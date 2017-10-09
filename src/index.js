@@ -1,50 +1,124 @@
-import scatterPlot from './scatterPlot'
 
-const xValue = d => d.sepalLength;
-const xLabel = 'Sepal Length';
-const yValue = d => d.petalLength;
-const yLabel = 'Petal Length';
-const colorValue = d => d.species;
-const colorLabel = 'Species';
-const margin = { left: 120, right: 300, top: 20, bottom: 120 };
+var width = 600,
+    height = 500,
+    sens = 0.25,
+    focused;
 
-const visualization = d3.select('#visualization');
-const visualizationDiv = visualization.node();
-const svg = visualization.select('svg');
+//Setting projection
 
-const row = d => {
-  d.petalLength = +d.petalLength;
-  d.petalWidth = +d.petalWidth;
-  d.sepalLength = +d.sepalLength;
-  d.sepalWidth = +d.sepalWidth;
-  return d;
-};
+var projection = d3.geo.orthographic()
+    .scale(245)
+    .rotate([0, 0])
+    .translate([width / 2, height / 2])
+    .clipAngle(90);
 
-d3.csv('data/iris.csv', row, data => {
+var path = d3.geo.path()
+    .projection(projection);
 
-  const render = () => {
+//SVG container
 
-    // Extract the width and height that was computed by CSS.
-    svg
-      .attr('width', visualizationDiv.clientWidth)
-      .attr('height', visualizationDiv.clientHeight);
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
 
-    // Render the scatter plot.
-    scatterPlot(svg, {
-      data,
-      xValue,
-      xLabel,
-      yValue,
-      yLabel,
-      colorValue,
-      colorLabel,
-      margin
+//Adding water
+
+svg.append("path")
+    .datum({type: "Sphere"})
+    .attr("class", "water")
+    .attr("d", path);
+
+var countryTooltip = d3.select("body").append("div").attr("class", "countryTooltip"),
+    countryList = d3.select("body").append("select").attr("name", "countries");
+
+
+queue()
+    .defer(d3.json, "/data/world-110m.json")
+    .defer(d3.tsv, "/data/world-110m-country-names.tsv")
+    .await(ready);
+
+//Main function
+
+function ready(error, world, countryData) {
+
+    var countryById = {},
+        countries = topojson.feature(world, world.objects.countries).features;
+
+    //Adding countries to select
+
+    countryData.forEach(function(d) {
+        countryById[d.id] = d.name;
+        option = countryList.append("option");
+        option.text(d.name);
+        option.property("value", d.id);
     });
-  }
 
-  // Draw for the first time to initialize.
-  render();
+    //Drawing countries on the globe
 
-  // Redraw based on the new size whenever the browser window is resized.
-  window.addEventListener('resize', render);
-});
+    var world = svg.selectAll("path.land")
+        .data(countries)
+        .enter().append("path")
+        .attr("class", "land")
+        .attr("d", path)
+
+        //Drag event
+
+        .call(d3.behavior.drag()
+            .origin(function() { var r = projection.rotate(); return {x: r[0] / sens, y: -r[1] / sens}; })
+            .on("drag", function() {
+                var rotate = projection.rotate();
+                projection.rotate([d3.event.x * sens, -d3.event.y * sens, rotate[2]]);
+                svg.selectAll("path.land").attr("d", path);
+                svg.selectAll(".focused").classed("focused", focused = false);
+            }))
+
+        //Mouse events
+
+        .on("mouseover", function(d) {
+            countryTooltip.text(countryById[d.id])
+                .style("left", (d3.event.pageX + 7) + "px")
+                .style("top", (d3.event.pageY - 15) + "px")
+                .style("display", "block")
+                .style("opacity", 1);
+        })
+        .on("mouseout", function(d) {
+            countryTooltip.style("opacity", 0)
+                .style("display", "none");
+        })
+        .on("mousemove", function(d) {
+            countryTooltip.style("left", (d3.event.pageX + 7) + "px")
+                .style("top", (d3.event.pageY - 15) + "px");
+        });
+
+    //Country focus on option select
+
+    d3.select("select").on("change", function() {
+        var rotate = projection.rotate(),
+            focusedCountry = country(countries, this),
+            p = d3.geo.centroid(focusedCountry);
+
+        svg.selectAll(".focused").classed("focused", focused = false);
+
+        //Globe rotating
+
+        (function transition() {
+            d3.transition()
+                .duration(2500)
+                .tween("rotate", function() {
+                    var r = d3.interpolate(projection.rotate(), [-p[0], -p[1]]);
+                    return function(t) {
+                        projection.rotate(r(t));
+                        svg.selectAll("path").attr("d", path)
+                            .classed("focused", function(d, i) { return d.id == focusedCountry.id ? focused = d : false; });
+                    };
+                })
+        })();
+    });
+
+    function country(cnt, sel) {
+        for(var i = 0, l = cnt.length; i < l; i++) {
+            if(cnt[i].id == sel.value) {return cnt[i];}
+        }
+    };
+
+};
