@@ -1,17 +1,120 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.min.js"></script>
-    <title>Visualization Project</title>
     <link rel="stylesheet" href="css/styles.css">
-  </head>
-  <body>
-    <div id="visualization">
-      <svg></svg>
-    </div>
-    <script src="./dist/bundle.js"></script>
-  </body>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/datamaps/0.5.8/datamaps.all.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+    <script src="src/load_data.js"></script>
+    <title>Dependency Ratio Map</title>
+    <style></style>
+</head>
+<body style="background-color:#dcffe0;">
+<div id="map"></div>
+<p/>
+
+<label for="country">Country:</label>
+<select class="form-control" id="country" style="width: 300px"></select>
+
+
+<div id="bar">
+    <h1>There will be a bar-line chart here.</h1>
+</div>
+
+<script>
+    var countryCode = {};
+    var series = [];
+    var countriesInCode = [];
+    var countries = []
+    var worldMap = d3.select('#map');
+
+
+    function resize() {
+        var w = window.innerWidth;
+        var h = window.innerHeight;
+        var map_width;
+        var map_height;
+        if (w / 16 * 9 > h) {//narrow the height
+            map_height = 0.8 * h;
+            map_width = map_height / 9 * 16;
+        } else {//narrow the width
+            map_width = 0.9 * w;
+            map_height = map_width / 16 * 9
+        }
+        worldMap.selectAll("*").remove();
+        worldMap.style('width', map_width + 'px').style('height', map_height + 'px');
+    }
+
+    function render() {
+        resize();
+        if (document.getElementById("country").childElementCount === 0) {
+            var countryList = d3.select('#country');
+            countryList.selectAll('*').remove();
+            countryList.append('option').text('World');
+            countries.sort();
+            for (var i in countries)
+                countryList.append('option').text(countries[i]);
+        }
+        var dataset = {};
+        // colors should be uniq for every value.
+        // For this purpose we create palette(using min/max series-value)
+        var onlyValues = series.map(function (obj) {
+            return obj[1];
+        });
+        var minValue = Math.min.apply(null, onlyValues);
+        var maxValue = Math.max.apply(null, onlyValues);
+        // create color palette function
+        var paletteScale = d3.scale.linear()
+            .domain([minValue, maxValue])
+            .range(["#ffeaea", "#410200"]); // blue color
+        // fill dataset in appropriate format
+        series.forEach(function (item) { //item example value ["USA", 70]
+            var iso = item[0];
+            var value = item[1];
+            dataset[iso] = {numberOfThings: value, fillColor: paletteScale(value)};
+        });
+        // render map
+        new Datamap({
+            element: document.getElementById('map'),
+            projection: 'mercator', // big world map
+            // countries don't listed in dataset will be painted with this color
+            fills: {defaultFill: '#F5F5F5'},
+            data: dataset,
+            geographyConfig: {
+                borderColor: '#DEDEDE',
+                highlightBorderWidth: 2,
+                // don't change color on mouse hover
+                highlightFillColor: function (geo) {
+                    return geo['fillColor'] || '#F5F5F5';
+                },
+                // show desired information in tooltip
+                popupTemplate: function (geo, data) {
+                    // don't show tooltip if country don't present in dataset
+                    var popupInfo = ['<div class="hoverinfo">', '<strong>', geo.properties.name, '</strong>'];
+                    if (!data) {
+                        popupInfo.push('<br><strong>No Data</strong>');
+                        return popupInfo.join('');
+                    }
+                    else
+                        return popupInfo.concat(['<br>Total Dependency Ratio: <strong>',
+                            data.numberOfThings, '</strong>', '</div>']).join('');
+                },
+                // only change border
+                highlightBorderColor: '#B7B7B7'
+            }
+        });
+    }
+
+    resize();
+    d3.csv("data/CountryCode.csv", countryCodeRow, {});
+    d3.csv("data/2015 to 2100 Dependency Ratio.csv", row, render);
+    window.addEventListener("resize", render);
+</script>
+
+</body>
 </html>

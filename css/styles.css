@@ -1,28 +1,15 @@
-body {
-  margin: 0px;
-}
-.domain {
-  display: none;
-}
-.tick line {
-  stroke: #C0C0BB;
-}
-.tick text, .legendCells text {
-  fill: #8E8883;
-  font-size: 28pt;
-  font-family: sans-serif;
-}
-.axis-label, .legend-label {
-  fill: #635F5D;
-  font-size: 50pt;
-  font-family: sans-serif;
+#map {
+  width: 1400px;
+  height: 950px;
+  /*top: 20px;*/
+  /*left: 20px;*/
+  position: relative;
+  padding: 10px
+
 }
 
-/* Make the chart container fill the page using CSS. */
-#visualization {
-  position: fixed;
-  left: 0px;
-  right: 0px;
-  top: 0px;
-  bottom: 0px;
+#country {
+  position: relative;
+  max-height: 250px; /* you can change as you need it */
+  overflow: auto; /* to get scroll */
 }
