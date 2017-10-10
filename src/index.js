@@ -1,6 +1,6 @@
 //import detailHandler from './detailHandler'
 
-var width = 1600,
+var width = 1200,
     height = 500,
     sens = 0.25,
     focused;
@@ -102,7 +102,7 @@ function ready(error, world, countryData) {
         });
 
     //Country focus on option select
-
+/**
     d3.select("select").on("change", function () {
         var rotate = projection.rotate(),
             focusedCountry = country(countries, this),
@@ -135,6 +135,7 @@ function ready(error, world, countryData) {
             }
         }
     };
+ */
 };
 
 
@@ -210,7 +211,8 @@ function updateDetail(countryName){
 
         yScale
             .domain(d3.extent(data, yValue))
-            .range([innerHeight, 0]);
+            .range([innerHeight, 0])
+            .nice(yTicks);
 
         g.append('path')
             .attr('fill', 'none')
