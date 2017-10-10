@@ -139,32 +139,34 @@ function ready(error, world, countryData) {
 
 
 function updateDetail(countryName){
-    //var chartDiv = document.getElementById("chart");
-    //svg = d3.select(chartDiv).append("svg");
+
     const xValue = d => d['Year'];
     const xLabel = 'Year';
     const yValue = d => d['Mobile cellular subscriptions'];
     const yLabel = 'Subscription per 100 people';
+    const margin = { left: 120, right: 60, top: 20, bottom: 120 };
 
-    var innerWidth = width/2;
-    var innerHeight = height;
+    const innerWidth = width - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
 
-    //var g = svg.selectAll("*").exit().append('g');
-    var g = svg.append("g");
+    var g = svg.select("#old").remove();
+    g = svg.append("g")
+        .attr("id", "old")
+        .attr('transform', `translate(${margin.left},${margin.top})`);
     const xAxisG = g.append('g')
         .attr('transform', `translate(0, ${innerHeight})`);
     const yAxisG = g.append('g');
 
     xAxisG.append('text')
         .attr('class', 'axis-label')
-        .attr('x', innerWidth / 2)
+        .attr('x', innerWidth * 3/4)
         .attr('y', 80)
         .text(xLabel);
 
     yAxisG.append('text')
         .attr('class', 'axis-label')
-        .attr('x', -innerHeight / 2)
-        .attr('y', -60)
+        .attr('x', -innerHeight/2)
+        .attr('y', innerWidth * 1.9/4)
         .attr('transform', `rotate(-90)`)
         .style('text-anchor', 'middle')
         .text(yLabel);
@@ -172,22 +174,23 @@ function updateDetail(countryName){
     const xScale = d3.scale.linear();
     const yScale = d3.scale.linear();
 
-    const xAxis = g.axis()
+    const xAxis = d3.svg.axis()
         .scale(xScale)
+        .orient("bottom")
         .tickPadding(15)
-        .ticks(5)
         .tickSize(-innerHeight)
         .tickFormat(d3.format("d"));
 
     const yTicks = 5;
-    const yAxis = g.axis()
+    const yAxis = d3.svg.axis()
         .scale(yScale)
+        .orient("right")
         .ticks(yTicks)
         .tickPadding(15)
-        .tickSize(-innerWidth)
+        .tickSize(innerWidth)
         .tickFormat(d3.format("d"));
 
-    const line = g.line()
+    const line = d3.svg.line()
         .x(d => xScale(xValue(d)))
         .y(d => yScale(yValue(d)))
         .interpolate("basis");
@@ -203,13 +206,11 @@ function updateDetail(countryName){
     d3.csv('/data/mobile-cellular-subscriptions-by-country.csv', row, data => {
         xScale
             .domain(d3.extent(data, xValue))
-            .range([0, innerWidth])
-            .nice();
+            .range([innerWidth/2, innerWidth]);
 
         yScale
             .domain(d3.extent(data, yValue))
-            .range([innerHeight, 0])
-            .nice(yTicks);
+            .range([innerHeight, 0]);
 
         g.append('path')
             .attr('fill', 'none')

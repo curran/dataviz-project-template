@@ -65,3 +65,32 @@ select {
     top: 0px;
     bottom: 0px;
 }
+
+
+
+
+.domain {
+    display: none;
+}
+.tick line {
+    stroke: #C0C0BB;
+    stroke-width: 0;
+}
+
+.tick text {
+    fill: #8E8883;
+    font-size: 12pt;
+    font-family: sans-serif;
+}
+
+.axis path,
+.axis line{
+    fill: #635F5D;
+    stroke: black;
+}
+
+.axis-label {
+    fill: #635F5D;
+    font-size: 18pt;
+    font-family: sans-serif;
+}
