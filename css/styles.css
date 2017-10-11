@@ -26,3 +26,94 @@ body {
   top: 0px;
   bottom: 0px;
 }
+
+/*********** read in from the choropleth map code ************/
+
+
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+body {
+  font-family: Roboto, sans-serif;
+  font-size: 10pt;
+}
+
+/* Make the chart container fill the page using CSS. */
+#chart {
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+}
+
+.area {
+  stroke: #fff;
+  stroke-width: 1.5px;
+  opacity: 0.9;
+  fill: #c6c6c6;
+}
+
+.area:hover {
+  opacity: 0.4;
+}
+
+.alreadyRun {
+  fill: #16a; /*darkgreen;*/
+}
+
+.hasRaceSoon {
+  fill: #feb24c; /* #428cd1;  */
+}
+
+.hasRaceVerySoon {
+  fill: #f03b20; /*#d14242;*/ 
+}
+.color-legend text {
+  font-size: 12pt;
+  color: #666;
+}
+.color-legend rect {
+  opacity: 0.9;
+}
+
+.d3-tip {
+  font-size: 12pt;
+  line-height: 1.2;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color:  #fff;
+  border-radius: 7px;
+}
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+/* style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+/* more tooltip formats */
+.townname {
+  font-weight: bold;
+}
+.racedate {
+  color: skyblue;
+  font-weight: bold;
+}
+.racedistance {
+  color: orange;
+  font-weight: bold;
+}
+.racename {
+  color: #fff;
+}
+
