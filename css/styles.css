@@ -1,15 +1,32 @@
 #map {
-  width: 1400px;
-  height: 950px;
-  /*top: 20px;*/
-  /*left: 20px;*/
-  position: relative;
-  padding: 10px
-
+    margin: auto;
+    width: 1400px;
+    height: 950px;
+    position: relative;
+    border: double;
 }
 
-#country {
-  position: relative;
-  max-height: 250px; /* you can change as you need it */
-  overflow: auto; /* to get scroll */
+#bar {
+    margin: 1% auto;
+    border: double
 }
+
+#selector {
+    margin: 1% auto;
+    border: double
+}
+
+#country-list {
+
+    display: inline-block;
+    position: relative;
+    width: 300px;
+    max-height: 300px; /* you can change as you need it */
+    overflow: auto; /* to get scroll */
+}
+
+/*#year-input {*/
+/*width: auto;*/
+/*display: inline-block;*/
+/*}*/
+

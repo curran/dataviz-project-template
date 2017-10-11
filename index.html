@@ -5,26 +5,65 @@
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/datamaps/0.5.8/datamaps.all.js"></script>
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
-    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="src/load_data.js"></script>
     <title>Dependency Ratio Map</title>
-    <style></style>
 </head>
-<body style="background-color:#dcffe0;">
-<div id="map"></div>
-<p/>
 
-<label for="country">Country:</label>
-<select class="form-control" id="country" style="width: 300px"></select>
+<body style="background-color:  #feffe1;">
+
+<div id="map"></div>
 
 
 <div id="bar">
     <h1>There will be a bar-line chart here.</h1>
 </div>
+
+<!--<div id="selector">-->
+<!--<label for="country-list">Country:</label>-->
+<!--<select class="form-control" id="country-list"></select>-->
+<!--Year:<input id="year-input" type="range" min="2015" max="2100" step="5">-->
+<!--</div>-->
+
+
+<div id="selector">
+    <table id="country-year" style="width:100%">
+        <tr>
+            <th style="width: 20%"><label for="country-list">Country:</label>
+            <th colspan="18">Year:</th>
+        </tr>
+        <tr>
+            <td rowspan="2" style="padding-right: 2%"><select class="form-control" id="country-list"></select></td>
+            <td colspan="18" style="padding-left: 1%;padding-right: 3.5%"><input id="year-input" type="range" min="2015"
+                                                                                 max="2100" step="5"></td>
+        </tr>
+        <tr>
+            <td>2015</td>
+            <td>2020</td>
+            <td>2025</td>
+            <td>2030</td>
+            <td>2035</td>
+            <td>2040</td>
+            <td>2045</td>
+            <td>2050</td>
+            <td>2055</td>
+            <td>2060</td>
+            <td>2065</td>
+            <td>2070</td>
+            <td>2075</td>
+            <td>2080</td>
+            <td>2085</td>
+            <td>2090</td>
+            <td>2095</td>
+            <td>2100</td>
+        </tr>
+    </table>
+</div>
+
 
 <script>
     var countryCode = {};
@@ -48,12 +87,14 @@
         }
         worldMap.selectAll("*").remove();
         worldMap.style('width', map_width + 'px').style('height', map_height + 'px');
+        d3.select("#bar").style("width", map_width + 'px');
+        d3.select("#selector").style("width", map_width + 'px');
     }
 
     function render() {
         resize();
-        if (document.getElementById("country").childElementCount === 0) {
-            var countryList = d3.select('#country');
+        if (document.getElementById("country-list").childElementCount === 0) {
+            var countryList = d3.select('#country-list');
             countryList.selectAll('*').remove();
             countryList.append('option').text('World');
             countries.sort();
@@ -79,7 +120,7 @@
             dataset[iso] = {numberOfThings: value, fillColor: paletteScale(value)};
         });
         // render map
-        new Datamap({
+        var datamap = new Datamap({
             element: document.getElementById('map'),
             projection: 'mercator', // big world map
             // countries don't listed in dataset will be painted with this color
@@ -106,13 +147,19 @@
                 },
                 // only change border
                 highlightBorderColor: '#B7B7B7'
+            },
+            done: function (datamap) {
+                datamap.svg.selectAll('.datamaps-subunit').on('click', function (geography) {
+                    alert(geography.properties.name);
+                });
             }
         });
     }
 
     resize();
     d3.csv("data/CountryCode.csv", countryCodeRow, {});
-    d3.csv("data/2015 to 2100 Dependency Ratio.csv", row, render);
+    d3.csv("data/2015 to 2100 Dependency Ratio.csv", row, {});
+    setTimeout(render, 500);
     window.addEventListener("resize", render);
 </script>
 
