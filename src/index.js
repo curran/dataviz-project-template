@@ -1,4 +1,5 @@
 import scatterPlot from './scatterPlot'
+import choroplethMap from './choroplethMap'
 
 const xValue = d => d.sepalLength;
 const xLabel = 'Sepal Length';
