@@ -109,6 +109,26 @@ function dataLoaded(error, data, mapData, drivingTimes, racesRun, races) {
       colorLabel,
       margin
     });
+    // Render the choropleth map.
+    choroplethMap(svg, {
+      mapData,
+      drivingTimes,
+      racesRun,
+      races,
+      racesRunMap,
+      drivingTimesMap,
+      racesSoonByTown,
+      raceHorizonByTown,
+      xValue,
+      xLabel,
+      yValue,
+      yLabel,
+      colorValue,
+      colorLabel,
+      margin
+    });
+
+
   }
 
   // Draw for the first time to initialize.
