@@ -21,7 +21,7 @@ const row = d => {
   return d;
 };
 
-d3.csv('data/iris.csv', row, data => {
+function dataLoaded(error, data, mapData, drivingTimes, racesRun, races) {
 
   const render = () => {
 
@@ -48,4 +48,14 @@ d3.csv('data/iris.csv', row, data => {
 
   // Redraw based on the new size whenever the browser window is resized.
   window.addEventListener('resize', render);
-});
+}
+
+d3.queue()
+  .defer(d3.csv, "data/iris.csv", row)
+  .defer(d3.json, "data/ct_towns_simplified.topojson")
+  .defer(d3.csv, "data/driving_times_from_avon.csv")//, build_driving_map)
+  .defer(d3.csv, "data/towns_run.csv")//, build_races_run_map)
+  .defer(d3.csv, "data/races2017.csv")//, parseRaces)
+  .await(dataLoaded);
+
+
