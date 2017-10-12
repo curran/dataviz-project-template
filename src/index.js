@@ -76,6 +76,22 @@ const parseRaces = row => {
 
 
 function dataLoaded(error, mapData, drivingTimes, racesRun, races) {
+  const colorScale = d3.scaleOrdinal()
+    .domain(["Race within 1 week", "Race within 2 weeks", "Town already run"])
+    .range(["#f03b20", "#feb24c", "#16a"]);
+  const colorLegend = d3.legendColor()
+    .scale(colorScale)
+    .shapeWidth(40)
+    .shapeHeight(20);
+
+
+
+  const colorLegendG = svg.append("g")
+    .attr("transform",`translate(10,10)`);
+  colorLegendG.call(colorLegend)
+    .attr("class", "color-legend");
+
+
 
   const render = () => {
 
