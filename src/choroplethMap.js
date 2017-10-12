@@ -8,12 +8,6 @@ export default function (svg, props) {
     drivingTimesMap,
     racesSoonByTown,
     raceHorizonByTown,
-    xValue,
-    xLabel,
-    yValue,
-    yLabel,
-    colorValue,
-    colorLabel,
     margin
   } = props;
 
