@@ -1,32 +1,157 @@
 #map {
+    width: 900px;
+    height: 540px;
     margin: auto;
-    width: 1400px;
-    height: 950px;
+    margin-top: -30px;
+    border: 1px black solid;
+}
+
+#country-selector {
+    margin: auto;
+    top: -20px;
+    width: 900px;
     position: relative;
-    border: double;
+    max-height: 300px;
+    overflow: auto;
+    border: 1px black solid;
+}
+
+#country-input {
+    width: 300px;
 }
 
 #bar {
-    margin: 1% auto;
-    border: double
-}
-
-#selector {
-    margin: 1% auto;
-    border: double
-}
-
-#country-list {
-
-    display: inline-block;
+    width: 900px;
+    height: 260px;
+    top: -20px;
+    margin: auto;
     position: relative;
-    width: 300px;
-    max-height: 300px; /* you can change as you need it */
-    overflow: auto; /* to get scroll */
+    border: 1px black solid;
 }
 
-/*#year-input {*/
-/*width: auto;*/
-/*display: inline-block;*/
-/*}*/
+#year-selector {
+    margin: auto;
+    width: 910px;
 
+}
+
+.range {
+    position: relative;
+    width: 900px;
+    height: 5px;
+}
+
+.range input {
+    width: 900px;
+    position: relative;
+    top: 2px;
+    height: 0;
+    -webkit-appearance: none;
+}
+
+.range input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    margin: -8px 0 0;
+    border-radius: 500%;
+    background: #ff5a04;
+    cursor: pointer;
+    border: 0 !important;
+}
+
+.range input::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    margin: -8px 0 0;
+    border-radius: 50%;
+    background: #ff5a04;
+    cursor: pointer;
+    border: 0 !important;
+}
+
+.range input::-ms-thumb {
+    width: 18px;
+    height: 18px;
+    margin: -8px 0 0;
+    border-radius: 50%;
+    background: #ff5a04;
+    cursor: pointer;
+    border: 0 !important;
+}
+
+.range input::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background: #b2b2b2;
+}
+
+.range input::-moz-range-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background: #b2b2b2;
+}
+
+.range input::-ms-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background: #b2b2b2;
+}
+
+.range input:focus {
+    background: none;
+    outline: none;
+}
+
+.range input::-ms-track {
+    width: 100%;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+.range-labels {
+    margin: 18px -27px 0;
+    padding: 0;
+    list-style: none;
+}
+
+.range-labels li {
+    position: relative;
+    float: left;
+    width: 53px;
+    text-align: center;
+    color: #b2b2b2;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.range-labels li::before {
+    position: absolute;
+    top: -25px;
+    right: 0;
+    left: 0;
+    content: "";
+    margin: 0 auto;
+    width: 9px;
+    height: 9px;
+    background: #b2b2b2;
+    border-radius: 50%;
+}
+
+.range-labels .active {
+    color: #ff5a04;
+}
+
+.range-labels .selected::before {
+    background: #ff5a04;
+}
+
+.range-labels .active.selected::before {
+    display: none;
+}

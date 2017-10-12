@@ -3,108 +3,133 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="css/styles.css">
+
+    <link rel="stylesheet" href="css/styles.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/datamaps/0.5.8/datamaps.all.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="src/load_data.js"></script>
+
+
     <title>Dependency Ratio Map</title>
 </head>
 
 <body style="background-color:  #feffe1;">
 
-<div id="map"></div>
+<div id="map">
+</div>
 
+<div id="country-selector">
+    <label for="country-input">Country:</label>
+    <select class="form-control" id="country-input"></select>
+</div>
 
 <div id="bar">
     <h1>There will be a bar-line chart here.</h1>
 </div>
 
-<!--<div id="selector">-->
-<!--<label for="country-list">Country:</label>-->
-<!--<select class="form-control" id="country-list"></select>-->
-<!--Year:<input id="year-input" type="range" min="2015" max="2100" step="5">-->
-<!--</div>-->
-
-
-<div id="selector">
-    <table id="country-year" style="width:100%">
-        <tr>
-            <th style="width: 20%"><label for="country-list">Country:</label>
-            <th colspan="18">Year:</th>
-        </tr>
-        <tr>
-            <td rowspan="2" style="padding-right: 2%"><select class="form-control" id="country-list"></select></td>
-            <td colspan="18" style="padding-left: 1%;padding-right: 3.5%"><input id="year-input" type="range" min="2015"
-                                                                                 max="2100" step="5"></td>
-        </tr>
-        <tr>
-            <td>2015</td>
-            <td>2020</td>
-            <td>2025</td>
-            <td>2030</td>
-            <td>2035</td>
-            <td>2040</td>
-            <td>2045</td>
-            <td>2050</td>
-            <td>2055</td>
-            <td>2060</td>
-            <td>2065</td>
-            <td>2070</td>
-            <td>2075</td>
-            <td>2080</td>
-            <td>2085</td>
-            <td>2090</td>
-            <td>2095</td>
-            <td>2100</td>
-        </tr>
-    </table>
+<div id="year-selector">
+    <div class="range">
+        <input type="range" min="2015" max="2100" step="5" value="2015" autocomplete="off">
+    </div>
+    <ul class="range-labels">
+        <li class="active selected">2015</li>
+        <li>2020</li>
+        <li>2025</li>
+        <li>2030</li>
+        <li>2035</li>
+        <li>2040</li>
+        <li>2045</li>
+        <li>2050</li>
+        <li>2055</li>
+        <li>2060</li>
+        <li>2065</li>
+        <li>2070</li>
+        <li>2075</li>
+        <li>2080</li>
+        <li>2085</li>
+        <li>2090</li>
+        <li>2095</li>
+        <li>2100</li>
+    </ul>
 </div>
 
 
+<!--<div id="selector">-->
+<!--<table id="country-year" style="width:100% ;">-->
+<!--<tr>-->
+<!--<th><label for="country-input">Country:</label>-->
+<!--<td colspan="2"><select class="form-control" id="country-input"></select></td>-->
+<!--<th>Year:</th>-->
+<!--<td colspan="18"><input id="year-input" type="range" min="2015"-->
+<!--max="2100" step="5"></td>-->
+<!--</tr>-->
+<!--<tr id="years">-->
+<!--<td colspan="4"></td>-->
+<!--<td>2015</td>-->
+<!--<td>2020</td>-->
+<!--<td>2025</td>-->
+<!--<td>2030</td>-->
+<!--<td>2035</td>-->
+<!--<td>2040</td>-->
+<!--<td>2045</td>-->
+<!--<td>2050</td>-->
+<!--<td>2055</td>-->
+<!--<td>2060</td>-->
+<!--<td>2065</td>-->
+<!--<td>2070</td>-->
+<!--<td>2075</td>-->
+<!--<td>2080</td>-->
+<!--<td>2085</td>-->
+<!--<td>2090</td>-->
+<!--<td>2095</td>-->
+<!--<td>2100</td>-->
+<!--</tr>-->
+<!--</table>-->
+<!--</div>-->
+
+
 <script>
-    var countryCode = {};
-    var series = [];
-    var countriesInCode = [];
-    var countries = []
-    var worldMap = d3.select('#map');
+    var countriesNumList = [];// country numeric code array
+    var countryCode = {};//{country numeric code : alpha 3 code}
+    var codeName = {};// {alpha 3 code : country name}
+    var codeValue = []; // [alpha 3 code, value]
+    var countriesNames = [];
 
 
-    function resize() {
-        var w = window.innerWidth;
-        var h = window.innerHeight;
-        var map_width;
-        var map_height;
-        if (w / 16 * 9 > h) {//narrow the height
-            map_height = 0.8 * h;
-            map_width = map_height / 9 * 16;
-        } else {//narrow the width
-            map_width = 0.9 * w;
-            map_height = map_width / 16 * 9
+    function countryCodeRow(d) {
+        countriesNumList.push(d.Numeric_code);
+        countryCode[d.Numeric_code] = d.Alpha_3_code;
+        return 0;
+    }
+
+    function row(d) {
+        if (countriesNumList.indexOf(d.Country_code) !== -1) {
+            countriesNames.push(d['Region, subregion, country or area *']);
+            var rowData={};
+            for (var i=2015;i<=2100;i+=5) {
+                rowData[i] = d[i];
+            }
+            console.log(rowData);
+            codeValue.push([countryCode[d.Country_code], d["2050"]]);
+            codeName[countryCode[d.Country_code]] = d['Region, subregion, country or area *'];
         }
-        worldMap.selectAll("*").remove();
-        worldMap.style('width', map_width + 'px').style('height', map_height + 'px');
-        d3.select("#bar").style("width", map_width + 'px');
-        d3.select("#selector").style("width", map_width + 'px');
     }
 
     function render() {
-        resize();
-        if (document.getElementById("country-list").childElementCount === 0) {
-            var countryList = d3.select('#country-list');
+        if (document.getElementById("country-input").childElementCount === 0) {
+            var countryList = d3.select('#country-input');
             countryList.selectAll('*').remove();
             countryList.append('option').text('World');
-            countries.sort();
-            for (var i in countries)
-                countryList.append('option').text(countries[i]);
+            countriesNames.sort();
+            for (var i in countriesNames)
+                countryList.append('option').text(countriesNames[i]);
         }
         var dataset = {};
-        // colors should be uniq for every value.
-        // For this purpose we create palette(using min/max series-value)
-        var onlyValues = series.map(function (obj) {
+        var onlyValues = codeValue.map(function (obj) {
             return obj[1];
         });
         var minValue = Math.min.apply(null, onlyValues);
@@ -112,9 +137,9 @@
         // create color palette function
         var paletteScale = d3.scale.linear()
             .domain([minValue, maxValue])
-            .range(["#ffeaea", "#410200"]); // blue color
+            .range(["#f4fff8", "#b90700"]); // blue color
         // fill dataset in appropriate format
-        series.forEach(function (item) { //item example value ["USA", 70]
+        codeValue.forEach(function (item) { //item example value ["USA", 70]
             var iso = item[0];
             var value = item[1];
             dataset[iso] = {numberOfThings: value, fillColor: paletteScale(value)};
@@ -146,21 +171,50 @@
                             data.numberOfThings, '</strong>', '</div>']).join('');
                 },
                 // only change border
-                highlightBorderColor: '#B7B7B7'
+                highlightBorderColor: '#ff5a04'
             },
             done: function (datamap) {
                 datamap.svg.selectAll('.datamaps-subunit').on('click', function (geography) {
-                    alert(geography.properties.name);
+                    if (geography.id != -99)
+                        $("#country-input").val(codeName[geography.id]);
                 });
             }
         });
     }
 
-    resize();
-    d3.csv("data/CountryCode.csv", countryCodeRow, {});
-    d3.csv("data/2015 to 2100 Dependency Ratio.csv", row, {});
-    setTimeout(render, 500);
-    window.addEventListener("resize", render);
+    d3.csv("data/CountryCode.csv", countryCodeRow, function () {
+            d3.csv("data/2015 to 2100 Dependency Ratio.csv", row, render);
+        }
+    );
+    //    window.addEventListener("resize", render);
+</script>
+
+<script>
+    var sheet = document.createElement('style'),
+        $rangeInput = $('.range input'),
+        prefs = ['webkit-slider-runnable-track', 'moz-range-track', 'ms-track'];
+    document.head.appendChild(sheet);
+    var getTrackStyle = function (el) {
+        var curVal = el.value,
+            val = (curVal - 2015) * 1.176470588,
+            style = '';
+        $('.range-labels li').removeClass('active selected');
+        var curLabel = $('.range-labels').find('li:nth-child(' + (curVal - 2010) / 5 + ')');
+        curLabel.addClass('active selected');
+        curLabel.prevAll().addClass('selected');
+        for (var i = 0; i < prefs.length; i++) {
+            style += '.range {background: linear-gradient(to right, #ff5a04 0%, #ff5a04 ' + val + '%, #fff ' + val + '%, #fff 100%)}';
+            style += '.range input::-' + prefs[i] + '{background: linear-gradient(to right, #ff5a04 0%, #ff5a04 ' + val + '%, #b2b2b2 ' + val + '%, #b2b2b2 100%)}';
+        }
+        return style;
+    };
+    $rangeInput.on('input', function () {
+        sheet.textContent = getTrackStyle(this);
+    });
+    $('.range-labels li').on('click', function () {
+        var index = $(this).index();
+        $rangeInput.val(index * 5 + 2015).trigger('input');
+    });
 </script>
 
 </body>
