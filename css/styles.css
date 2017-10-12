@@ -1,15 +1,16 @@
 #map {
-    width: 900px;
-    height: 540px;
+    width: 1000px;
+    height: 678px;
     margin: auto;
-    margin-top: -30px;
+    margin-top: -150px;
+    position: relative;
     border: 1px black solid;
 }
 
 #country-selector {
     margin: auto;
-    top: -20px;
-    width: 900px;
+    top: -50px;
+    width: 1000px;
     position: relative;
     max-height: 300px;
     overflow: auto;
@@ -21,9 +22,9 @@
 }
 
 #bar {
-    width: 900px;
-    height: 260px;
-    top: -20px;
+    width: 1000px;
+    height: 300px;
+    top: -50px;
     margin: auto;
     position: relative;
     border: 1px black solid;
@@ -31,7 +32,7 @@
 
 #year-selector {
     margin: auto;
-    width: 910px;
+    width: 900px;
 
 }
 

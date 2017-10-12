@@ -13,12 +13,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+
 
     <title>Dependency Ratio Map</title>
 </head>
 
-<body style="background-color:  #feffe1;">
-
+<body style="background-color:#feffe1">
 <div id="map">
 </div>
 
@@ -33,7 +34,7 @@
 
 <div id="year-selector">
     <div class="range">
-        <input type="range" min="2015" max="2100" step="5" value="2015" autocomplete="off">
+        <input id="year-input" type="range" min="2015" max="2100" step="5" value="2015" autocomplete="off">
     </div>
     <ul class="range-labels">
         <li class="active selected">2015</li>
@@ -58,79 +59,53 @@
 </div>
 
 
-<!--<div id="selector">-->
-<!--<table id="country-year" style="width:100% ;">-->
-<!--<tr>-->
-<!--<th><label for="country-input">Country:</label>-->
-<!--<td colspan="2"><select class="form-control" id="country-input"></select></td>-->
-<!--<th>Year:</th>-->
-<!--<td colspan="18"><input id="year-input" type="range" min="2015"-->
-<!--max="2100" step="5"></td>-->
-<!--</tr>-->
-<!--<tr id="years">-->
-<!--<td colspan="4"></td>-->
-<!--<td>2015</td>-->
-<!--<td>2020</td>-->
-<!--<td>2025</td>-->
-<!--<td>2030</td>-->
-<!--<td>2035</td>-->
-<!--<td>2040</td>-->
-<!--<td>2045</td>-->
-<!--<td>2050</td>-->
-<!--<td>2055</td>-->
-<!--<td>2060</td>-->
-<!--<td>2065</td>-->
-<!--<td>2070</td>-->
-<!--<td>2075</td>-->
-<!--<td>2080</td>-->
-<!--<td>2085</td>-->
-<!--<td>2090</td>-->
-<!--<td>2095</td>-->
-<!--<td>2100</td>-->
-<!--</tr>-->
-<!--</table>-->
-<!--</div>-->
-
-
 <script>
-    var countriesNumList = [];// country numeric code array
-    var countryCode = {};//{country numeric code : alpha 3 code}
+    var special = {
+        900: 'World',
+        1503: 'High Income Countries',
+        1517: 'Middle Income Countries',
+        1500: 'Low Income Countries'
+    };
+    var countryCode = {900: null, 1503: null, 1517: null, 1500: null};//{country numeric code : alpha 3 code}
     var codeName = {};// {alpha 3 code : country name}
-    var codeValue = []; // [alpha 3 code, value]
-    var countriesNames = [];
-
-
+    var codeValue = []; // [alpha 3 code, {year: value}]
+    var countriesNames = ['World', 'High Income Countries', 'Middle Income Countries', 'Low Income Countries'];//
+    var nameValue = {};//{country name: value}
     function countryCodeRow(d) {
-        countriesNumList.push(d.Numeric_code);
         countryCode[d.Numeric_code] = d.Alpha_3_code;
         return 0;
     }
 
     function row(d) {
-        if (countriesNumList.indexOf(d.Country_code) !== -1) {
-            countriesNames.push(d['Region, subregion, country or area *']);
-            var rowData={};
-            for (var i=2015;i<=2100;i+=5) {
+        if (countryCode[d.Country_code] !== undefined) {
+            var rowData = {};
+            for (var i = 2015; i <= 2100; i += 5) {
                 rowData[i] = d[i];
             }
-            console.log(rowData);
-            codeValue.push([countryCode[d.Country_code], d["2050"]]);
-            codeName[countryCode[d.Country_code]] = d['Region, subregion, country or area *'];
+            if (special[d.Country_code] !== undefined)
+                nameValue[special[d.Country_code]] = rowData;
+            else {
+                codeValue.push([countryCode[d.Country_code], rowData]);
+                nameValue[d['Region, subregion, country or area *']] = rowData;
+                countriesNames.push(d['Region, subregion, country or area *']);
+                codeName[countryCode[d.Country_code]] = d['Region, subregion, country or area *'];
+            }
         }
     }
 
     function render() {
+        d3.select("#map").selectAll("*").remove();
         if (document.getElementById("country-input").childElementCount === 0) {
             var countryList = d3.select('#country-input');
             countryList.selectAll('*').remove();
-            countryList.append('option').text('World');
             countriesNames.sort();
+            countriesNames.unshift('World', 'High Income Countries', 'Middle Income Countries', 'Low Income Countries');
             for (var i in countriesNames)
                 countryList.append('option').text(countriesNames[i]);
         }
         var dataset = {};
         var onlyValues = codeValue.map(function (obj) {
-            return obj[1];
+            return obj[1][$("#year-input").val()];
         });
         var minValue = Math.min.apply(null, onlyValues);
         var maxValue = Math.max.apply(null, onlyValues);
@@ -141,11 +116,11 @@
         // fill dataset in appropriate format
         codeValue.forEach(function (item) { //item example value ["USA", 70]
             var iso = item[0];
-            var value = item[1];
+            var value = item[1][$("#year-input").val()];
             dataset[iso] = {numberOfThings: value, fillColor: paletteScale(value)};
         });
         // render map
-        var datamap = new Datamap({
+        new Datamap({
             element: document.getElementById('map'),
             projection: 'mercator', // big world map
             // countries don't listed in dataset will be painted with this color
@@ -175,8 +150,10 @@
             },
             done: function (datamap) {
                 datamap.svg.selectAll('.datamaps-subunit').on('click', function (geography) {
-                    if (geography.id != -99)
+                    if (geography.id !== -99) {
                         $("#country-input").val(codeName[geography.id]);
+                        console.log(nameValue[$("#country-input").val()]);//Todo
+                    }
                 });
             }
         });
@@ -186,7 +163,6 @@
             d3.csv("data/2015 to 2100 Dependency Ratio.csv", row, render);
         }
     );
-    //    window.addEventListener("resize", render);
 </script>
 
 <script>
@@ -215,7 +191,12 @@
         var index = $(this).index();
         $rangeInput.val(index * 5 + 2015).trigger('input');
     });
+    $("#year-input").on('input', function () {
+        render();
+    });
+    $("#country-input").change(function () {//Todo
+        console.log(nameValue[$("#country-input").val()])
+    });
 </script>
-
 </body>
 </html>
