@@ -1,6 +1,13 @@
-A template project that uses Webpack and D3. Designed as a starting point for interactive data visualization projects that require JavaScript code to be organized across many files (as ES6 modules).
+# 2015-2100 World Dependency Ratio
 
-The starter code here is from [Stylized Scatter Plot with Color Legend](https://bl.ocks.org/curran/ecb09f2605c7fbbadf0eeb75da5f0a6b).
+## Have a look on the Alpha Version
+[Click here](https://bl.ocks.org/BruceHenry/raw/f9c8fdaa96182f18c5517a0d18323f40/) to visit.
+
+## Introduction of [Total Dependency Ratio](https://en.wikipedia.org/wiki/Dependency_ratio)
+The dependency ratio is a measure showing the number of dependents, aged 0 to 24 and over the age of 65, to the total population aged 25 to 64. This indicator gives insight into the amount of people of nonworking age compared to the number of those of working age.
+
+## Data Source
+The data is from [United Nations: World Population Prospects 2017](https://esa.un.org/unpd/wpp/Download/Standard/Population/).This dataset is total dependency ratio (<25 & 65+)/(25-64) by region, subregion and country, 1950-2100 (ratio of population 0-24 and 65+ per 100 population 25-64).
 
 ## Development
 
