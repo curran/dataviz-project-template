@@ -54,7 +54,7 @@
 .range input {
     width: 920px;
     position: relative;
-    top: 2px; /*Todo*/
+    top: 2px;
     height: 0;
     -webkit-appearance: none;
 }
