@@ -29,7 +29,6 @@
 </div>
 
 <div id="bar">
-    <h1>There will be a bar-line chart here.</h1>
 </div>
 
 <div id="year-selector">
@@ -102,6 +101,7 @@
             countriesNames.unshift('World', 'High Income Countries', 'Middle Income Countries', 'Low Income Countries');
             for (var i in countriesNames)
                 countryList.append('option').text(countriesNames[i]);
+            $("#country-input").val("World");
         }
         var dataset = {};
         var onlyValues = codeValue.map(function (obj) {
@@ -152,7 +152,7 @@
                 datamap.svg.selectAll('.datamaps-subunit').on('click', function (geography) {
                     if (geography.id !== -99) {
                         $("#country-input").val(codeName[geography.id]);
-                        console.log(nameValue[$("#country-input").val()]);//Todo
+                        drawBar(nameValue[$("#country-input").val()]);
                     }
                 });
             }
@@ -160,9 +160,58 @@
     }
 
     d3.csv("data/CountryCode.csv", countryCodeRow, function () {
-            d3.csv("data/2015 to 2100 Dependency Ratio.csv", row, render);
+            d3.csv("data/2015 to 2100 Dependency Ratio.csv", row, function () {
+                render();
+                drawBar(nameValue["World"]);
+            });
         }
     );
+</script>
+<script>
+
+    var svg = d3.select("#bar").append("svg").attr('width', '100%').attr('height', '100%');
+    var barWidth = 30;
+
+    function drawBar(yearValue) {
+        var data = [];
+        for (var i = 2015; i <= 2100; i += 5) {
+            data.push({year: String(i), value: yearValue[i]});
+        }
+        const xValue = d => d.year;
+        const yValue = d => +d.value;
+        const xScale = d3.scale.linear()
+            .domain([2015, 2100])
+            .range([0, 915]);
+        const yScale = d3.scale.linear()
+            .range([0, 299])
+            .domain([0, 256]);
+        var rects = svg.selectAll('rect').data(data)
+            .attr('x', d => xScale(xValue(d)) + 12)
+            .attr('y', d => 300 - yScale(yValue(d)))
+            .attr('width', barWidth)
+            .attr('height', d => yScale(yValue(d)));
+
+        svg.selectAll('title').data(data)
+            .text(d => yValue(d));
+
+        rects.enter().append('rect')
+            .attr('class', 'year')
+            .attr('id', d => 'year-' + d.year)
+            .attr('x', d => xScale(xValue(d)) + 12)
+            .attr('y', d => 300 - yScale(yValue(d)))
+            .attr('width', barWidth)
+            .attr('height', d => yScale(yValue(d)))
+            .append('title')
+            .attr('class', 'rect-popup')
+            .text(d => yValue(d));
+        $("rect:nth-child(1)").addClass("selected-year");
+        $('.year').on('click', function () {
+            var index = $(this).index();
+            $('.range input').val(index * 5 + 2015).trigger('input');
+        });
+    }
+
+
 </script>
 
 <script>
@@ -174,10 +223,14 @@
         var curVal = el.value,
             val = (curVal - 2015) * 1.176470588,
             style = '';
-        $('.range-labels li').removeClass('active selected');
+        $('.range-labels  li').removeClass('active selected');
+        $('svg  rect').removeClass('selected-year');
         var curLabel = $('.range-labels').find('li:nth-child(' + (curVal - 2010) / 5 + ')');
         curLabel.addClass('active selected');
-        curLabel.prevAll().addClass('selected');
+        curLabel.prevAll().addClass('active selected');
+        var curYear = $("svg").find('rect:nth-child(' + (curVal - 2010) / 5 + ')');
+        curYear.addClass('selected-year');
+        curYear.prevAll().addClass('selected-year');
         for (var i = 0; i < prefs.length; i++) {
             style += '.range {background: linear-gradient(to right, #ff5a04 0%, #ff5a04 ' + val + '%, #fff ' + val + '%, #fff 100%)}';
             style += '.range input::-' + prefs[i] + '{background: linear-gradient(to right, #ff5a04 0%, #ff5a04 ' + val + '%, #b2b2b2 ' + val + '%, #b2b2b2 100%)}';
@@ -186,17 +239,17 @@
     };
     $rangeInput.on('input', function () {
         sheet.textContent = getTrackStyle(this);
+        render();
     });
     $('.range-labels li').on('click', function () {
         var index = $(this).index();
         $rangeInput.val(index * 5 + 2015).trigger('input');
     });
-    $("#year-input").on('input', function () {
-        render();
-    });
+
     $("#country-input").change(function () {//Todo
-        console.log(nameValue[$("#country-input").val()])
+        drawBar(nameValue[$("#country-input").val()]);
     });
+
 </script>
 </body>
 </html>

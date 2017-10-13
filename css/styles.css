@@ -4,7 +4,7 @@
     margin: auto;
     margin-top: -150px;
     position: relative;
-    border: 1px black solid;
+    /*border: 1px black solid;*/
 }
 
 #country-selector {
@@ -14,7 +14,7 @@
     position: relative;
     max-height: 300px;
     overflow: auto;
-    border: 1px black solid;
+    /*border: 1px black solid;*/
 }
 
 #country-input {
@@ -30,22 +30,31 @@
     border: 1px black solid;
 }
 
+.year {
+    fill: #b2b2b2
+}
+
+.selected-year {
+    fill: #ff5a04
+}
+
 #year-selector {
     margin: auto;
-    width: 900px;
-
+    width: 950px;
+    top: -25px;
+    position: relative;
 }
 
 .range {
     position: relative;
-    width: 900px;
+    width: 920px;
     height: 5px;
 }
 
 .range input {
-    width: 900px;
+    width: 920px;
     position: relative;
-    top: 2px;
+    top: 2px; /*Todo*/
     height: 0;
     -webkit-appearance: none;
 }
@@ -124,7 +133,7 @@
 .range-labels li {
     position: relative;
     float: left;
-    width: 53px;
+    width: 54px;
     text-align: center;
     color: #b2b2b2;
     font-size: 15px;
