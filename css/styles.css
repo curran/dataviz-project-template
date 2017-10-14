@@ -34,6 +34,10 @@
     fill: #b2b2b2
 }
 
+.year {
+    fill: #b2b2b2
+}
+
 .selected-year {
     fill: #ff5a04
 }
@@ -64,7 +68,7 @@
     width: 18px;
     height: 18px;
     margin: -8px 0 0;
-    border-radius: 500%;
+    border-radius: 50%;
     background: #ff5a04;
     cursor: pointer;
     border: 0 !important;
