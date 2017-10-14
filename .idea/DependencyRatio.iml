@@ -15,5 +15,8 @@
     <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" name="bootstrap" level="application" />
     <orderEntry type="library" name="angular" level="application" />
+    <orderEntry type="library" name="d3-scale-chromatic.v1" level="application" />
+    <orderEntry type="library" name="d3-color.v1" level="application" />
+    <orderEntry type="library" name="d3-interpolate.v1" level="application" />
   </component>
 </module>

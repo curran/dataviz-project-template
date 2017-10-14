@@ -31,15 +31,32 @@
 }
 
 .year {
-    fill: #b2b2b2
+
+    fill:#b2b2b2;
+    cursor: pointer;
+}
+.selected-year{
+    fill: #ff5a04;
 }
 
-.year {
-    fill: #b2b2b2
+.active-year  {
+    fill: #ff5a04;
+    stroke-width: 3;
+    stroke: #ff5a04;
 }
 
-.selected-year {
-    fill: #ff5a04
+
+.grid line {
+    stroke: #717171;
+    stroke-opacity: 0.3;
+    shape-rendering: crispEdges;
+}
+.grid text{
+    fill: #717171;
+    font-weight: bold;
+}
+.domain{
+    display: none;
 }
 
 #year-selector {
