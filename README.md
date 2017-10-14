@@ -38,3 +38,8 @@ For automatic refreshing during development, you can start the Webpack Dev Serve
 ```
 npm run serve
 ```
+
+## References
+1. The idea of using bar chart comes from [UNHCR Historical Refugee Data](http://data.unhcr.org/dataviz/).
+2. The idea of year range input is from [Custom range input slider with labels](https://codepen.io/trevanhetzel/pen/rOVrGK).
+3. The map is built by [DataMaps](http://datamaps.github.io/).
