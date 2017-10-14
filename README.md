@@ -1,7 +1,6 @@
 # 2015-2100 World Dependency Ratio
 
-## Have a look on the Alpha Version
-[Click here](https://bl.ocks.org/BruceHenry/raw/f9c8fdaa96182f18c5517a0d18323f40/) to visit.
+### Have a look on the Alpha Test Version, [Click here](https://bl.ocks.org/BruceHenry/raw/f9c8fdaa96182f18c5517a0d18323f40/) to visit.
 
 ## Introduction of [Total Dependency Ratio](https://en.wikipedia.org/wiki/Dependency_ratio)
 The dependency ratio is a measure showing the number of dependents, aged 0 to 24 and over the age of 65, to the total population aged 25 to 64. This indicator gives insight into the amount of people of nonworking age compared to the number of those of working age.
