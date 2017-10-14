@@ -1,5 +1,5 @@
-export default function (svg, props) {
-  const {
+export default function (props, box, name) {
+  const [
     mapData,
     drivingTimes,
     racesRun,
@@ -7,9 +7,8 @@ export default function (svg, props) {
     racesRunMap,
     drivingTimesMap,
     racesSoonByTown,
-    raceHorizonByTown,
-    margin
-  } = props;
+    raceHorizonByTown
+  ] = props.data;
 
   const tip = d3.tip()
       .attr("class", "d3-tip")
@@ -41,15 +40,17 @@ export default function (svg, props) {
     );
   }
 
-  svg.call(tip);
+  // the order matters here
+  const container = d3.selectAll('svg').selectAll('.' + name);
+  container.call(tip);
 
   completeTooltipTables();
 
   // Extract the width and height that was computed by CSS.
-  const width = svg.attr('width');
-  const height = svg.attr('height');
-  const innerWidth = width - margin.left - margin.right;
-  const innerHeight = height - margin.top - margin.bottom;
+  const width = box.width;
+  const height = box.height;
+  const innerWidth = width - props.margin.left - props.margin.right;
+  const innerHeight = height - props.margin.top - props.margin.bottom;
 
   const centerX = width/2;
   const centerY = height/2;
@@ -64,24 +65,22 @@ export default function (svg, props) {
     .translate([centerX, centerY]);
   const path = d3.geoPath().projection(projection);
 
-  const group = svg.selectAll(".path")
+  const pathClassName = name + 'path';
+  const areas = container.selectAll('.' + pathClassName)
     .data(topojson.feature(mapData, mapData.objects.townct_37800_0000_2010_s100_census_1_shp_wgs84).features);
 
-  const areas = group
+  areas
     .enter()
-    .append("g").attr("class", "path").append("path")
-      .attr("d", path)
-      .attr("class", d => 
+    .append('path')
+      .attr('d', path)
+      .attr('class', d =>
           d.properties.NAME10 in racesRunMap ? 
-            "area alreadyRun" : 
-            "area " + raceHorizonByTown[d.properties.NAME10].raceType
-           )
+            pathClassName + " area alreadyRun" : 
+            pathClassName + " area " + raceHorizonByTown[d.properties.NAME10].raceType
+      )
     .on("mouseover", tip.show)
-    .on("mouseout", tip.hide);
-
-  areas.merge(group).selectAll("path")
-      .attr("d", path);
-
-
+    .on("mouseout", tip.hide)
+    .merge(areas)
+      .attr('d', path);
 }
 

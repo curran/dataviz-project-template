@@ -72,7 +72,65 @@ const parseRaces = row => {
   return row;
 };
 
+const functions = {
+  calendar: choroplethMap,
+  map: choroplethMap,
+  selector: choroplethMap,
+  drivingTimesFilter: choroplethMap
+}
 
+function drawBox(name, box, functions, props) {
+  // From sample code
+  // https://bl.ocks.org/curran/ad6d4eaa6cf39bf58769697307ec5f3a
+  const x = box.x;
+  const y = box.y;
+  const width = box.width;
+  const height = box.height;
+
+  // set up a group for this box
+  // this is the "managing one thing" version of the General Update Pattern
+  const g = svg.selectAll('.' + name).data([null]);
+  const gEnter = g.enter().append('g').attr('class', name);
+  gEnter.merge(g)
+      .attr('transform', 'translate(' + x + ',' + y + ')');
+
+  // Draw a box (will remove this later)
+  gEnter
+    .append('rect')
+      .attr('fill', 'none')
+      .attr('stroke', '#666')
+    .merge(g.select('rect'))
+      .attr('width', width)
+      .attr('height', height);
+  // call the specific renderer
+  functions[name](props[name], box, name);
+};
+
+
+const layout = {
+  orientation: "vertical",
+  children: [
+    "calendar",
+    {
+      orientation: "horizontal",
+      children: [
+        "selector",
+        "drivingTimesFilter",
+        "map"
+      ],
+      size: 3
+    }
+  ]
+};
+
+const sizes = {
+  calendar: {
+    size: 1
+  },
+  map: {
+    size: 2
+  }
+};
 
 
 function dataLoaded(error, mapData, drivingTimes, racesRun, races) {
@@ -91,28 +149,81 @@ function dataLoaded(error, mapData, drivingTimes, racesRun, races) {
   colorLegendG.call(colorLegend)
     .attr("class", "color-legend");
 
+  const props = {
+    calendar: {
+      data: [
+        mapData,
+        drivingTimes,
+        racesRun,
+        races,
+        racesRunMap, 
+        drivingTimesMap, 
+        racesSoonByTown, 
+        raceHorizonByTown
+      ],
+      margin: margin
+    },
+    map: {
+      data: [
+        mapData,
+        drivingTimes,
+        racesRun,
+        races,
+        racesRunMap, 
+        drivingTimesMap, 
+        racesSoonByTown, 
+        raceHorizonByTown
+      ],
+      margin: margin
+    },
+    selector: {
+      data: [
+        mapData,
+        drivingTimes,
+        racesRun,
+        races,
+        racesRunMap, 
+        drivingTimesMap, 
+        racesSoonByTown, 
+        raceHorizonByTown
+      ],
+      margin: margin
+    },
+    drivingTimesFilter: {
+      data: [
+        mapData,
+        drivingTimes,
+        racesRun,
+        races,
+        racesRunMap, 
+        drivingTimesMap, 
+        racesSoonByTown, 
+        raceHorizonByTown
+      ],
+      margin: margin
+    }
+  };
+
+
 
 
   const render = () => {
-
     // Extract the width and height that was computed by CSS.
+    const width = visualizationDiv.clientWidth;
+    const height = visualizationDiv.clientHeight;
     svg
-      .attr('width', visualizationDiv.clientWidth)
-      .attr('height', visualizationDiv.clientHeight);
+      .attr('width', width)
+      .attr('height', height);
+
+    const box = {
+      width: width,
+      height: height
+    };
+
+    const boxes = d3.boxes(layout, sizes, box);
 
     // Render the choropleth map.
-    choroplethMap(svg, {
-      mapData,
-      drivingTimes,
-      racesRun,
-      races,
-      racesRunMap,
-      drivingTimesMap,
-      racesSoonByTown,
-      raceHorizonByTown,
-      margin
-    });
-
+    Object.keys(boxes).forEach( name => { drawBox(name, boxes[name], functions, props); } );
 
   }
 
