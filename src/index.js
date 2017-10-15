@@ -17,7 +17,7 @@ const visualizationDiv = visualization.node();
 const svg = visualization.select('svg');
 
 const functions = {
-  calendar: choroplethMap, // calendar,
+  calendar: calendar,
   map: choroplethMap,
   selector: () => {},
   drivingTimesFilter: () => {}
@@ -94,10 +94,7 @@ function dataLoaded(error, mapData, drivingTimes, racesRun, racesForMap, racesFo
   const props = {
     calendar: {
       data: [
-        mapData,
-        drivingTimes,
-        racesRun,
-        racesForMap
+        racesForCalendar
       ],
       margin: margin
     },
@@ -110,24 +107,8 @@ function dataLoaded(error, mapData, drivingTimes, racesRun, racesForMap, racesFo
       ],
       margin: margin
     },
-    selector: {
-      data: [
-        mapData,
-        drivingTimes,
-        racesRun,
-        racesForMap
-      ],
-      margin: margin
-    },
-    drivingTimesFilter: {
-      data: [
-        mapData,
-        drivingTimes,
-        racesRun,
-        racesForMap
-      ],
-      margin: margin
-    }
+    selector: { },
+    drivingTimesFilter: { }
   };
 
 
