@@ -1,4 +1,4 @@
-import { choroplethMap, build_driving_map, build_races_run_map, parseRaces } from './choroplethMap'
+import { choroplethMap, buildDrivingMap, buildRacesRunMap, parseRaces } from './choroplethMap'
 
 const margin = { left: 120, right: 300, top: 20, bottom: 120 };
 
@@ -154,8 +154,8 @@ function dataLoaded(error, mapData, drivingTimes, racesRun, races) {
 
 d3.queue()
   .defer(d3.json, "data/ct_towns_simplified.topojson")
-  .defer(d3.csv, "data/driving_times_from_avon.csv", build_driving_map)
-  .defer(d3.csv, "data/towns_run.csv", build_races_run_map)
+  .defer(d3.csv, "data/driving_times_from_avon.csv", buildDrivingMap)
+  .defer(d3.csv, "data/towns_run.csv", buildRacesRunMap)
   .defer(d3.csv, "data/races2017.csv", parseRaces)
   .await(dataLoaded);
 

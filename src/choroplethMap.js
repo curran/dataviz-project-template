@@ -1,7 +1,7 @@
 /***** parsing code for choropleth *********/
 
 const drivingTimesMap = {};
-const build_driving_map = row => {
+const buildDrivingMap = row => {
   drivingTimesMap[row.Town] = {};
   drivingTimesMap[row.Town].time = +row.DrivingTime;
   const hours = Math.floor(+row.DrivingTime/60);
@@ -18,7 +18,7 @@ const build_driving_map = row => {
 };
 
 const racesRunMap = {};
-const build_races_run_map = row => {
+const buildRacesRunMap = row => {
   racesRunMap[row.Town] = {};
   racesRunMap[row.Town].distance = row.Distance;
   return row;
@@ -147,4 +147,4 @@ function choroplethMap(props, box, name) {
       .attr('d', path);
 }
 
-export { choroplethMap, build_driving_map, build_races_run_map, parseRaces };
+export { choroplethMap, buildDrivingMap, buildRacesRunMap, parseRaces };
