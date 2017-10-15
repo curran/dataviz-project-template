@@ -20,7 +20,7 @@ function drawBar(yearValue) {
     for (let i = 2015; i <= 2100; i += 5) {
         data.push({year: String(i), value: yearValue[i]});
     }
-    const xValue = d => d.year;
+    const xValue = d => +d.year;
     const yValue = d => +d.value;
     const xScale = d3.scale.linear()
         .domain(d3.extent(data, xValue))
@@ -63,6 +63,4 @@ function drawBar(yearValue) {
         .attr("transform", "translate(972,0)")
         .attr("class", "grid")
         .call(yAxis);
-
-
 }

@@ -29,5 +29,5 @@ $('.range-labels li').on('click', function () {
     $rangeInput.val(index * 5 + 2015).trigger('input');
 });
 $("#country-input").change(function () {
-    drawBar(nameValue[$("#country-input").val()]);
+    drawBar(nameToValues[$("#country-input").val()]);
 });
