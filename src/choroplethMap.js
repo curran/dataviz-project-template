@@ -1,13 +1,76 @@
-export default function (props, box, name) {
+/***** parsing code for choropleth *********/
+
+const drivingTimesMap = {};
+const build_driving_map = row => {
+  drivingTimesMap[row.Town] = {};
+  drivingTimesMap[row.Town].time = +row.DrivingTime;
+  const hours = Math.floor(+row.DrivingTime/60);
+  const mins = +row.DrivingTime - 60*hours;
+  if(hours > 0) {
+    drivingTimesMap[row.Town].timeString = hours + "h " + mins + " min";
+  } else {
+    drivingTimesMap[row.Town].timeString = mins + " min";
+  }
+  if(!(row.Town in raceHorizonByTown)) {
+    raceHorizonByTown[row.Town] = { 'daysToRace': 400, 'raceType': ""};
+  }
+  return row;
+};
+
+const racesRunMap = {};
+const build_races_run_map = row => {
+  racesRunMap[row.Town] = {};
+  racesRunMap[row.Town].distance = row.Distance;
+  return row;
+};
+
+const today = d3.timeDay(new Date());
+const racesSoonByTown = {};
+const raceHorizonByTown = {};
+const fmt = d3.format("02");
+const parseRaces = row => {
+  row.Month = +row.Month;
+  row.Day = +row.Day;
+  row.Weekday = +row.Weekday;
+  row.DateString = fmt(row.Month) + "/" + fmt(row.Day);
+  row.raceDay = d3.timeDay(new Date(2017, row.Month-1, row.Day));
+  const daysToRace = d3.timeDay.count(today, row.raceDay);
+  if(daysToRace >= 0 && daysToRace <= 14) {
+    const raceString = "<tr><td><span class='racedate'>" + 
+          row["Date/Time"] + 
+          "</span></td><td><span class='racedistance'>" + 
+          row.Distance + "</span></td><td><span class='racename'>" + 
+          row.Name + "</span></td></tr>";          
+    if(row.Town in racesSoonByTown) {
+      racesSoonByTown[row.Town] += raceString;
+    } else {
+      racesSoonByTown[row.Town] = "<table>" + raceString;
+    }
+    const raceType = daysToRace <= 7 ? "hasRaceVerySoon" : "hasRaceSoon"; 
+    if(row.Town in raceHorizonByTown) {
+      if(daysToRace < raceHorizonByTown[row.Town].daysToRace) {
+        raceHorizonByTown[row.Town] = { 
+          'daysToRace': daysToRace, 
+          'raceType': raceType 
+        };            
+      }            
+    } else {
+      raceHorizonByTown[row.Town] = { 
+        'daysToRace': daysToRace, 
+        'raceType': raceType 
+      };            
+    }
+  }
+  return row;
+};
+
+
+function choroplethMap(props, box, name) {
   const [
     mapData,
     drivingTimes,
     racesRun,
-    races,
-    racesRunMap,
-    drivingTimesMap,
-    racesSoonByTown,
-    raceHorizonByTown
+    races
   ] = props.data;
 
   const tip = d3.tip()
@@ -84,3 +147,4 @@ export default function (props, box, name) {
       .attr('d', path);
 }
 
+export { choroplethMap, build_driving_map, build_races_run_map, parseRaces };
