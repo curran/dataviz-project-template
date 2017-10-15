@@ -64,15 +64,6 @@ const parseRaces = row => {
   return row;
 };
 
-
-function choroplethMap(props, box, name) {
-  const [
-    mapData,
-    drivingTimes,
-    racesRun,
-    races
-  ] = props.data;
-
   const tip = d3.tip()
       .attr("class", "d3-tip")
       .offset([-10, 0])
@@ -85,6 +76,17 @@ function choroplethMap(props, box, name) {
             : "")
           + "</span>"
           );
+
+d3.selectAll('svg').call(tip);
+
+function choroplethMap(props, box, name) {
+  const [
+    mapData,
+    drivingTimes,
+    racesRun,
+    races
+  ] = props.data;
+
 
   function getMapScale(width, height) {
     // known size of CT image for given scale
@@ -105,12 +107,6 @@ function choroplethMap(props, box, name) {
 
   // the order matters here
   const container = d3.selectAll('svg').selectAll('.' + name);
-  // trick to prevent multple d3-tip objects in the DOM:
-  // use the "manage only one thing" GUP
-  const tipG = container.selectAll('.tipgroup').data([null])
-    .enter().append('g')
-    .attr('class', d => { container.call(tip); return 'tipgroup'; } );
-
 
   completeTooltipTables();
 
