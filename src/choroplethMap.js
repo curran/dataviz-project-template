@@ -105,7 +105,12 @@ function choroplethMap(props, box, name) {
 
   // the order matters here
   const container = d3.selectAll('svg').selectAll('.' + name);
-  container.call(tip);
+  // trick to prevent multple d3-tip objects in the DOM:
+  // use the "manage only one thing" GUP
+  const tipG = container.selectAll('.tipgroup').data([null])
+    .enter().append('g')
+    .attr('class', d => { container.call(tip); return 'tipgroup'; } );
+
 
   completeTooltipTables();
 
