@@ -109,6 +109,21 @@ function choroplethMap(props, box, name) {
 
   completeTooltipTables();
 
+  const colorScale = d3.scaleOrdinal()
+    .domain(["Race within 1 week", "Race within 2 weeks", "Town already run"])
+    .range(["#f03b20", "#feb24c", "#16a"]);
+  const colorLegend = d3.legendColor()
+    .scale(colorScale)
+    .shapeWidth(40)
+    .shapeHeight(20);
+
+  // use the "manage only one thing" version of the General Update Pattern
+  const colorLegendG = container.selectAll(".color-legend").data([null])
+    .enter().append('g')
+    .attr("transform",`translate(10,10)`);
+  colorLegendG.call(colorLegend)
+    .attr("class", "color-legend");
+
   // Extract the width and height that was computed by CSS.
   const width = box.width;
   const height = box.height;
