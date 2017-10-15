@@ -1,45 +1,20 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <!--<script src="https://d3js.org/d3.v4.min.js"></script>-->
-    <script src="../assets/lib/d3.v4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.min.js"></script>
-    <title>Races in CT in 2017</title>
-<style>
-@import url("https://fonts.googleapis.com/css?family=Roboto");
-body {
-  font-family: Roboto, sans-serif;
-  margin: 0;
-}
-
-svg {
-  padding: 0;
-}
-
-.day_with_race:hover {
-  fill: darkred;
-}
-
-.yearLabel {
-  fill: #666;
-}
-.monthLabel {
-  text-anchor: middle;
-  font-size: 1em;
-  fill: #666;
-}
-</style>
-  </head>
-
-<body>
-<script>
-
-const width = 960,
-    height = 136 + 100,
-    cellSize = 17;
+const fmt = d3.format("02");
+const parseRace = d => {
+  d.Month = +d.Month;
+  d.Day = +d.Day;
+  d.Weekday = +d.Weekday;
+  d.DateString = "2017-" + fmt(d.Month) + "-" + fmt(d.Day);
+  return d;
+};
 
 const formatCell = d3.format("0");
+
+function calendar(props, box, name) {
+  const [racesData] = props.data;
+
+  const width = 960,
+    height = 136 + 100,
+    cellSize = 17;
 
 const color = d3.scaleLinear()
     .domain([1, 10, 25, 31])
@@ -77,16 +52,7 @@ const rect = svg.append("g")
     .attr("stroke-width", 1)
     .datum(d3.timeFormat("%Y-%m-%d"));
 
-fmt = d3.format("02");
-row =  d => {
-  d.Month = +d.Month;
-  d.Day = +d.Day;
-  d.Weekday = +d.Weekday;
-  d.DateString = "2017-" + fmt(d.Month) + "-" + fmt(d.Day);
-  return d;
-};
-
-d3.csv("races2017.csv", row, csv => {
+d3.csv("races2017.csv", parseRace, csv => {
 
   const data = d3.nest()
       .key(d => d.DateString)
@@ -167,6 +133,8 @@ function pathMonth(t0) {
       + "H" + (w0 + 1) * cellSize + "Z";
 }
 
-</script>
-</body>
-</html>
+
+}
+
+export { calendar, parseRace };
+

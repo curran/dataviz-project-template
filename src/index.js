@@ -1,4 +1,14 @@
-import { choroplethMap, buildDrivingMap, buildRacesRunMap, parseRaces } from './choroplethMap'
+import {
+  choroplethMap,
+  buildDrivingMap,
+  buildRacesRunMap,
+  parseRaces as parseRacesForMap
+} from './choroplethMap'
+
+import {
+  calendar,
+  parseRace as parseRacesForCalendar
+} from './calendar.js'
 
 const margin = { left: 120, right: 300, top: 20, bottom: 120 };
 
@@ -7,10 +17,10 @@ const visualizationDiv = visualization.node();
 const svg = visualization.select('svg');
 
 const functions = {
-  calendar: choroplethMap,
+  calendar: choroplethMap, // calendar,
   map: choroplethMap,
-  selector: choroplethMap,
-  drivingTimesFilter: choroplethMap
+  selector: () => {},
+  drivingTimesFilter: () => {}
 }
 
 function drawBox(name, box, functions, props) {
@@ -67,7 +77,7 @@ const sizes = {
 };
 
 
-function dataLoaded(error, mapData, drivingTimes, racesRun, races) {
+function dataLoaded(error, mapData, drivingTimes, racesRun, racesForMap, racesForCalendar) {
   const colorScale = d3.scaleOrdinal()
     .domain(["Race within 1 week", "Race within 2 weeks", "Town already run"])
     .range(["#f03b20", "#feb24c", "#16a"]);
@@ -75,8 +85,6 @@ function dataLoaded(error, mapData, drivingTimes, racesRun, races) {
     .scale(colorScale)
     .shapeWidth(40)
     .shapeHeight(20);
-
-
 
   const colorLegendG = svg.append("g")
     .attr("transform",`translate(10,10)`);
@@ -89,7 +97,7 @@ function dataLoaded(error, mapData, drivingTimes, racesRun, races) {
         mapData,
         drivingTimes,
         racesRun,
-        races
+        racesForMap
       ],
       margin: margin
     },
@@ -98,7 +106,7 @@ function dataLoaded(error, mapData, drivingTimes, racesRun, races) {
         mapData,
         drivingTimes,
         racesRun,
-        races
+        racesForMap
       ],
       margin: margin
     },
@@ -107,7 +115,7 @@ function dataLoaded(error, mapData, drivingTimes, racesRun, races) {
         mapData,
         drivingTimes,
         racesRun,
-        races
+        racesForMap
       ],
       margin: margin
     },
@@ -116,7 +124,7 @@ function dataLoaded(error, mapData, drivingTimes, racesRun, races) {
         mapData,
         drivingTimes,
         racesRun,
-        races
+        racesForMap
       ],
       margin: margin
     }
@@ -156,7 +164,8 @@ d3.queue()
   .defer(d3.json, "data/ct_towns_simplified.topojson")
   .defer(d3.csv, "data/driving_times_from_avon.csv", buildDrivingMap)
   .defer(d3.csv, "data/towns_run.csv", buildRacesRunMap)
-  .defer(d3.csv, "data/races2017.csv", parseRaces)
+  .defer(d3.csv, "data/races2017.csv", parseRacesForMap)
+  .defer(d3.csv, "data/races2017.csv", parseRacesForCalendar)
   .await(dataLoaded);
 
 
