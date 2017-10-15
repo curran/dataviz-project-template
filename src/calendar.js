@@ -23,8 +23,10 @@ function calendar(props, box, name) {
 
   const currentYear = 2017;
 
-  const svg = d3.selectAll('svg').selectAll('.' + name)
-    .append('g')
+  // use the "manage only one thing" GUP
+  const svg = d3.selectAll('svg').selectAll('.' + name).selectAll('.calendargroup').data([null]) 
+    .enter().append('g')
+      .attr('class', 'calendargroup')
       .attr("transform", "translate(" + ((width - cellSize * 53) / 2) + "," + (height - cellSize * 7 - 1) + ")");
 
   // year label
@@ -70,12 +72,13 @@ function calendar(props, box, name) {
       .append("title")
         .text(d => d + ": " + formatCell(data[d].length) + " races\n" +  data[d].races);
 
-    svg.append("g")
-      .attr("class", "legend")
+    // use the "manage only one thing" version of the General Update Pattern
+    const colorLegendG = svg.selectAll('.legend').data([null])
+      .enter().append('g')
       .attr("transform", "translate(320,-90)");
 
-    svg.select(".legend")
-      .call(legend);
+    colorLegendG.call(legend)
+        .attr('class', 'legend');
 
   svg.append("g")
       .attr("id", "monthOutlines")
