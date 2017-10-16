@@ -9,12 +9,15 @@ const parseRace = d => {
 
 const formatCell = d3.format("0");
 
-function calendar(props, box, name) {
+function calendar(container, props, box) {
   const [racesData] = props.data;
 
-  const width = 960,
-    height = 136 + 100,
-    cellSize = 17;
+  const nWeeks = 52;
+  const nDays = 7;
+
+  const width = box.width,
+    height = box.height,
+    cellSize = d3.min([width/(nWeeks+6), height/(nDays+12)]);
 
   const color = d3.scaleLinear()
       .domain([1, 10, 25, 31])
@@ -24,13 +27,16 @@ function calendar(props, box, name) {
   const currentYear = 2017;
 
   // use the "manage only one thing" GUP
-  const svg = d3.selectAll('svg').selectAll('.' + name).selectAll('.calendargroup').data([null]) 
+  // Calendar group
+  const calendarG = container.selectAll('.calendargroup').data([null])
     .enter().append('g')
       .attr('class', 'calendargroup')
-      .attr("transform", "translate(" + ((width - cellSize * 53) / 2) + "," + (height - cellSize * 7 - 1) + ")");
+      .attr("transform", "translate(" + 
+        ((width - cellSize * 53) / 2) + "," + 
+        (height - cellSize * 7 - 1) + ")");
 
   // year label
-  svg.append("text")
+  calendarG.append("text")
       .attr("class", "yearLabel")
       .attr("transform", "translate(-6," + cellSize * 3.5 + ")rotate(-90)")
       .attr("font-family", "sans-serif")
@@ -39,7 +45,8 @@ function calendar(props, box, name) {
       .text(currentYear);
 
   // draw the background grid
-  const rect = svg.append("g")
+  // Note: this relies on the top-left corner of this group being (0,0)
+  const rect = calendarG.append("g")
       .attr("fill", "none")
     .selectAll("rect")
     .data(d3.timeDays(new Date(currentYear, 0, 1), new Date(currentYear + 1, 0, 1)))
@@ -62,10 +69,11 @@ function calendar(props, box, name) {
       .cells(7)
       .scale(color)
       .orient("horizontal")
-      .shapeWidth(30)
-      .shapeHeight(20)
-      .title("Number of races");
+      .shapeWidth(2*cellSize)
+      .shapeHeight(cellSize)
+      .title('Races');
 
+    // fill the rects for each day
     rect.filter(d => d in data)
         .attr("fill", d => color(data[d].length))
         .attr("class", "day_with_race")
@@ -73,14 +81,14 @@ function calendar(props, box, name) {
         .text(d => d + ": " + formatCell(data[d].length) + " races\n" +  data[d].races);
 
     // use the "manage only one thing" version of the General Update Pattern
-    const colorLegendG = svg.selectAll('.legend').data([null])
+    const colorLegendG = calendarG.selectAll('.legend').data([null])
       .enter().append('g')
-      .attr("transform", "translate(320,-90)");
+      .attr("transform", "translate(" + (0) + "," + (-8*cellSize) + ")");
 
     colorLegendG.call(legend)
         .attr('class', 'legend');
 
-  svg.append("g")
+  calendarG.append("g")
       .attr("id", "monthOutlines")
       .attr("fill", "none")
       .attr("stroke", "#666")
@@ -92,7 +100,7 @@ function calendar(props, box, name) {
 
   // frame for today's date
   const today = d3.timeDay(new Date());
-  const todayRect = svg.append("rect")
+  const todayRect = calendarG.append("rect")
       .attr("fill", "none")
       .attr("width", cellSize)
       .attr("height", cellSize)
@@ -111,7 +119,7 @@ function calendar(props, box, name) {
   const monthX = BB.map(d => d.x + d.width/2);
   // add the labels
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  const monthLabels = svg.append("g").attr("id", "monthLabels");
+  const monthLabels = calendarG.append("g").attr("id", "monthLabels");
   months.forEach((d, i) => {
     monthLabels.append("text")
         .attr("class", "monthLabel")

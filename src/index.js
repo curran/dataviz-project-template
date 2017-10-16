@@ -33,21 +33,23 @@ function drawBox(name, box, functions, props) {
 
   // set up a group for this box
   // this is the "managing one thing" version of the General Update Pattern
-  const g = svg.selectAll('.' + name).data([null]);
+  let g = svg.selectAll('.' + name).data([null]);
   const gEnter = g.enter().append('g').attr('class', name);
-  gEnter.merge(g)
+  g = gEnter.merge(g)
       .attr('transform', 'translate(' + x + ',' + y + ')');
 
   // Draw a box (will remove this later)
-  gEnter
-    .append('rect')
+  const rect = g.selectAll('.boxFrame').data([null]);
+  rect
+    .enter().append('rect')
+      .attr('class', 'boxFrame')
       .attr('fill', 'none')
       .attr('stroke', '#666')
-    .merge(g.select('rect'))
+    .merge(rect)
       .attr('width', width)
       .attr('height', height);
   // call the specific renderer
-  functions[name](props[name], box, name);
+  functions[name](g, props[name], box);
 };
 
 

@@ -79,7 +79,7 @@ const parseRaces = row => {
 
 d3.selectAll('svg').call(tip);
 
-function choroplethMap(props, box, name) {
+function choroplethMap(container, props, box) {
   const [
     mapData,
     drivingTimes,
@@ -104,9 +104,6 @@ function choroplethMap(props, box, name) {
         key => { racesSoonByTown[key] += "</table>"; }
     );
   }
-
-  // the order matters here
-  const container = d3.selectAll('svg').selectAll('.' + name);
 
   completeTooltipTables();
 
@@ -144,7 +141,7 @@ function choroplethMap(props, box, name) {
     .translate([centerX, centerY]);
   const path = d3.geoPath().projection(projection);
 
-  const pathClassName = name + 'path';
+  const pathClassName = 'areapath';
   const areas = container.selectAll('.' + pathClassName)
     .data(topojson.feature(mapData, mapData.objects.townct_37800_0000_2010_s100_census_1_shp_wgs84).features);
 
