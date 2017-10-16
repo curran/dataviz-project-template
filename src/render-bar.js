@@ -1,4 +1,4 @@
-let svg = d3.select("#bar").append("svg").attr('width', '100%').attr('height', '100%');
+let svg = d3.select("#bar").append("svg").attr('id','bar-svg').attr('width', '100%').attr('height', '100%');
 const barWidth = 30;
 
 function clickRect() {
@@ -27,26 +27,24 @@ function drawBar(yearValue) {
         .range([0, 915]);
     const yScale = d3.scale.linear()
         .domain([minValue, maxValue])
-        .range([10, 280]);
+        .range([10, 265]);
     const yAxisScale = d3.scale.linear()
         .domain([maxValue, minValue])
-        .range([300-yScale(maxValue), 300-yScale(minValue)]);
+        .range([280 - yScale(maxValue), 280 - yScale(minValue)]);
 
 
     const rects = svg.selectAll('rect').data(data)
         .attr('x', d => xScale(xValue(d)) + 12)
-        .attr('y', d => 300 - yScale(yValue(d)))
+        .attr('y', d => 280 - yScale(yValue(d)))
         .attr('width', barWidth)
         .attr('height', d => yScale(yValue(d)));
-
     svg.selectAll('title').data(data)
         .text(d => yValue(d));
-
     rects.enter().append('rect')
         .attr('class', 'year')
         .attr('id', d => 'year-' + d.year)
         .attr('x', d => xScale(xValue(d)) + 12)
-        .attr('y', d => 300 - yScale(yValue(d)))
+        .attr('y', d => 280 - yScale(yValue(d)))
         .attr('width', barWidth)
         .attr('height', d => yScale(yValue(d)))
         .on('click', clickRect)
@@ -71,13 +69,13 @@ function drawBar(yearValue) {
         svg.append('text')
             .attr('class', 'bar-text')
             .attr('x', xScale(xValue(data[i])) + 10)
-            .attr('y', 300 - yScale(yValue(data[i])) - 8)
+            .attr('y', 280 - yScale(yValue(data[i])) - 8)
             .text(format(yValue(data[i])));
 
         svg.append('circle')
             .attr('class', 'bar-point')
             .attr('cx', xScale(xValue(data[i])) + 12 + barWidth / 2)
-            .attr('cy', 300 - yScale(yValue(data[i])))
+            .attr('cy', 280 - yScale(yValue(data[i])))
             .attr('r', 3);
 
         if (i === data.length - 1)
@@ -85,8 +83,8 @@ function drawBar(yearValue) {
         svg.append("line")
             .attr('class', 'bar-line')
             .attr('x1', xScale(xValue(data[i])) + 12 + barWidth / 2)
-            .attr('y1', 300 - yScale(yValue(data[i])))
+            .attr('y1', 280 - yScale(yValue(data[i])))
             .attr('x2', xScale(xValue(data[i + 1])) + 12 + barWidth / 2)
-            .attr('y2', 300 - yScale(yValue(data[i + 1])));
+            .attr('y2', 280 - yScale(yValue(data[i + 1])));
     }
 }

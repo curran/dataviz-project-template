@@ -7,11 +7,11 @@ const getTrackStyle = function (el) {
     const val = (curVal - 2015) * 1.176470588;
     let style = '';
     $('.range-labels li').removeClass('active selected');
-    $('rect').removeClass('active-year selected-year');
+    $('.year').removeClass('active-year selected-year');
     const curLabel = $('.range-labels').find('li:nth-child(' + (curVal - 2010) / 5 + ')');
     curLabel.addClass('active selected');
     curLabel.prevAll().addClass('active selected');
-    const curYear = $("svg").find('rect:nth-child(' + (curVal - 2005) / 5 + ')');
+    const curYear = $("#bar-svg").find('rect:nth-child(' + (curVal - 2005) / 5 + ')');
     curYear.addClass('active-year selected-year');
     curYear.prevAll().addClass('selected-year');
     for (let i = 0; i < prefs.length; i++) {
@@ -23,6 +23,7 @@ const getTrackStyle = function (el) {
 $rangeInput.on('input', function () {
     sheet.textContent = getTrackStyle(this);
     render();
+    renderPyramid();
 });
 $('.range-labels li').on('click', function () {
     const index = $(this).index();
@@ -31,5 +32,5 @@ $('.range-labels li').on('click', function () {
 $("#country-input").change(function () {
     const name = $("#country-input").val();
     drawBar(nameToValues[name]);
-    // $('.'+nameToCode[name]).css('fill','red');
+    renderPyramid();
 });

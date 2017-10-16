@@ -1,11 +1,18 @@
-.range {
+#year-selector {
+    margin: auto;
+    width: 1024px;
+    top: -25px;
     position: relative;
-    width: 920px;
+}
+.range {
+    margin-left: 20px;
+    position: relative;
+    width: 925px;
     height: 5px;
 }
 
 .range input {
-    width: 920px;
+    width: 925px;
     position: relative;
     top: 2px;
     height: 0;
@@ -78,7 +85,7 @@
 }
 
 .range-labels {
-    margin: 18px -27px 0;
+    margin: 18px 0 0;
     padding: 0;
     list-style: none;
 }
@@ -86,7 +93,7 @@
 .range-labels li {
     position: relative;
     float: left;
-    width: 54px;
+    width: 5.26%;
     text-align: center;
     color: #b2b2b2;
     font-size: 15px;
