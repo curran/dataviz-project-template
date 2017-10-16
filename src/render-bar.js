@@ -26,11 +26,11 @@ function drawBar(yearValue) {
         .domain(d3.extent(data, xValue))
         .range([0, 915]);
     const yScale = d3.scale.linear()
-        .domain([33.4, 255.6])
+        .domain([minValue, maxValue])
         .range([10, 280]);
     const yAxisScale = d3.scale.linear()
-        .domain([270, 25])
-        .range([0, 300]);
+        .domain([maxValue, minValue])
+        .range([300-yScale(maxValue), 300-yScale(minValue)]);
 
 
     const rects = svg.selectAll('rect').data(data)
@@ -49,7 +49,6 @@ function drawBar(yearValue) {
         .attr('y', d => 300 - yScale(yValue(d)))
         .attr('width', barWidth)
         .attr('height', d => yScale(yValue(d)))
-        .style('z-index', 100)
         .on('click', clickRect)
         .on('mouseover', mouseoverRect)
         .on('mouseout', mouseoutRect)
@@ -57,10 +56,37 @@ function drawBar(yearValue) {
         .attr('class', 'rect-popup')
         .text(d => yValue(d));
 
-    const yAxis = d3.svg.axis().scale(yAxisScale).orient("right").tickSize(-2).innerTickSize(-1000);
+    const yAxis = d3.svg.axis().scale(yAxisScale).orient("right").innerTickSize(-1000);
     svg.select('.grid').remove();
     svg.insert("g", ":first-child")
         .attr("transform", "translate(972,0)")
         .attr("class", "grid")
         .call(yAxis);
+
+    svg.selectAll('.bar-line').remove();
+    svg.selectAll('.bar-text').remove();
+    svg.selectAll('.bar-point').remove();
+
+    for (let i = 0; i < data.length; i++) {
+        svg.append('text')
+            .attr('class', 'bar-text')
+            .attr('x', xScale(xValue(data[i])) + 10)
+            .attr('y', 300 - yScale(yValue(data[i])) - 8)
+            .text(format(yValue(data[i])));
+
+        svg.append('circle')
+            .attr('class', 'bar-point')
+            .attr('cx', xScale(xValue(data[i])) + 12 + barWidth / 2)
+            .attr('cy', 300 - yScale(yValue(data[i])))
+            .attr('r', 3);
+
+        if (i === data.length - 1)
+            break;
+        svg.append("line")
+            .attr('class', 'bar-line')
+            .attr('x1', xScale(xValue(data[i])) + 12 + barWidth / 2)
+            .attr('y1', 300 - yScale(yValue(data[i])))
+            .attr('x2', xScale(xValue(data[i + 1])) + 12 + barWidth / 2)
+            .attr('y2', 300 - yScale(yValue(data[i + 1])));
+    }
 }
