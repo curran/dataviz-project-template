@@ -40,7 +40,7 @@ function calendar(container, props, box) {
       .attr("class", "yearLabel")
       .attr("transform", "translate(-6," + cellSize * 3.5 + ")rotate(-90)")
       .attr("font-family", "sans-serif")
-      .attr("font-size", 20)
+      .attr("font-size", cellSize*1.8)
       .attr("text-anchor", "middle")
       .text(currentYear);
 
@@ -125,6 +125,7 @@ function calendar(container, props, box) {
         .attr("class", "monthLabel")
         .attr("x", monthX[i])
         .attr("y", -10)
+        .attr('font-size', cellSize*1.2)
         .text(d);
   });
 
