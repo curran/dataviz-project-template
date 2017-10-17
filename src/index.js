@@ -187,7 +187,7 @@ d3.csv(datafile, row, data => {
       yValue1,  
       xLabel1, 
       yLabel3,
-      "grey", 
+      pointColor2, 
       margin
     });
       
