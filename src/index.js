@@ -2,15 +2,15 @@ import scatterPlot from './scatterPlot'
 import linePlot from './linePlot'
 import radialPlot from './radialPlot'
 
-     const div1 = "viz1",
-      div2 = "viz2",
-      div3 = "viz3",
-      div4 = "viz4",
-      div5 = "viz5",
-      div6 = "viz6",
-      div7 = "viz7",
-      div8 = "viz8";
-      div9 = "viz9";
+     const div1 = "viz1";
+     const div2 = "viz2";
+     const div3 = "viz3";
+     const div4 = "viz4";
+     const div5 = "viz5";
+     const div6 = "viz6";
+     const div7 = "viz7";
+     const div8 = "viz8";
+     const div9 = "viz9";
 
       const localFile = 'data/day.csv'
       const blocksFile = 'day.csv'

@@ -151,5 +151,61 @@ export default function (svg, props) {
     .selectAll('.cell text')
     .attr('dy', '0.1em');
 
+
+// TODO adapt radial time series code to 
+// const xValue = d => d.dteday;
+      
+      
+     
+//       function deltaDays(date1, date2){
+//         const dayms = 1000 * 60 * 60 * 24;
+//         var date1ms = date1.geTime();
+//         var date2ms = date2.getTime();
+//         var deltams = date1ms-date2ms
+//         return (deltams/dayms)
+//         }; 
+      
+//       const yMax = d3.max(yValue)
+//       const colorUser = {Total:"grey", Casual:"red",  Registered:"green"} 
+      
+//       const minDate = new Date(2012,1,1)
+//       const centerOffset = innerHeight/2;
+//       const radialOffset = .25*Math.PI
+//       //getting a 
+//       //const days = d => deltaDays(d.dteday,minDate);
+//       //days calc is a hack since pi is a periodic function
+//       //calculating days since 1/1/1970 and dividing by 365 gets data on the screen..
+//       const days = d =>(d.dteday.getTime()/(1000*60*60*24))
+//       const theta = d => (d.hr/24 *Math.PI*2+ radialOffset);
+
+//       const radialScale = d => (innerHeight/2* yValue/yMax);
+//       const radialX = d => (radialScale(d) * Math.cos(theta(d))+centerOffset);
+//       const radialY = d => (radialScale(d) * Math.sin(theta(d))+centerOffset);
+//       var plotColor = colorUser.Registered
+//       
+//       const radialPath = d3.line()
+//         .x(d => radialX(d))
+//         .y(d => radialY(d))
+//         .curve(d3.curveBasis);
+                  
+//         g.append('path')
+//             .attr('fill', 'none')
+//             .attr('stroke', plotColor)
+//             .attr('stroke-opacity', 0.7)
+//             .attr('stroke-width', .1)
+//             .attr('d', radialPath(data));
+
+//         g.append('circle')
+//             .attr('cx',centerOffset)
+//             .attr('cy',centerOffset)
+//             .attr('fill', 'none')
+//             .attr('stroke', 'grey')
+//             .attr('stroke-width', 2)
+//             .attr('r', centerOffset);
+
+        
+
+
+
       
     };
