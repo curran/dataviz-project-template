@@ -17,7 +17,7 @@ function calendar(container, props, box) {
 
   const width = box.width,
     height = box.height,
-    cellSize = d3.min([width/(nWeeks+6), height/(nDays+12)]);
+    cellSize = d3.min([width/(nWeeks+10), height/(nDays+8)]);
 
   const color = d3.scaleLinear()
       .domain([1, 10, 25, 31])
@@ -32,8 +32,8 @@ function calendar(container, props, box) {
     .enter().append('g')
       .attr('class', 'calendargroup')
       .attr("transform", "translate(" + 
-        ((width - cellSize * 53) / 2) + "," + 
-        (height - cellSize * 7 - 1) + ")");
+        ((width - cellSize * 53) / 2 - 2*cellSize) + "," + 
+        (height - cellSize * 7 - 1)/2 + ")");
 
   // year label
   calendarG.append("text")
@@ -66,9 +66,9 @@ function calendar(container, props, box) {
 
     const legend = d3.legendColor()
       .labelFormat(d3.format("0"))
-      .cells(7)
+      .cells(4)
       .scale(color)
-      .orient("horizontal")
+      .orient('vertical')
       .shapeWidth(2*cellSize)
       .shapeHeight(cellSize)
       .title('Races');
@@ -83,7 +83,7 @@ function calendar(container, props, box) {
     // use the "manage only one thing" version of the General Update Pattern
     const colorLegendG = calendarG.selectAll('.legend').data([null])
       .enter().append('g')
-      .attr("transform", "translate(" + (0) + "," + (-8*cellSize) + ")");
+      .attr("transform", "translate(" + (54*cellSize) + "," + (-1*cellSize) + ")");
 
     colorLegendG.call(legend)
         .attr('class', 'legend');
