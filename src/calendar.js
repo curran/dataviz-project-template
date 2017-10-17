@@ -48,8 +48,8 @@ function calendar(container, props, box) {
       .attr("text-anchor", "middle")
       .text(currentYear)
     .merge(yearLabel)
-      .attr("transform", "translate(-6," + cellSize * 3.5 + ")rotate(-90)")
-      .attr("font-size", cellSize*1.8);
+      .attr("transform", "translate(-" + 1.9*cellSize + "," + cellSize * 3.5 + ")rotate(-90)")
+      .attr("font-size", cellSize*1.6);
 
   const data = d3.nest()
       .key(d => d.DateString)
@@ -163,6 +163,20 @@ function calendar(container, props, box) {
     .merge(monthLabels)
       .attr('x', (d,i) => monthX[i])
       .attr('font-size', cellSize*1.2);
+
+  const weekDayText = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+  const weekDayLabels = calendarG.selectAll('.weekDayLabel').data(weekDayText);
+  weekDayLabels
+    .enter().append('text')
+      .attr('class', 'weekDayLabel')
+      .text(d => d)
+      .attr('fill', '#666')
+    .merge(weekDayLabels)
+      .attr('x', -1.4*cellSize)
+      .attr("font-size", 0.8*cellSize)
+      .attr('y', (d, i) => cellSize*(i + 0.8));
+
+
 
   function pathMonth(t0) {
     const t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),

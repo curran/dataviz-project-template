@@ -90,7 +90,7 @@ body {
 /************ calendar CSS *********/
 
 .day_with_race:hover {
-  fill: darkred;
+  fill: #339;
 }
 
 .yearLabel {
