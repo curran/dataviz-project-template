@@ -21,7 +21,7 @@ function calendar(container, props, box) {
 
   
   const legendColors = ['#fff', '#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
-  const legendLabels = [null, '&nbsp;&nbsp;1 - 5', '&nbsp;&nbsp;6 - 10', '11 - 15', '16 - 20', 'over 20'];
+  const legendLabels = [null, '&nbsp;&nbsp;1&ndash;5', '&nbsp;&nbsp;6&ndash;10', '11&ndash;15', '16&ndash;20', 'over 20'];
   const color = d3.scaleThreshold()
       .domain([1, 6, 11, 16, 21])
       .range(legendColors);
