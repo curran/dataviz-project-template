@@ -19,10 +19,11 @@ function calendar(container, props, box) {
     height = box.height,
     cellSize = d3.min([width/(nWeeks+10), height/(nDays+8)]);
 
-  const color = d3.scaleLinear()
-      .domain([1, 10, 25, 31])
-      .range(["#dee", "#699", "#366", "#000"])
-      .interpolate(d3.interpolateHcl);
+  
+  const color = d3.scaleThreshold()
+      .domain([1, 6, 11, 16, 21])
+      .range(['#fff', '#ffffb2', "#fecc5c", "#fd8d3c", "#f03b20", "#bd0026"]);
+  const legendLabels = [null, '1 to 5', '6 to 10', '11 to 15', '16 to 20', 'over 20'];
 
   const currentYear = 2017;
 
@@ -69,8 +70,9 @@ function calendar(container, props, box) {
       .cells(4)
       .scale(color)
       .orient('vertical')
-      .shapeWidth(2*cellSize)
+      .shapeWidth(cellSize)
       .shapeHeight(cellSize)
+      .labels(legendLabels)
       .title('Races');
 
     // fill the rects for each day
