@@ -4,25 +4,35 @@ body {
 .domain {
   display: none;
 }
-.tick line {
-  stroke: #C0C0BB;
+.square {
+  display: inline-block;
+  position: relative;
+  height: 25vmin;
+  width: 25vmin;
 }
+
+.long {
+  display: inline-block;
+  position: relative;
+  height: 25vmin;
+  width: 100vmin;}
+
+.tick line {
+  stroke: LightGrey;
+}
+
+.axis line {
+  stroke: LightGrey;
+}
+
 .tick text, .legendCells text {
   fill: #8E8883;
-  font-size: 28pt;
-  font-family: sans-serif;
-}
-.axis-label, .legend-label {
-  fill: #635F5D;
-  font-size: 50pt;
+  font-size: 6pt;
   font-family: sans-serif;
 }
 
-/* Make the chart container fill the page using CSS. */
-#visualization {
-  position: fixed;
-  left: 0px;
-  right: 0px;
-  top: 0px;
-  bottom: 0px;
+.axis-label, .legend-label {
+  fill: #635F5D;
+  font-size: 8pt;
+  font-family: sans-serif;
 }
