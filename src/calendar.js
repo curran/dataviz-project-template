@@ -21,7 +21,7 @@ function calendar(container, props, box) {
 
   
   const legendColors = ['#fff', '#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
-  const legendLabels = [null, '1 to 5', '6 to 10', '11 to 15', '16 to 20', 'over 20'];
+  const legendLabels = [null, '&nbsp;&nbsp;1 - 5', '&nbsp;&nbsp;6 - 10', '11 - 15', '16 - 20', 'over 20'];
   const color = d3.scaleThreshold()
       .domain([1, 6, 11, 16, 21])
       .range(legendColors);
@@ -99,20 +99,33 @@ function calendar(container, props, box) {
       .attr('fill', d => d)
       .attr('width', legendLineHeight*.9)
       .attr('height', legendLineHeight*.9)
-      .attr('y', (d, i) => (i-0.5)*legendLineHeight);
+      .attr('y', (d, i) => (i-0.3)*legendLineHeight);
   
   const colorLegendText = colorLegendG.selectAll('text').data(legendLabels.slice(1));
   colorLegendText
     .enter().append('text')
       .attr('fill', d => d)
       .attr('fill', '#666')
-      .attr('text-anchor', 'middle')
+      //.attr('text-anchor', 'middle')
       .attr('alignment-baseline', 'middle')
-      .text(d => d)
+      .html(d => d)
     .merge(colorLegendText)
       .attr('font-size', cellSize)
-      .attr('x', cellSize*4)
-      .attr('y', (d, i) => i*(legendLineHeight));
+      .attr('x', cellSize*2)
+      .attr('y', (d, i) => (i + 0.2)*(legendLineHeight));
+
+  // legend title
+  const legendTitle = colorLegendG.selectAll('.legendTitle').data([null]);
+  legendTitle
+    .enter()
+    .append("text")
+      .attr("class", "legendTitle")
+      .attr('fill', '#666')
+      .text('# of Races')
+    .merge(legendTitle)
+      .attr('transform', 'translate(0,-' + cellSize + ')')
+      .attr("font-size", cellSize*1.2);
+
 
   // frame for today's date
   const today = d3.timeDay(new Date());
