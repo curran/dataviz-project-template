@@ -23,7 +23,7 @@ const colorLegend = d3.legendColor()
   .scale(colorScale)
   .shape('circle');
 
-export default function (svg, props) {
+export default function (div, props) {
   const { 
     data,
     xValue,
