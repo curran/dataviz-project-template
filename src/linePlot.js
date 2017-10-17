@@ -34,7 +34,6 @@ export default function (svg, props) {
     colorLabel,
     margin
   } = props;
-
         
   var vizDiv = document.getElementById(div);
   var svg = d3.select(vizDiv)
@@ -43,9 +42,7 @@ export default function (svg, props) {
 
   const width = vizDiv.offsetWidth;
   const height = vizDiv.offsetHeight;
-  
-  //maintain 1:1 aspect ration for scatter plot
-  const minDimension = d3.min([width, height]);
+  //const minDimension = d3.min([width, height]);
         
   var svgEnter = svg
     .enter()
@@ -54,15 +51,15 @@ export default function (svg, props) {
   //set svg size to window 
   svg = svgEnter
     .merge(svg)
-    .attr('width',minDimension)
-    .attr('height',minDimension);
+    .attr('width',width)
+    .attr('height',height);
 
         
   console.log(width, height, minDimension);
   console.log(svg.attr('width'), svg.attr('height'));
     
-  const innerHeight = minDimension - margin.top - margin.bottom;
-  const innerWidth = minDimension - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom;
+  const innerWidth = width - margin.left - margin.right;
       
             
   xScale
