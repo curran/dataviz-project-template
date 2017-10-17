@@ -59,36 +59,7 @@ import radialPlot from './radialPlot'
       
       const dataDaily = null;
       const dataHourly = null;
-
-d3.csv('data/iris.csv', row, data => {
-
-  const render = () => {
-
-    // Extract the width and height that was computed by CSS.
-    svg
-      .attr('width', visualizationDiv.clientWidth)
-      .attr('height', visualizationDiv.clientHeight);
-
-    // Render the scatter plot.
-    scatterPlot(svg, {
-      data,
-      xValue,
-      xLabel,
-      yValue,
-      yLabel,
-      colorValue,
-      colorLabel,
-      margin
-    });
-  }
-
-  // Draw for the first time to initialize.
-  render();
-
-  // Redraw based on the new size whenever the browser window is resized.
-  window.addEventListener('resize', render);
-});
-
+      
 
 d3.csv(datafile, row, data => {
         
