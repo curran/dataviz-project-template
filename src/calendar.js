@@ -45,8 +45,6 @@ function calendar(container, props, box) {
     .enter()
     .append("text")
       .attr("class", "yearLabel")
-      .attr("transform", "translate(-6," + cellSize * 3.5 + ")rotate(-90)")
-      .attr("font-size", cellSize*1.8)
       .attr("text-anchor", "middle")
       .text(currentYear)
     .merge(yearLabel)
@@ -67,10 +65,6 @@ function calendar(container, props, box) {
   rect = rect
     .enter().append("rect")
       .attr('fill', 'none')
-      .attr("width", cellSize)
-      .attr("height", cellSize)
-      .attr("x", d => d3.timeWeek.count(d3.timeYear(d), d) * cellSize)
-      .attr("y", d => d.getDay() * cellSize)
       .attr("stroke", "#ccc")
       .attr("stroke-width", 1)
     .merge(rect)
@@ -94,7 +88,7 @@ function calendar(container, props, box) {
     .enter().append('g')
       .attr('class', 'calendarLegendG')
     .merge(colorLegendG)
-      .attr("transform", "translate(" + (54*cellSize) + "," + "0)");
+      .attr("transform", "translate(" + (54*cellSize) + "," + (0.5*cellSize) + ")");
 
   const colorLegend = colorLegendG.selectAll('rect').data(legendColors.slice(1));
   const legendLineHeight = cellSize*1.4;
@@ -124,37 +118,32 @@ function calendar(container, props, box) {
   const today = d3.timeDay(new Date());
   const todayRect = calendarG.selectAll('.todayDate').data([null]);
   todayRect
-    .enter().append("rect")
+    .enter().append('rect')
       .attr('class', 'todayDate')
-      .attr("fill", "none")
-      .attr("width", cellSize)
-      .attr("height", cellSize)
-      .attr("x", d3.timeWeek.count(d3.timeYear(today), today)*cellSize)
-      .attr("y", today.getDay() * cellSize)
-      .attr("stroke", "darkred")
-      .attr("stroke-width", 3)
+      .attr('fill', 'none')
+      .attr('stroke', 'black')
     .merge(todayRect)
-      .attr("width", cellSize)
-      .attr("height", cellSize)
-      .attr("x", d3.timeWeek.count(d3.timeYear(today), today)*cellSize)
-      .attr("y", today.getDay() * cellSize);
+      .attr('width', cellSize)
+      .attr('height', cellSize)
+      .attr('stroke-width', d3.min([3, cellSize/5]))
+      .attr('x', d3.timeWeek.count(d3.timeYear(today), today)*cellSize)
+      .attr('y', today.getDay() * cellSize);
 
   // monthOutlines
   let monthOutlinesG = calendarG.selectAll('#monthOutlines').data([null]);
   monthOutlinesG = monthOutlinesG
     .enter().append('g')
       .attr('id', 'monthOutlines')
+    .merge(monthOutlinesG)
       .attr('fill', 'none')
       .attr('stroke', '#666')
-      .attr('stroke-width', '2')
-    .merge(monthOutlinesG);
+      .attr('stroke-width', d3.min([2, cellSize/5]));
 
   const monthOutlines = monthOutlinesG.selectAll('.monthPath')
     .data(d3.timeMonths(new Date(currentYear, 0, 1), new Date(currentYear + 1, 0, 1)));
   monthOutlines
     .enter().append('path')
       .attr('class', 'monthPath')
-      .attr('d', pathMonth)
     .merge(monthOutlines)
       .attr('d', pathMonth);
 
@@ -169,9 +158,7 @@ function calendar(container, props, box) {
   monthLabels
     .enter().append('text')
       .attr('class', 'monthLabel')
-      .attr('x', (d,i) => monthX[i])
       .attr('y', -10)
-      .attr('font-size', cellSize*1.2)
       .text(d => d)
     .merge(monthLabels)
       .attr('x', (d,i) => monthX[i])
