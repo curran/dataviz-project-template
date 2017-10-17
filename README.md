@@ -1,33 +1,35 @@
-A template project that uses Webpack and D3. Designed as a starting point for interactive data visualization projects that require JavaScript code to be organized across many files (as ES6 modules).
 
-The starter code here is from [Stylized Scatter Plot with Color Legend](https://bl.ocks.org/curran/ecb09f2605c7fbbadf0eeb75da5f0a6b).
+# The Visualization
+This is an exploratory visualization looking at the time of day use patterns and the relationship between the number of users and quantitative weather attributes (temperature, humidity and windspeed). 
 
-## Development
+# The Data
+## Washington DC Bike Sharing Data Set
 
-This project uses NPM and Webpack. To get started, clone the repository and install dependencies like this:
+This data set contains the number of bike share system users (casual and registered) for each day (and hour) for two years (Jan 2011 - Dec 2012), as well as the day type (holiday, workingday), weather situation, temperature and humidity, apparent temperature and windspeed.
 
-```
-cd dataviz-project-template
-npm install
-```
+This data is from [UCI Machine Learning Repository: Bike Sharing Data Set](https://archive.ics.uci.edu/ml/datasets/bike+sharing+dataset)
 
-You'll need to build the JavaScript bundle using WebPack, using this command:
+The dataset file can be found [here](https://archive.ics.uci.edu/ml/machine-learning-databases/00275/Bike-Sharing-Dataset.zip) as a zip archive.
 
-```
-npm run build
-```
 
-To see the page run, you'll need to serve the site using a local HTTP server.
+[Daily Data Block Summary](https://bl.ocks.org/sajudson/d8d4909fa0512302a95b1e0982a07c0f)
+[Hourly Data Block Summary](https://bl.ocks.org/sajudson/3b64ad3a4e4e2c5f80898eebd40646ca)
 
-```
-npm install -g http-server
-http-server
-```
+Sources of inspiration and code
+<a href='http://bl.ocks.org/curran/'>curran</a>'s block: <a href='http://bl.ocks.org/curran/ecb09f2605c7fbbadf0eeb75da5f0a6b'>Stylized Scatter Plot with Color Legend</a>
+<a href='http://bl.ocks.org/sajudson/'>sajudson</a>'s block: <a href='http://bl.ocks.org/sajudson/159113faca3611883a34bdaf460c020a'>CS Degrees Awarded 1971-2011</a>
 
-Now the site should be available at localhost:8080.
 
-For automatic refreshing during development, you can start the Webpack Dev Server like this:
+## Development Notes
 
-```
-npm run serve
-```
+The project is built from a template project that uses Webpack and D3. Designed as a starting point for interactive data visualization projects that require JavaScript code to be organized across many files (as ES6 modules).
+
+Build the JavaScript bundle using WebPack, using this command: npm run build
+To see the page run on a local HTTP server at localhost:8080 
+    
+    npm install -g http-server
+    http-server
+
+For automatic refreshing during development, start the Webpack Dev Server using: ike this: npm run serve
+
+
