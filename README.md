@@ -1,16 +1,20 @@
-# 2015-2100 World Dependency Ratio
+# 2015-2100 World Population Data
 
-A visualization of dependency ratio change from 2015 to 2100.
+A visualization of world population data from 2015 to 2100.
+
+Have a look => [Click here](https://bl.ocks.org/BruceHenry/raw/f9c8fdaa96182f18c5517a0d18323f40/) to visit.
 <br/><img src="https://gist.githubusercontent.com/BruceHenry/f9c8fdaa96182f18c5517a0d18323f40/raw/fc7658333565e637481f0164861c65030af95141/thumbnail.png"/>
-
-### Have a look on the Alpha Test Version, [Click here](https://bl.ocks.org/BruceHenry/raw/f9c8fdaa96182f18c5517a0d18323f40/) to visit.
 <hr/>
 
-## Introduction of [Total Dependency Ratio](https://en.wikipedia.org/wiki/Dependency_ratio)
-The dependency ratio is a measure showing the number of dependents, aged 0 to 24 and over the age of 65, to the total population aged 25 to 64. This indicator gives insight into the amount of people of nonworking age compared to the number of those of working age.
+## Introduction of Concept
+- [Total dependency ratio](https://en.wikipedia.org/wiki/Dependency_ratio) is a measure showing the number of dependents, aged 0 to 14 and over the age of 65, to the total population aged 15 to 64. This indicator gives insight into the amount of people of nonworking age compared to the number of those of working age.
+<br/><br/><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/e7515ecc13b474b4953708350ad4197be7b6e40f"/>
+
+- Old-age dependency ratio is aged over the age of 65, to the total population aged 15 to 64.
+<br/><br/><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/1864839236c02e2787c3fa2cac420edfcf8e5de2"/>
 
 ## Data Source
-The data is from [United Nations: World Population Prospects 2017](https://esa.un.org/unpd/wpp/Download/Standard/Population/).This dataset is total dependency ratio (<25 & 65+)/(25-64) by region, subregion and country, 1950-2100 (ratio of population 0-24 and 65+ per 100 population 25-64).
+The data is from [United Nations: World Population Prospects 2017](https://esa.un.org/unpd/wpp/Download/Standard/Population/).
 
 ## Development
 
