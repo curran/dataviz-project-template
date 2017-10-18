@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.min.js"></script>
-    <link rel="stylesheet" href="css/styles.css">
-  
-
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width'>
+    <script src='https://d3js.org/d3.v4.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.min.js'></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!-- Optional theme -->
@@ -15,21 +12,59 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+
     <title>DC Bike Share Test Chart</title>
+    <style>
+      
+        
 
-    
+      body {
+        margin: 0px;
+      }
+      
+      .square {
+        display: inline-block;
+        position: relative;
+        height: 25vmin;
+        width: 25vmin;
+      }
+      .long {
+        display: inline-block;
+        position: relative;
+        height: 25vmin;
+        width: 100vmin;}
+
+      .domain {
+        display: none;
+      }
+      .tick line {
+        stroke: LightGrey;
+      }
+      .axis line {
+        stroke: LightGrey;
+      }
+      .tick text, .legendCells text {
+        fill: #8E8883;
+        font-size: 6pt;
+        font-family: sans-serif;
+      }
+      .axis-label, .legend-label {
+        fill: #635F5D;
+        font-size: 8pt;
+        font-family: sans-serif;
+      }
+
+      
+
+    </style>
   </head>
+  <body>
+  <h1>DC Bike Share User Trends and Patterns</h1>
 
-  <body>  
+  <h2>Registered Users</h1>
   
   <div class='container-fluid'>
-    
-    <h1>DC Bike Share User Trends and Patterns</h1>
-
     <div class='row'>
-
-    <h2>Registered Users</h1>
-  
       <div class ="col-md-3 column square" id="viz1"></div> 
       <div class ="col-md-3 column square" id="viz2"></div> 
       <div class ="col-md-3 column square" id="viz3"></div> 
@@ -48,8 +83,485 @@
       <div class ="col-md-12 column long" id="viz9"></div>
     </div>
   </div>
-  
-  <script src="./dist/bundle.js"></script>
-  
-</body>
+
+
+    <script>
+
+      const div1 = "viz1",
+      div2 = "viz2",
+      div3 = "viz3",
+      div4 = "viz4",
+      div5 = "viz5",
+      div6 = "viz6",
+      div7 = "viz7",
+      div8 = "viz8";
+      div9 = "viz9";
+
+      const localFile = 'data/day.csv'
+      const blocksFile = 'day.csv'
+      var datafile = localFile
+
+
+      //set x and y value pointers and axis labels
+      const xValue1 = d => d.temp;
+      const xValue2 = d => d.hum;
+      const xValue3 = d => d.windspeed;
+      const xValue4 = d => d.dteday;
+      const xLabel1 = 'Temperature';
+      const xLabel2 = 'Humidity';
+      const xLabel3 = 'Windspeed';
+      const yValue2 = d => d.casual;
+      const yValue1 = d => d.registered;
+      const yLabel1 = 'Registered Users';
+      const yLabel2 = 'Casual Users';
+      const yLabel3 = xLabel1;
+      const pointSize = 2;
+      const pointColor1 = "green";
+      const pointColor2 = "blue";
+
+      const margin = { left: 75, right: 10, top: 10, bottom: 75 };
+      
+      //row function to parse daily csv
+      const row = d => {
+          d.instant = +d.instant;
+          d.dteday = new Date(d.dteday); //need to parse date
+          d.season = +d.season;
+          d.yr = +d.yr;
+          d.mnth = +d.mnth;
+          d.holiday = +d.holiday; //flag
+          d.weekday = +d.weekday; //integer day of week (0-6)
+          d.workingday = +d.workingday; //flag
+          d.weathersit = +d.weathersit; //(1-4)
+          d.temp = +d.temp;
+          d.atemp = +d.atemp;
+          d.hum = +d.hum;
+          d.windspeed = +d.windspeed;
+          d.casual = +d.casual;
+          d.registered = +d.registered;
+          d.cnt = +d.cnt;
+          return d;
+      };
+      
+      const dataDaily = null;
+      const dataHourly = null;
+      
+      const chartConfig = {
+        'chart1':{
+          'div':div1,
+          'data':dataDaily,
+          'xValue':"d.temp",
+          'yValue':'d.registered',
+          'xLabel':'Temperature',
+          'yLabel':'Registered Users',
+          'pointColor':"orange",
+          'margin':margin
+        },
+        'chart2':{
+          'div':div2,
+          'data':dataDaily,
+          'xValue':"d.hum",
+          'yValue':"d.registered",
+          'xLabel':'Humidity',
+          'yLabel':'Registered Users',
+          'pointColor':"orange",
+          'margin':margin
+        },
+        'chart3':{
+          'div':div3,
+          'data':dataDaily,
+          'xValue':'d.windspeed',
+          'yValue':'d.registered',
+          'xLabel':'Windspeed',
+          'yLabel':'Registered Users',
+          'pointColor':"orange",
+          'margin':margin
+        },
+        'chart5':{
+          'div':div5,
+          'data':dataDaily,
+          'xValue':'d.temp',
+          'yValue':'d.casual',
+          'xLabel':'Temperature',
+          'yLabel':'Casual Users',
+          'pointColor':"purple",
+          'margin':margin
+        },
+        'chart6':{
+          'div':div6,
+          'data':dataDaily,
+          'xValue':'d.hum',
+          'yValue':'d.casual',
+          'xLabel':'Humidity',
+          'yLabel':'Casual Users',
+          'pointColor':"purple",
+          'margin':margin
+        },
+        'chart7':{
+          'div':div7,
+          'data':dataDaily,
+          'xValue':'d.windspeed',
+          'yValue':'d.casual',
+          'xLabel':'Windspeed',
+          'yLabel':'Casual Users',
+          'pointColor':"purple",
+          'margin':margin
+        },
+      }
+      
+
+
+
+
+      
+      function scatterPlot(div, data, xValue, yValue, xLabel, yLabel, pointColor, margin) {
+        // maintain  1:1 aspect ratio for  plot
+        
+        var vizDiv = document.getElementById(div);
+        var svg = d3.select(vizDiv)
+                .selectAll('svg')
+                .data([null]);
+
+        const width = vizDiv.offsetWidth;
+        const height = vizDiv.offsetHeight;
+        const minDimension = d3.min([width, height]);
+        
+
+        var svgEnter = svg
+         .enter()
+         .append('svg');
+        //set svg size to window 
+        svg = svgEnter
+          .merge(svg)
+          .attr('width',minDimension)
+          .attr('height',minDimension);
+
+        
+        console.log(width, height, minDimension);
+        console.log(svg.attr('width'), svg.attr('height'));
+    
+        const innerHeight = minDimension - margin.top - margin.bottom;
+        const innerWidth = minDimension - margin.left - margin.right;
+      
+        const xScale = d3.scaleLinear();
+        const yScale = d3.scaleLinear();    
+            
+        xScale
+          .domain(d3.extent(data, xValue))
+          .range([0, innerWidth])
+          .nice();
+
+        yScale
+             .domain(d3.extent(data, yValue)) //d3.extent(data, yValue
+             .range([innerHeight, 0])
+             .nice();
+ 
+        const xAxis = d3.axisBottom()
+             .scale(xScale)
+             .tickPadding(10)
+             .tickFormat(d3.format('0'))
+             .tickSize(-innerHeight);
+
+        const yAxis = d3.axisLeft()
+             .scale(yScale)
+             .tickFormat(d3.format('.2s'))
+             .tickPadding(10)
+             .tickSize(-innerWidth);
+
+        var g = svg.selectAll('g').data([null]);
+
+        g = g.enter().append('g')
+          .merge(g)
+          .attr('transform', `translate(${margin.left},${margin.top})`);
+
+        var xAxisG = g.selectAll('#x-axis-g').data([null]);
+
+        xAxisG = xAxisG.enter().append('g').merge(xAxisG)
+          .attr('id','x-axis-g')
+          .attr('transform', `translate(0, ${innerHeight})`);
+
+        var yAxisG = g.selectAll('#y-axis-g').data([null]);
+        
+        yAxisG = yAxisG.enter().append('g').merge(yAxisG)
+          .attr('id','y-axis-g');
+        
+        
+        console.log(innerWidth, innerHeight, margin);
+        
+
+        var xAxisText = g.selectAll('#x-axis-label').data([null]);
+        xAxisText = xAxisText.enter().append('text').merge(xAxisText)
+            .attr('class', 'axis-label')
+            .attr('id', 'x-axis-label')
+            .attr('x', innerWidth / 2)
+            .attr('y', innerHeight+margin.bottom/2)
+            .style('text-anchor', 'middle')
+            .text(xLabel);
+
+        var yAxisText = g.selectAll('#y-axis-label').data([null]);
+        yAxisText = yAxisText.enter().append('text').merge(yAxisText)
+            .attr('class', 'axis-label')  
+            .attr('id', 'y-axis-label')
+            .attr('x', -innerHeight / 2)
+            .attr('y',  -margin.left/2)
+            .attr('transform', `rotate(-90)`)
+            .style('text-anchor', 'middle')
+            .text(yLabel);
+          
+
+         
+        
+        //log domain of yValues
+        console.log(d3.extent(data, yValue));
+        
+        //log exoected max values of x and y scale
+        console.log(xScale(0), xScale(1))
+        console.log(yScale(0), yScale(3410))
+             
+        //data join
+        var circles = g.selectAll('circle').data(data);
+
+        //Add new elements
+        var circlesEnter = circles.enter().append('circle');
+        var t = d3.transition().duration(500);
+
+        var circlesExit = circles.exit()
+            .attr('class','exit')
+            .remove();
+
+        //UPDATE old elements present (change class)
+        circles
+          .attr('class','update')
+
+        //merge new and existing ell
+        circlesEnter
+          .attr('class','enter')
+          .attr('fill', pointColor)
+          .attr('fill-opacity', .2)
+          .attr('r', pointSize)
+         .merge(circles)
+          .attr('cx', d => xScale(xValue(d)))
+          .attr('cy', d => yScale(yValue(d)));
+        
+        //remove elements for which there is no data
+          circlesExit
+
+        //call X and Y axis
+        xAxisG.call(xAxis);
+        yAxisG.call(yAxis);
+          //colorLegendG.call(colorLegend)
+          //  .selectAll('.cell text')
+          //    .attr('dy', '0.1em');
+
+      
+    }; 
+
+
+     function linePlot(div, data, xValue, yValue, xLabel, yLabel, pointColor, margin) {
+        // maintain  1:1 aspect ratio for  plot
+        
+        var vizDiv = document.getElementById(div);
+        var svg = d3.select(vizDiv)
+                .selectAll('svg')
+                .data([null]);
+
+        const width = vizDiv.offsetWidth;
+        const height = vizDiv.offsetHeight;
+      
+        
+
+        var svgEnter = svg
+         .enter()
+         .append('svg');
+        //set svg size to window 
+        svg = svgEnter
+          .merge(svg)
+          .attr('width',width)
+          .attr('height',height);
+
+        
+        console.log(width, height);
+        console.log(svg.attr('width'), svg.attr('height'));
+    
+        const innerHeight = height - margin.top - margin.bottom;
+        const innerWidth = width - margin.left - margin.right;
+      
+        const xScale = d3.scaleLinear();
+        const yScale = d3.scaleLinear();    
+            
+        xScale
+          .domain(d3.extent(data, xValue))
+          .range([0, innerWidth])
+          .nice();
+
+        yScale
+             .domain(d3.extent(data, yValue)) //d3.extent(data, yValue
+             .range([innerHeight, 0])
+             .nice();
+ 
+        const xAxis = d3.axisBottom()
+             .scale(xScale)
+             .tickPadding(10)
+             .tickFormat(d3.format('0'))
+             .tickSize(-innerHeight);
+
+        const yAxis = d3.axisLeft()
+             .scale(yScale)
+             .tickFormat(d3.format('.2s'))
+             .tickPadding(10)
+             .tickSize(-innerWidth);
+
+        var g = svg.selectAll('g').data([null]);
+
+        g = g.enter().append('g')
+          .merge(g)
+          .attr('transform', `translate(${margin.left},${margin.top})`);
+
+        var xAxisG = g.selectAll('#x-axis-g').data([null]);
+
+        xAxisG = xAxisG.enter().append('g').merge(xAxisG)
+          .attr('id','x-axis-g')
+          .attr('transform', `translate(0, ${innerHeight})`);
+
+        var yAxisG = g.selectAll('#y-axis-g').data([null]);
+        
+        yAxisG = yAxisG.enter().append('g').merge(yAxisG)
+          .attr('id','y-axis-g');
+        
+        
+        console.log(innerWidth, innerHeight, margin);
+        
+
+        var xAxisText = g.selectAll('#x-axis-label').data([null]);
+        xAxisText = xAxisText.enter().append('text').merge(xAxisText)
+            .attr('class', 'axis-label')
+            .attr('id', 'x-axis-label')
+            .attr('x', innerWidth / 2)
+            .attr('y', innerHeight+margin.bottom/2)
+            .style('text-anchor', 'middle')
+            .text(xLabel);
+
+        var yAxisText = g.selectAll('#y-axis-label').data([null]);
+        yAxisText = yAxisText.enter().append('text').merge(yAxisText)
+            .attr('class', 'axis-label')  
+            .attr('id', 'y-axis-label')
+            .attr('x', -innerHeight / 2)
+            .attr('y',  -margin.left/2)
+            .attr('transform', `rotate(-90)`)
+            .style('text-anchor', 'middle')
+            .text(yLabel);
+          
+
+         
+        
+        //log domain of yValues
+        console.log(d3.extent(data, yValue));
+        
+        //log exoected max values of x and y scale
+        console.log(xScale(0), xScale(1))
+        console.log(yScale(0), yScale(3410))
+             
+        //data join
+        var circles = g.selectAll('circle').data(data);
+
+        //Add new elements
+        var circlesEnter = circles.enter().append('circle');
+        var t = d3.transition().duration(500);
+
+        var circlesExit = circles.exit()
+            .attr('class','exit')
+            .remove();
+
+        //UPDATE old elements present (change class)
+        circles
+          .attr('class','update')
+
+        //merge new and existing ell
+        circlesEnter
+          .attr('class','enter')
+          .attr('fill', pointColor)
+          .attr('fill-opacity', .2)
+          .attr('r', pointSize)
+         .merge(circles)
+          .attr('cx', d => xScale(xValue(d)))
+          .attr('cy', d => yScale(yValue(d)));
+        
+        //remove elements for which there is no data
+          circlesExit
+
+        //call X and Y axis
+        xAxisG.call(xAxis);
+        yAxisG.call(yAxis);
+          //colorLegendG.call(colorLegend)
+          //  .selectAll('.cell text')
+          //    .attr('dy', '0.1em');
+
+      
+    };   
+
+    console.log('join data');
+          
+
+    d3.csv(datafile, row, data => {
+        
+        const dataDaily = data;
+        const dataHourly = data;
+
+        const render =() => {
+          //get window width and height computed by CCS
+          
+          data = data.filter( d => d.yr == 0)
+
+          scatterPlot(div1, data, 
+            xValue1, yValue1, xLabel1, yLabel1, 
+            pointColor1, margin);
+
+          scatterPlot(div2, data, 
+            xValue2, yValue1,  xLabel2, yLabel1,
+            pointColor1, margin);
+          
+          scatterPlot(div3, data, 
+            xValue3, yValue1,  xLabel3, yLabel1,
+            pointColor1, margin);
+          
+          scatterPlot(div4, data, 
+            xValue1, yValue1,  xLabel1, yLabel1,
+            pointColor1, margin);
+
+          scatterPlot(div5, data, 
+            xValue1, yValue2,  xLabel1, yLabel2,
+            pointColor2, margin);
+          
+          scatterPlot(div6, data, 
+            xValue2, yValue2,  xLabel2, yLabel2,
+            pointColor2, margin);
+          
+          scatterPlot(div7, data, 
+            xValue3, yValue2,  xLabel3, yLabel2,
+            pointColor2, margin);
+          
+          scatterPlot(div8, data, 
+             xValue1, yValue2,  xLabel1, yLabel2,
+             pointColor2, margin);
+          
+          linePlot(div9, data, 
+            xValue3, yValue1,  xLabel1, yLabel3,
+            "grey", margin);
+          ;
+
+        }
+          
+        console.log('now render');
+
+        render();
+
+        console.log('resized and rendered...');
+
+        window.addEventListener('resize',render);
+        
+    });
+
+    
+      
+    </script>
+  </body>
 </html>

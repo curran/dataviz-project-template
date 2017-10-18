@@ -27,10 +27,11 @@ export default function (div, props) {
   const {
     data,
     xValue,
-    xLabel,
     yValue,
+    xLabel,
     yLabel,
     colorValue,
+    pointSize,
     margin
   } = props;
 

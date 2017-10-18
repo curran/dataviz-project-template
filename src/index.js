@@ -78,6 +78,7 @@ d3.csv(datafile, row, data => {
       xLabel1,
       yLabel1,
       pointColor1,
+      pointSize,
       margin
     });
 
@@ -88,6 +89,7 @@ d3.csv(datafile, row, data => {
       xLabel2,
       yLabel1,
       pointColor1,
+      pointSize,
       margin
     });
 
@@ -98,6 +100,7 @@ d3.csv(datafile, row, data => {
       xLabel3,
       yLabel1,
       pointColor1,
+      pointSize,
       margin
     });
 
@@ -108,6 +111,7 @@ d3.csv(datafile, row, data => {
       xLabel1,
       yLabel1,
       pointColor1,
+      pointSize,
       margin
     });
 
@@ -119,6 +123,7 @@ d3.csv(datafile, row, data => {
       xLabel1,
       yLabel2,
       pointColor2,
+      pointSize,
       margin
     });
 
@@ -129,6 +134,7 @@ d3.csv(datafile, row, data => {
       xLabel2,
       yLabel2,
       pointColor2,
+      pointSize,
       margin
     });
 
@@ -139,6 +145,7 @@ d3.csv(datafile, row, data => {
       xLabel3,
       yLabel2,
       pointColor2,
+      pointSize,
       margin
     });
 
@@ -149,6 +156,7 @@ d3.csv(datafile, row, data => {
       xLabel1,
       yLabel2,
       pointColor2,
+      pointSize,
       margin
     });
 
@@ -159,6 +167,7 @@ d3.csv(datafile, row, data => {
       xLabel1,
       yLabel3,
       pointColor2,
+      pointSize,
       margin
     });
 

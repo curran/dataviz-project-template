@@ -27,10 +27,11 @@ export default function (div, props) {
   const {
     data,
     xValue,
-    xLabel,
     yValue,
+    xLabel,
     yLabel,
     colorValue,
+    pointSize,
     margin
   } = props;
 
@@ -135,7 +136,7 @@ export default function (div, props) {
     .attr('fill', colorValue)
     .attr('fill-opacity', .2)
     .attr('r', pointSize)
-    .merge(circles)
+   .merge(circles)
     .attr('cx', d => xScale(xValue(d)))
     .attr('cy', d => yScale(yValue(d)));
 

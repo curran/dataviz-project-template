@@ -50,6 +50,7 @@ export default function (div, props) {
     yLabelLeft,
     yLabelRight,
     colorValue,
+    pointSize,
     margin
   } = props;
 
