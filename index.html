@@ -28,9 +28,26 @@
 </div>
 
 
-<div id="country-selector">
-    <label id="country-input-label" for="country-input">Country </label>
+<div id="info-selector">
+    <label id="country-input-label" for="country-input">Country</label>
     <select class="form-control" id="country-input"></select>
+    <label id="type-input-label" for="type-input">Data</label>
+    <select class="form-control" id="type-input">
+        <option>Population (million)</option>
+        <option>Median Age</option>
+        <option disabled>-----Total Dependency Ratio-----</option>
+        <option>Total Dependency Ratio ((Age 0-14 + Age 65+) / Age 15-64)</option>
+        <option>Total Dependency Ratio ((Age 0-19 + Age 65+) / Age 20-64)</option>
+        <option>Total Dependency Ratio ((Age 0-19 + Age 70+) / Age 20-69)</option>
+        <option>Total Dependency Ratio ((Age 0-24 + Age 65+) / Age 25-64)</option>
+        <option>Total Dependency Ratio ((Age 0-24 + Age 70+) / Age 25-69)</option>
+        <option disabled>-----Old-Age Dependency Ratio-----</option>
+        <option>Old-Age Dependency Ratio (Age 65+ / Age 15-64)</option>
+        <option>Old-Age Dependency Ratio (Age 65+ / Age 20-64)</option>
+        <option>Old-Age Dependency Ratio (Age 70+ / Age 20-69)</option>
+        <option>Old-Age Dependency Ratio (Age 65+ / Age 25-64)</option>
+        <option>Old-Age Dependency Ratio (Age 70+ / Age 25-69)</option>
+    </select>
 </div>
 
 <div id="bar">
@@ -38,7 +55,7 @@
 
 <div id="year-selector">
     <div class="range">
-        <input id="year-input" type="range" min="2015" max="2100" step="5" value="2015" autocomplete="off">
+        <label for="year-input"></label><input id="year-input" type="range" min="2015" max="2100" step="5" value="2015" autocomplete="off">
     </div>
     <ul class="range-labels">
         <li class="active selected">2015</li>
@@ -66,8 +83,7 @@
 
 <script src="src/render-map.js"></script>
 <script src="src/render-bar.js"></script>
-<script src="src/input-year.js"></script>
-<script src="src/render-pyramid.js"></script>
+<script src="src/input.js"></script>
 
 </body>
 </html>

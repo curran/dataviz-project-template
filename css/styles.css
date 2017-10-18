@@ -49,28 +49,42 @@
     fill: #FB7F5F;
     opacity: 0.8;
 }
-#country-selector {
+#info-selector {
     margin: auto;
     top: -50px;
     width: 1024px;
     position: relative;
     height: 80px;
-    overflow: auto;
+    /*overflow: auto;*/
     /*border: 1px black solid;*/
 }
 
 #country-input-label {
-    position: relative;
-    top: 10px;
-    left: 450px;
+    position: absolute;
+    top: 20px;
+    left: 724px;
     font-size: 15px;
 }
 
 #country-input {
-    position: relative;
-    top: 10px;
-    left: 450px;
+    position: absolute;
+    top: 45px;
+    left: 724px;
     width: 300px;
+}
+
+#type-input-label {
+    position: absolute;
+    top: 20px;
+    left: 320px;
+    font-size: 15px;
+}
+
+#type-input {
+    position: absolute;
+    top: 45px;
+    left: 320px;
+    width: 395px;
 }
 
 #bar {

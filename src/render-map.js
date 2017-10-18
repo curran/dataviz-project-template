@@ -3,32 +3,131 @@ const specials = ['World', 'High Income Countries', 'Middle Income Countries', '
 const ageGroups = ['0-4', '5-9', '10-14', '15-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54',
     '55-59', '60-64', '65-69', '70-74', '75-79', '80-84', '85-89', '90-94', '95-99', '100+'];
 let ageData = {};
-const codeToName = {};// {alpha 3 code : country name}
-const nameToCode = {};// {country name : alpha 3 code}
-const codeToValues = []; // [[alpha 3 code, {year: value}]]
-const nameToValues = {};//{country name: {values}}
+let codeToName = {};// {alpha 3 code : country name}
+let nameToCode = {};// {country name : alpha 3 code}
+let codeToValues = []; // [[alpha 3 code, {year: value}]]
+let nameToValues = {};//{country name: {values}}
 let countriesNames = [];
-let minValue = 99999;
-let maxValue = -1;
+let maxValue = Number.MIN_VALUE;//max value including 'World'
+let maxValue2 = Number.MIN_VALUE;//max value of a country
+let minValue = Number.MAX_VALUE;
 
-function render() {
+const properties = {
+    'Population (million)': {file: 'Population.json', color: d3.interpolateBlues, class: 'Population'},
+    'Median Age': {file: 'MedianAge.json', color: d3.interpolateBuGn, class: 'Median Age'},
+    'Total Dependency Ratio ((Age 0-14 + Age 65+) / Age 15-64)': {
+        file: 'DR1564.json',
+        color: d3.interpolateReds,
+        class: 'Total Dependency Ratio'
+    },
+    'Total Dependency Ratio ((Age 0-19 + Age 65+) / Age 20-64)': {
+        file: 'DR2064.json',
+        color: d3.interpolateReds,
+        class: 'Total Dependency Ratio'
+    },
+    'Total Dependency Ratio ((Age 0-19 + Age 70+) / Age 20-69)': {
+        file: 'DR2069.json',
+        color: d3.interpolateReds,
+        class: 'Total Dependency Ratio'
+    },
+    'Total Dependency Ratio ((Age 0-24 + Age 65+) / Age 25-64)': {
+        file: 'DR2564.json',
+        color: d3.interpolateReds,
+        class: 'Total Dependency Ratio'
+    },
+    'Total Dependency Ratio ((Age 0-24 + Age 70+) / Age 25-69)': {
+        file: 'DR2569.json',
+        color: d3.interpolateReds,
+        class: 'Total Dependency Ratio'
+    },
+    'Old-Age Dependency Ratio (Age 65+ / Age 15-64)': {
+        file: 'ODR1564.json',
+        color: d3.interpolateRdPu,
+        class: 'Old-Age Dependency Ratio'
+    },
+    'Old-Age Dependency Ratio (Age 65+ / Age 20-64)': {
+        file: 'ODR2064.json',
+        color: d3.interpolateRdPu,
+        class: 'Old-Age Dependency Ratio'
+    },
+    'Old-Age Dependency Ratio (Age 70+ / Age 20-69)': {
+        file: 'ODR2069.json',
+        color: d3.interpolateRdPu,
+        class: 'Old-Age Dependency Ratio'
+    },
+    'Old-Age Dependency Ratio (Age 65+ / Age 25-64)': {
+        file: 'ODR2564.json',
+        color: d3.interpolateRdPu,
+        class: 'Old-Age Dependency Ratio'
+    },
+    'Old-Age Dependency Ratio (Age 70+ / Age 25-69)': {
+        file: 'ODR2569.json',
+        color: d3.interpolateRdPu,
+        class: 'Old-Age Dependency Ratio'
+    }
+};
+
+function dataInput() {
+    codeToName = {};
+    nameToCode = {};
+    codeToValues = [];
+    nameToValues = {};
+    countriesNames = [];
+    d3.json("data/" + properties[$("#type-input").val()].file, function (data) {
+        for (let code in data) {
+            if (code === 'min' || code === 'max' || code === 'max2')
+                continue;
+            if (data.hasOwnProperty(code)) {
+                const name = data[code].name;
+                const values = data[code].data;
+                nameToValues[name] = values;
+                codeToName[code] = name;
+                nameToCode[name] = code;
+                if (specials.includes(code))
+                    continue;
+                codeToValues.push([code, values]);
+                countriesNames.push(name);
+            }
+        }
+        minValue = parseInt(data['min'] / 10) * 10;
+        maxValue = parseInt(data['max'] / 10 + 1) * 10;
+        maxValue2 = parseInt(data['max2'] / 10 + 1) * 10;
+        countriesNames = specials.concat(countriesNames.sort());
+        renderMap();
+        drawBar(nameToValues[$("#country-input").val()]);
+        $("#year-2015").addClass('selected-year');
+        d3.json("data/AgeComposition.json", function (data) {
+            ageData = data;
+            renderPyramid();
+        });
+    });
+}
+
+function renderMap() {
     d3.select("#map").selectAll("*").remove();
-    if (document.getElementById("country-input").childElementCount === 0) {
+    if (document.getElementById("country-input").childElementCount !== countriesNames.length) {
+        const previousCountry = $("#country-input").val();
         const countryList = d3.select('#country-input');
         countryList.selectAll('*').remove();
         countriesNames.forEach(value => countryList.append('option').text(value));
-        $("#country-input").val("World");
+        if (countriesNames.includes(previousCountry))
+            $("#country-input").val(previousCountry);
+        else
+            $("#country-input").val("World");
     }
     const dataset = {};
     // create color palette function
-    const colorValue = d3.scale.linear().range([0, 1]).domain([minValue, maxValue]);
-    const paletteScale = value => d3.interpolateReds(colorValue(value));
+    const type = $("#type-input").val();
+    const max_value = type === 'Population (million)' ? maxValue2 : maxValue;
+    const colorIndex = type === 'Population (million)' ? 3 : 1;
+    const colorValue = d3.scale.linear().range([0, 1]).domain([minValue, max_value / colorIndex]);
+    const paletteScale = value => properties[type].color(colorValue(value));
     // fill dataset in appropriate format
     codeToValues.forEach(function (item) { //item example value ["USA", 70]
         const value = item[1][$("#year-input").val()];
         dataset[item[0]] = {numberOfThings: value, fillColor: paletteScale(value)};
     });
-    // render map
+    // renderMap map
     const datamap = new Datamap({
         element: document.getElementById('map'),
         projection: 'mercator', // big world map
@@ -51,9 +150,17 @@ function render() {
                     return popupInfo.join('');
                 }
                 else {
-                    const popupInfo = ['<div class="hoverinfo">', '<strong>', codeToName[geo.id], '</strong>'];
-                    return popupInfo.concat(['<br>Total Dependency Ratio: <strong>',
-                        format(data.numberOfThings), '</strong>', '</div>']).join('');
+                    if (type === 'Population (million)') {
+                        let number = data.numberOfThings;
+                        number = number > 1000 ? format(number / 1000) + ' million' : format(number) + ' thousand';
+                        const popupInfo = ['<div class="hoverinfo">', '<strong>', codeToName[geo.id], '</strong>'];
+                        return popupInfo.concat(['<br/>', properties[$("#type-input").val()].class, ': <strong>',
+                            number, '</strong>', '</div>']).join('');
+                    } else {
+                        const popupInfo = ['<div class="hoverinfo">', '<strong>', codeToName[geo.id], '</strong>'];
+                        return popupInfo.concat(['<br/>', properties[$("#type-input").val()].class, ': <strong>',
+                            format(data.numberOfThings), '</strong>', '</div>']).join('');
+                    }
                 }
 
             },
@@ -71,23 +178,26 @@ function render() {
             });
         }
     });
+    const kiloToMillion = type === 'Population (million)' ? 1000 : 1;
     const svg = d3.select('.datamap');
     svg.select('#map-legend').remove();
     svg.select('#map-legend-axis').remove();
     const legend = svg.append("defs").append("svg:linearGradient").attr("id", "gradient")
         .attr("x1", "0%").attr("y1", "100%").attr("x2", "100%").attr("y2", "100%").attr("spreadMethod", "pad");
     for (let i = 0; i <= 100; i += 10) {
-        legend.append("stop").attr("offset", i + '%').attr("stop-color", d3.interpolateReds(i / 100))
+        legend.append("stop").attr("offset", i + '%').attr("stop-color", properties[$("#type-input").val()].color(i / 100))
     }
     svg.append("rect").attr("width", 150).attr("height", 15).style("fill", "url(#gradient)")
         .attr('id', 'map-legend')
-        .attr("transform", "translate(545,640)");
-    const axisScale = d3.scale.linear().range([0, 150]).domain([minValue, maxValue]);
+        .attr("transform", "translate(460,625)");
+    const axisScale = d3.scale.linear().range([0, 150]).domain([minValue, max_value / kiloToMillion / colorIndex]);
     const axis = d3.svg.axis().scale(axisScale).orient("bottom").ticks(5);
     svg.append("g")
-        .attr("transform", "translate(545,655)")
+        .attr("transform", "translate(460,640)")
         .attr("id", "map-legend-axis")
         .call(axis);
+    if (type === 'Population (million)')
+        svg.append('text').attr('x', 620).attr('y', 658).text('+ (million)');
 }
 
 function renderPyramid() {
@@ -96,7 +206,9 @@ function renderPyramid() {
     const g = d3.select('.datamap').append('g').attr('id', 'pyramid').attr("transform", "translate(0,400)");
     const index = ($("#year-input").val() - 2015) / 5;
     const country = ageData[nameToCode[$("#country-input").val()]];
-    let maxValue = -1;
+    if (country === undefined)
+        return;
+    let maxValue = Number.MIN_VALUE;
 
     const maleData = country['male'][index];
     const femaleData = country['female'][index];
@@ -124,7 +236,7 @@ function renderPyramid() {
         .attr('width', d => xScale(d))
         .attr('height', height)
         .append('title')
-        .text(d => d+' thousand');
+        .text(d => d + ' thousand');
     const femaleRects = g.selectAll('.female-age-rect').data(country['female'][index])
         .attr('width', d => xScale(d[1]));
     femaleRects.enter().append('rect').attr('class', 'age-rect female-age-rect')
@@ -133,7 +245,7 @@ function renderPyramid() {
         .attr('width', d => xScale(d))
         .attr('height', height)
         .append('title')
-        .text(d => d+' thousand');
+        .text(d => d + ' thousand');
     g.selectAll('text').data(ageGroups).enter()
         .append('text').attr('x', (d, i) => i > 1 ? 1 : 7).attr('y', (d, i) => 250 - i * height)
         .text(d => d)
@@ -142,10 +254,10 @@ function renderPyramid() {
     g.append('text').attr('x', 160).attr('y', 45).text('Female').style('font-size', '20px');
 
     const MalexScale = d3.scale.linear()
-        .domain([maxValue/1000, 0])
+        .domain([maxValue / 1000, 0])
         .range([0, 100]);
     const FemalexScale = d3.scale.linear()
-        .domain([0,maxValue/1000])
+        .domain([0, maxValue / 1000])
         .range([0, 100]);
     const axisMale = d3.svg.axis().scale(MalexScale).orient("bottom").ticks(3);
     const axisFemale = d3.svg.axis().scale(FemalexScale).orient("bottom").ticks(3);
@@ -158,41 +270,7 @@ function renderPyramid() {
         .attr("id", "map-legend-axis")
         .call(axisFemale);
 
-    g.append('text').attr('x',75).attr('y',280).text('Population (million)');
-
-
-    // g.append('rect').attr('x', 0).attr('y', 28).attr('width', 242).attr('height', 260)
-    //     .style('fill', 'none').style('stroke', '#717171')
-
+    g.append('text').attr('x', 75).attr('y', 280).text('Population (million)');
 }
-
-d3.json("data/DR2565.json", function (data) {
-    for (let code in data) {
-        if (code === 'min' || code === 'max')
-            continue;
-        if (data.hasOwnProperty(code)) {
-            const name = data[code].name;
-            const values = data[code].data;
-            nameToValues[name] = values;
-            codeToName[code] = name;
-            nameToCode[name] = code;
-            if (specials.includes(code))
-                continue;
-            codeToValues.push([code, values]);
-            countriesNames.push(name);
-        }
-    }
-    minValue = parseInt(data['min'] / 10) * 10;
-    maxValue = parseInt(data['max'] / 10 + 1) * 10;
-    countriesNames = specials.concat(countriesNames.sort());
-    render();
-    drawBar(nameToValues["World"]);
-    $("#year-2015").addClass('selected-year');
-    d3.json("data/AgeComposition.json", function (data) {
-        ageData = data;
-        renderPyramid();
-    });
-});
-
 
 

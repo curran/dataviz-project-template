@@ -14,9 +14,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/<your username here>/dataviz-project-template"
+    "url": "https://github.com/BruceHenry/WorldDependencyRatio.git"
   },
   "keywords": [],
-  "author": "<your name here>",
+  "author": "Han Bao",
   "license": "MIT"
 }

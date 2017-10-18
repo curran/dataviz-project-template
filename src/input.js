@@ -22,7 +22,7 @@ const getTrackStyle = function (el) {
 };
 $rangeInput.on('input', function () {
     sheet.textContent = getTrackStyle(this);
-    render();
+    renderMap();
     renderPyramid();
 });
 $('.range-labels li').on('click', function () {
@@ -34,3 +34,8 @@ $("#country-input").change(function () {
     drawBar(nameToValues[name]);
     renderPyramid();
 });
+
+$('#type-input').change(function () {
+    dataInput();
+});
+dataInput();
