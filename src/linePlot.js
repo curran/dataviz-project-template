@@ -1,13 +1,13 @@
 
 const xScale = d3.scaleLinear();
-const yScaleLeft = d3.scaleLinear();    
-const yScaleRight = d3.scaleLinear();    
+const yScaleLeft = d3.scaleLinear();
+const yScaleRight = d3.scaleLinear();
 
 const yTicksLeft = 5
 const yTicksRight = 5
 
- 
-     
+
+
 
 const colorScale = d3.scaleOrdinal()
   .range(d3.schemeCategory10);
@@ -40,7 +40,7 @@ const colorLegend = d3.legendColor()
   .shape('circle');
 
 export default function (div, props) {
-  const { 
+  const {
     data,
     xValue,
     xLabel,
@@ -53,7 +53,7 @@ export default function (div, props) {
     colorLabel,
     margin
   } = props;
-        
+
   var vizDiv = document.getElementById(div);
   var svg = d3.select(vizDiv)
     .selectAll('svg')
@@ -62,25 +62,25 @@ export default function (div, props) {
   const width = vizDiv.offsetWidth;
   const height = vizDiv.offsetHeight;
   //const minDimension = d3.min([width, height]);
-        
+
   var svgEnter = svg
     .enter()
     .append('svg');
-  
-  //set svg size to window 
+
+  //set svg size to window
   svg = svgEnter
     .merge(svg)
     .attr('width',width)
     .attr('height',height);
 
-        
+
   console.log(width, height, minDimension);
   console.log(svg.attr('width'), svg.attr('height'));
-    
+
   const innerHeight = height - margin.top - margin.bottom;
   const innerWidth = width - margin.left - margin.right;
-      
-            
+
+
   xScale
     .domain(d3.extent(data, xValue))
     .range([0, innerWidth])
@@ -109,12 +109,12 @@ export default function (div, props) {
     .attr('transform', `translate(0, ${innerHeight})`);
 
   var yAxisG = g.selectAll('#y-axis-g').data([null]);
-        
+
   yAxisG = yAxisG.enter().append('g').merge(yAxisG)
     .attr('id','y-axis-g');
-  
+
   var xAxisText = g.selectAll('#x-axis-label').data([null]);
-        
+
   xAxisText = xAxisText.enter().append('text').merge(xAxisText)
     .attr('class', 'axis-label')
     .attr('id', 'x-axis-label')
@@ -124,35 +124,35 @@ export default function (div, props) {
     .text(xLabel);
 
   var yAxisText = g.selectAll('#y-axis-label').data([null]);
-  
+
   yAxisText = yAxisText.enter().append('text').merge(yAxisText)
-    .attr('class', 'axis-label')  
+    .attr('class', 'axis-label')
     .attr('id', 'y-axis-label')
     .attr('x', -innerHeight / 2)
     .attr('y',  -margin.left/2)
     .attr('transform', `rotate(-90)`)
     .style('text-anchor', 'middle')
     .text(yLabel1);
-          
-//TODO right Y axis text code 
+
+//TODO right Y axis text code
 // yAxisText = yAxisText.enter().append('text').merge(yAxisText)
-//     .attr('class', 'axis-label')  
+//     .attr('class', 'axis-label')
 //     .attr('id', 'y-axis-label')
 //     .attr('x', -innerHeight / 2)
 //     .attr('y',  -margin.left/2)
 //     .attr('transform', `rotate(-90)`)
 //     .style('text-anchor', 'middle')
 //     .text(yLabel1);
-      
+
 
   //data join
   var circles = g.selectAll('circle').data(data);
 
   //Add new elements
   var circlesEnter = circles.enter().append('circle');
-  
+
   var t = d3.transition().duration(500);
-  
+
   var circlesExit = circles.exit()
     .attr('class','exit')
     .remove();
@@ -164,17 +164,17 @@ export default function (div, props) {
   //merge new and existing ell
   circlesEnter
     .attr('class','enter')
-    .attr('fill', pointColor)
+    .attr('fill', colorValue)
     .attr('fill-opacity', .2)
     .attr('r', pointSize)
     .merge(circles)
     .attr('cx', d => xScale(xValue(d)))
     .attr('cy', d => yScale(yValue(d)));
-        
+
   //remove elements for which there is no data
   circlesExit
 
-      
+
       // const line2 = d3.line()
       //   .x(d => xScale(xValue(d)))
       //   .y(d => yScaleLeft(y2Value(d)))
@@ -184,13 +184,13 @@ export default function (div, props) {
       //   .x(d => xScale(xValue(d)))
       //   .y(d => yScaleLeft(y1Value(d)))
       //   .curve(d3.curveBasis)
-      
+
       // const line3 = d3.line()
       //   .x(d => xScale(xValue(d)))
       //   .y(d => yScaleRight(y3Value(d)))
       //   .curve(d3.curveBasis)
 
-      
+
 
       //   g.append('path')
       //       .attr('fill', 'none')
@@ -203,8 +203,8 @@ export default function (div, props) {
       //       .attr('stroke', 'grey')
       //       .attr('stroke-width', 1)
       //       .attr('d', line2(data));
-       
-        
+
+
       //   xAxisG.call(xAxis)
       //         .selectAll("text")
       //         .style("text-anchor", "end")
@@ -213,19 +213,19 @@ export default function (div, props) {
       //         .attr("transform", "rotate(-15)");
       //   yAxisG.call(yAxisLeft);
       //   yAxisRightG.call(yAxisRight);
-        
+
       //   g.append('path')
       //       .attr('fill', 'none')
       //       .attr('stroke', 'green')
       //       .attr('stroke-width', 1)
       //       .attr('d', line3(data));
-  
+
 
 
   //call X and Y axis
   xAxisG.call(xAxis);
   yAxisG.call(yAxis);
-  
 
-      
+
+
     };

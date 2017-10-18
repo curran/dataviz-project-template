@@ -35,7 +35,7 @@ import radialPlot from './radialPlot'
       const pointColor2 = "blue";
 
       const margin = { left: 75, right: 10, top: 10, bottom: 75 };
-      
+
       //row function to parse daily csv
       const row = d => {
           d.instant = +d.instant;
@@ -56,13 +56,13 @@ import radialPlot from './radialPlot'
           d.cnt = +d.cnt;
           return d;
       };
-      
+
       const dataDaily = null;
       const dataHourly = null;
-      
+
 
 d3.csv(datafile, row, data => {
-        
+
   const dataDaily = data;
   const dataHourly = data;
 
@@ -72,99 +72,99 @@ d3.csv(datafile, row, data => {
 
     //first row of grids
     radialPlot(div1, {
-      data, 
-      xValue1, 
-      yValue1, 
-      xLabel1, 
-      yLabel1, 
-      pointColor1, 
+      data,
+      xValue1,
+      yValue1,
+      xLabel1,
+      yLabel1,
+      pointColor1,
       margin
     });
 
     scatterPlot(div2, {
-      data, 
-      xValue2, 
-      yValue1,  
-      xLabel2, 
+      data,
+      xValue2,
+      yValue1,
+      xLabel2,
       yLabel1,
-      pointColor1, 
+      pointColor1,
       margin
     });
-          
+
     scatterPlot(div3, {
-      data, 
-      xValue3, 
-      yValue1,  
-      xLabel3, 
+      data,
+      xValue3,
+      yValue1,
+      xLabel3,
       yLabel1,
-      pointColor1, 
+      pointColor1,
       margin
     });
-          
+
     scatterPlot(div4, {
-      data, 
-      xValue1, 
-      yValue1,  
-      xLabel1, 
+      data,
+      xValue1,
+      yValue1,
+      xLabel1,
       yLabel1,
-      pointColor1, 
+      pointColor1,
       margin
     });
 
     //second row of grid
     radialPlot(div5, {
-      data, 
-      xValue1, 
-      yValue2,  
-      xLabel1, 
-      yLabel2,
-      pointColor2, 
-      margin
-    });
-
-    scatterPlot(div6, {
-      data, 
-      xValue2, 
-      yValue2,  
-      xLabel2, 
+      data,
+      xValue1,
+      yValue2,
+      xLabel1,
       yLabel2,
       pointColor2,
       margin
     });
-          
+
+    scatterPlot(div6, {
+      data,
+      xValue2,
+      yValue2,
+      xLabel2,
+      yLabel2,
+      pointColor2,
+      margin
+    });
+
     scatterPlot(div7, {
-      data, 
-      xValue3, 
-      yValue2,  
-      xLabel3, 
+      data,
+      xValue3,
+      yValue2,
+      xLabel3,
       yLabel2,
-      pointColor2, 
+      pointColor2,
       margin
     });
-          
+
     scatterPlot(div8, {
-      data, 
-      xValue1, 
-      yValue2,  
-      xLabel1, 
+      data,
+      xValue1,
+      yValue2,
+      xLabel1,
       yLabel2,
-      pointColor2, 
+      pointColor2,
       margin
     });
-          
+
     linePlot(div9, {
-      data, 
-      xValue3, 
-      yValue1,  
-      xLabel1, 
+      data,
+      xValue3,
+      yValue1,
+      xLabel1,
       yLabel3,
-      pointColor2, 
+      pointColor2,
       margin
     });
-      
+
 
   }
-          
+
   console.log('now render');
 
   render();
@@ -172,7 +172,5 @@ d3.csv(datafile, row, data => {
   console.log('resized and rendered...');
 
   window.addEventListener('resize',render);
-        
+
 });
-
-

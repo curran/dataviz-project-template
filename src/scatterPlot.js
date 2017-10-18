@@ -1,6 +1,6 @@
 
 const xScale = d3.scaleLinear();
-const yScale = d3.scaleLinear();    
+const yScale = d3.scaleLinear();
 
 
 const colorScale = d3.scaleOrdinal()
@@ -24,18 +24,17 @@ const colorLegend = d3.legendColor()
   .shape('circle');
 
 export default function (div, props) {
-  const { 
+  const {
     data,
     xValue,
     xLabel,
     yValue,
     yLabel,
     colorValue,
-    colorLabel,
     margin
   } = props;
 
-        
+
   var vizDiv = document.getElementById(div);
   var svg = d3.select(vizDiv)
     .selectAll('svg')
@@ -43,28 +42,28 @@ export default function (div, props) {
 
   const width = vizDiv.offsetWidth;
   const height = vizDiv.offsetHeight;
-  
+
   //maintain 1:1 aspect ration for scatter plot
   const minDimension = d3.min([width, height]);
-        
+
   var svgEnter = svg
     .enter()
     .append('svg');
-  
-  //set svg size to window 
+
+  //set svg size to window
   svg = svgEnter
     .merge(svg)
     .attr('width',minDimension)
     .attr('height',minDimension);
 
-        
+
   console.log(width, height, minDimension);
   console.log(svg.attr('width'), svg.attr('height'));
-    
+
   const innerHeight = minDimension - margin.top - margin.bottom;
   const innerWidth = minDimension - margin.left - margin.right;
-      
-            
+
+
   xScale
     .domain(d3.extent(data, xValue))
     .range([0, innerWidth])
@@ -74,7 +73,7 @@ export default function (div, props) {
     .domain(d3.extent(data, yValue)) //d3.extent(data, yValue
     .range([innerHeight, 0])
     .nice();
- 
+
   var g = svg.selectAll('g').data([null]);
 
   g = g.enter().append('g')
@@ -88,12 +87,12 @@ export default function (div, props) {
     .attr('transform', `translate(0, ${innerHeight})`);
 
   var yAxisG = g.selectAll('#y-axis-g').data([null]);
-        
+
   yAxisG = yAxisG.enter().append('g').merge(yAxisG)
     .attr('id','y-axis-g');
-  
+
   var xAxisText = g.selectAll('#x-axis-label').data([null]);
-        
+
   xAxisText = xAxisText.enter().append('text').merge(xAxisText)
     .attr('class', 'axis-label')
     .attr('id', 'x-axis-label')
@@ -103,25 +102,25 @@ export default function (div, props) {
     .text(xLabel);
 
   var yAxisText = g.selectAll('#y-axis-label').data([null]);
-  
+
   yAxisText = yAxisText.enter().append('text').merge(yAxisText)
-    .attr('class', 'axis-label')  
+    .attr('class', 'axis-label')
     .attr('id', 'y-axis-label')
     .attr('x', -innerHeight / 2)
     .attr('y',  -margin.left/2)
     .attr('transform', `rotate(-90)`)
     .style('text-anchor', 'middle')
     .text(yLabel);
-          
-   
+
+
   //data join
   var circles = g.selectAll('circle').data(data);
 
   //Add new elements
   var circlesEnter = circles.enter().append('circle');
-  
+
   var t = d3.transition().duration(500);
-  
+
   var circlesExit = circles.exit()
     .attr('class','exit')
     .remove();
@@ -133,23 +132,23 @@ export default function (div, props) {
   //merge new and existing ell
   circlesEnter
     .attr('class','enter')
-    .attr('fill', pointColor)
+    .attr('fill', colorValue)
     .attr('fill-opacity', .2)
     .attr('r', pointSize)
     .merge(circles)
     .attr('cx', d => xScale(xValue(d)))
     .attr('cy', d => yScale(yValue(d)));
-        
+
   //remove elements for which there is no data
   circlesExit
 
   //call X and Y axis
   xAxisG.call(xAxis);
   yAxisG.call(yAxis);
-  
+
   colorLegendG.call(colorLegend)
     .selectAll('.cell text')
     .attr('dy', '0.1em');
 
-      
+
     };
