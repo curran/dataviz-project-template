@@ -1,10 +1,29 @@
-body {
-    margin: 0px;
+
+/*General*/
+
+#chart {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
 }
+
+svg {
+    font: 1em Consolas;
+    shape-rendering: crispEdges;
+}
+
 .title{
+    margin: 0 auto;
     text-align: center;
 }
 
+/*Title*/
+h2 {
+    font-family: Consolas;
+    text-align: center
+}
+
+/*EarthPanel*/
 .earthPanel, .countrySelector{
     padding-top: 10px;
     padding-left: 30px;
@@ -67,6 +86,20 @@ select {
 }
 
 
+/* bar chart */
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+}
+
+path.domain {
+    stroke: none;
+}
+
+.y .tick line {
+    stroke: #ddd;
+}
 
 
 .domain {
@@ -74,7 +107,7 @@ select {
 }
 .tick line {
     stroke: #C0C0BB;
-    stroke-width: 0;
+    stroke-width: 1;
 }
 
 .tick text {
@@ -83,14 +116,47 @@ select {
     font-family: sans-serif;
 }
 
-.axis path,
-.axis line{
-    fill: #635F5D;
-    stroke: black;
-}
 
 .axis-label {
     fill: #635F5D;
     font-size: 18pt;
     font-family: sans-serif;
+}
+
+
+/*slider bar*/
+
+.ticks {
+    font: 10px sans-serif;
+}
+
+.track,
+.track-inset,
+.track-overlay {
+    stroke-linecap: round;
+}
+
+.track {
+    stroke: #000;
+    stroke-opacity: 0.3;
+    stroke-width: 10px;
+}
+
+.track-inset {
+    stroke: #ddd;
+    stroke-width: 8px;
+}
+
+.track-overlay {
+    pointer-events: stroke;
+    stroke-width: 50px;
+    stroke: transparent;
+    cursor: crosshair;
+}
+
+.handle {
+    fill: #fff;
+    stroke: #000;
+    stroke-opacity: 0.5;
+    stroke-width: 1.25px;
 }
