@@ -17,7 +17,7 @@ function calendar(container, props, box) {
 
   const width = box.width,
     height = box.height,
-    cellSize = d3.min([width/(nWeeks+12), height/(nDays+4)]);
+    cellSize = d3.min([width/(nWeeks+13), height/(nDays+8)]);
 
   
   const legendColors = ['#fff', '#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
