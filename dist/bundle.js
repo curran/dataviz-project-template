@@ -107,6 +107,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       const pointSize = 2;
       const pointColor1 = "green";
       const pointColor2 = "blue";
+      const pointColor3 = "grey";
 
       const margin = { left: 75, right: 10, top: 10, bottom: 75 };
 
@@ -146,103 +147,103 @@ d3.csv('data/day.csv', row, data => {
 
     //first row of grids
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div1, {
-      data,
-      xValue1,
-      yValue1,
-      xLabel1,
-      yLabel1,
-      pointColor1,
-      pointSize,
-      margin
+      data:data,
+      xValue:xValue1,
+      yValue:yValue1,
+      xLabel:xLabel1,
+      yLabel:yLabel1,
+      pointColor:pointColor1,
+      pointSize:pointSize,
+      margin:margin
     });
 
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div2, {
-      data,
-      xValue2,
-      yValue1,
-      xLabel2,
-      yLabel1,
-      pointColor1,
-      pointSize,
-      margin
+      data:data,
+      xValue:xValue2,
+      yValue:yValue1,
+      xLabel:xLabel2,
+      yLabel:yLabel1,
+      pointColor:pointColor1,
+      pointSize:pointSize,
+      margin:margin
     });
 
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div3, {
-      data,
-      xValue3,
-      yValue1,
-      xLabel3,
-      yLabel1,
-      pointColor1,
-      pointSize,
-      margin
+      data:data,
+      xValue:xValue3,
+      yValue:yValue1,
+      xLabel:xLabel3,
+      yLabel:yLabel1,
+      pointColor:pointColor1,
+      pointSize:pointSize,
+      margin:margin
     });
 
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div4, {
-      data,
-      xValue1,
-      yValue1,
-      xLabel1,
-      yLabel1,
-      pointColor1,
-      pointSize,
-      margin
+      data:data,
+      xValue:xValue1,
+      yValue:yValue1,
+      xLabel:xLabel1,
+      yLabel:yLabel1,
+      pointColor:pointColor1,
+      pointSize:pointSize,
+      margin:margin
     });
 
     //second row of grid
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div5, {
-      data,
-      xValue1,
-      yValue2,
-      xLabel1,
-      yLabel2,
-      pointColor2,
-      pointSize,
-      margin
+      data:data,
+      xValue:xValue1,
+      yValue:yValue2,
+      xLabel:xLabel1,
+      yLabel:yLabel2,
+      pointColor:pointColor2,
+      pointSize:pointSize,
+      margin:margin
     });
 
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div6, {
-      data,
-      xValue2,
-      yValue2,
-      xLabel2,
-      yLabel2,
-      pointColor2,
-      pointSize,
-      margin
+      data:data,
+      xValue:xValue2,
+      yValue:yValue2,
+      xLabel:xLabel2,
+      yLabel:yLabel2,
+      pointColor:pointColor2,
+      pointSize:pointSize,
+      margin:margin
     });
 
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div7, {
-      data,
-      xValue3,
-      yValue2,
-      xLabel3,
-      yLabel2,
-      pointColor2,
-      pointSize,
-      margin
+      data:data,
+      xValue:xValue3,
+      yValue:yValue2,
+      xLabel:xLabel3,
+      yLabel:yLabel2,
+      pointColor:pointColor2,
+      pointSize:pointSize,
+      margin:margin
     });
 
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div8, {
-      data,
-      xValue1,
-      yValue2,
-      xLabel1,
-      yLabel2,
-      pointColor2,
-      pointSize,
-      margin
+      data:data,
+      xValue:xValue1,
+      yValue:yValue2,
+      xLabel:xLabel1,
+      yLabel:yLabel2,
+      pointColor:pointColor2,
+      pointSize:pointSize,
+      margin:margin
     });
 
     Object(__WEBPACK_IMPORTED_MODULE_1__linePlot__["a" /* default */])(div9, {
-      data,
-      xValue3,
-      yValue1,
-      xLabel1,
-      yLabel3,
-      pointColor2,
-      pointSize,
-      margin
+      data:data,
+      xValue:xValue4,
+      yValue:yValue3,
+      xLabel:xLabel4,
+      yLabel:"Users",
+      pointColor:pointColor3,
+      pointSize:pointSize,
+      margin:margin
     });
 
 
