@@ -16,7 +16,7 @@ const getTrackStyle = function (el) {
     curYear.prevAll().addClass('selected-year');
     for (let i = 0; i < prefs.length; i++) {
         style += '.range {background: linear-gradient(to right, #ff5a04 0%, #ff5a04 ' + val + '%, #fff ' + val + '%, #fff 100%)}';
-        style += '.range input::-' + prefs[i] + '{background: linear-gradient(to right, #ff5a04 0%, #ff5a04 ' + val + '%, #b2b2b2 ' + val + '%, #b2b2b2 100%)}';
+        style += '.range input::-' + prefs[i] + '{background: linear-gradient(to right, #ff5a04 0%, #ff5a04 ' + val + '%, #0099cb ' + val + '%, #0099cb 100%)}';
     }
     return style;
 };

@@ -54,21 +54,21 @@
     width: 100%;
     height: 2px;
     cursor: pointer;
-    background: #b2b2b2;
+    background: #0099cb;
 }
 
 .range input::-moz-range-track {
     width: 100%;
     height: 2px;
     cursor: pointer;
-    background: #b2b2b2;
+    background: #0099cb;
 }
 
 .range input::-ms-track {
     width: 100%;
     height: 2px;
     cursor: pointer;
-    background: #b2b2b2;
+    background: #0099cb;
 }
 
 .range input:focus {
@@ -95,7 +95,7 @@
     float: left;
     width: 5.26%;
     text-align: center;
-    color: #b2b2b2;
+    color: #0099cb;
     font-size: 15px;
     font-weight: bold;
     cursor: pointer;
@@ -110,7 +110,7 @@
     margin: 0 auto;
     width: 9px;
     height: 9px;
-    background: #b2b2b2;
+    background: #0099cb;
     border-radius: 50%;
 }
 

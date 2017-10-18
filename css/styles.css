@@ -22,7 +22,8 @@
     stroke: #000;
     shape-rendering: crispEdges;
 }
-#map-legend-axis path{
+
+#map-legend-axis path {
     display: none;
 }
 
@@ -31,24 +32,27 @@
     height: 250px;
 }
 
-.age-rect{
+.age-rect {
     stroke: #717171;
     stroke-width: 1;
 }
-.age-rect:hover{
+
+.age-rect:hover {
     stroke: #717171;
     stroke-width: 3;
     opacity: 1;
 }
-.male-age-rect{
+
+.male-age-rect {
     fill: #0073ff;
     opacity: 0.7;
 }
 
-.female-age-rect{
+.female-age-rect {
     fill: #FB7F5F;
     opacity: 0.8;
 }
+
 #info-selector {
     margin: auto;
     top: -50px;
@@ -97,19 +101,20 @@
 }
 
 .year {
-
-    fill: #b2b2b2;
+    fill: #0099cb;
+    opacity: 0.9;
     cursor: pointer;
 }
 
 .selected-year {
+    opacity: 0.9;
     fill: #ff5a04;
 }
 
 .active-year {
-    fill: #ff5a04;
-    stroke-width: 3;
-    stroke: #ff5a04;
+    opacity: 1;
+    stroke-width: 2;
+    stroke: #848484;
 }
 
 .bar-text {
