@@ -21,7 +21,7 @@ The data is from [United Nations: World Population Prospects 2017](https://esa.u
 This project uses NPM and Webpack. To get started, clone the repository and install dependencies like this:
 
 ```
-cd dataviz-project-template
+cd WorldPopulationData
 npm install
 ```
 

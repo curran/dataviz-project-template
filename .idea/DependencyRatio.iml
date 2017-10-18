@@ -8,15 +8,14 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="jQuery-2.0.0" level="application" />
-    <orderEntry type="library" name="d3.v3" level="application" />
-    <orderEntry type="library" name="topojson" level="application" />
-    <orderEntry type="library" name="datamaps.all" level="application" />
-    <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" name="bootstrap" level="application" />
-    <orderEntry type="library" name="angular" level="application" />
-    <orderEntry type="library" name="d3-scale-chromatic.v1" level="application" />
     <orderEntry type="library" name="d3-color.v1" level="application" />
     <orderEntry type="library" name="d3-interpolate.v1" level="application" />
+    <orderEntry type="library" name="d3-scale-chromatic.v1" level="application" />
+    <orderEntry type="library" name="d3.v3" level="application" />
+    <orderEntry type="library" name="datamaps.all" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
+    <orderEntry type="library" name="jQuery-2.0.0" level="application" />
+    <orderEntry type="library" name="topojson" level="application" />
   </component>
 </module>
