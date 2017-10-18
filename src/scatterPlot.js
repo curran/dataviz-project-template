@@ -147,9 +147,9 @@ export default function (div, props) {
   xAxisG.call(xAxis);
   yAxisG.call(yAxis);
 
-  colorLegendG.call(colorLegend)
-    .selectAll('.cell text')
-    .attr('dy', '0.1em');
+  // colorLegendG.call(colorLegend)
+  //   .selectAll('.cell text')
+  //   .attr('dy', '0.1em');
 
 
     };

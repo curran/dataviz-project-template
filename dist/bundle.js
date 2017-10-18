@@ -414,9 +414,9 @@ const colorLegend = d3.legendColor()
   xAxisG.call(xAxis);
   yAxisG.call(yAxis);
 
-  colorLegendG.call(colorLegend)
-    .selectAll('.cell text')
-    .attr('dy', '0.1em');
+  // colorLegendG.call(colorLegend)
+  //   .selectAll('.cell text')
+  //   .attr('dy', '0.1em');
 
 
     });;
