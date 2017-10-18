@@ -135,17 +135,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       const dataHourly = null;
 
 
-d3.csv(datafile, row, data => {
+d3.csv('data/day.csv', row, data => {
 
   const dataDaily = data;
   const dataHourly = data;
 
   const render =() => {
 
-    data = data.filter( d => d.yr == 0)
+    //data = data.filter( d => d.yr == 0)
 
     //first row of grids
-    Object(__WEBPACK_IMPORTED_MODULE_2__radialPlot__["a" /* default */])(div1, {
+    Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div1, {
       data,
       xValue1,
       yValue1,
@@ -190,7 +190,7 @@ d3.csv(datafile, row, data => {
     });
 
     //second row of grid
-    Object(__WEBPACK_IMPORTED_MODULE_2__radialPlot__["a" /* default */])(div5, {
+    Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div5, {
       data,
       xValue1,
       yValue2,
@@ -471,14 +471,14 @@ const colorLegend = d3.legendColor()
   const {
     data,
     xValue,
+    yValue1, //registered  Left Y Axis
+    yValue2, //casual      Left Y Axis
+    yValue3, //temp        Right Y Axis
     xLabel,
-    yValue1, //registered
-    yValue2, //casual
-    yValue3, //temp
     yLabelLeft,
     yLabelRight,
     colorValue,
-    colorLabel,
+    pointSize,
     margin
   } = props;
 
@@ -567,89 +567,64 @@ const colorLegend = d3.legendColor()
 //     .attr('class', 'axis-label')
 //     .attr('id', 'y-axis-label')
 //     .attr('x', -innerHeight / 2)
-//     .attr('y',  -margin.left/2)
+//     .attr('y',  -margin.right/2)
 //     .attr('transform', `rotate(-90)`)
 //     .style('text-anchor', 'middle')
-//     .text(yLabel1);
+//     .text(yLabel3);
 
+const line2 = d3.line()
+  .x(d => xScale(xValue(d)))
+  .y(d => yScaleLeft(y2Value(d)))
+  .curve(d3.curveBasis);
+
+const line1 = d3.line()
+  .x(d => xScale(xValue(d)))
+  .y(d => yScaleLeft(y1Value(d)))
+  .curve(d3.curveBasis)
+
+const line3 = d3.line()
+  .x(d => xScale(xValue(d)))
+  .y(d => yScaleRight(y3Value(d)))
+  .curve(d3.curveBasis)
 
   //data join
-  var circles = g.selectAll('circle').data(data);
+  var lines = g.selectAll('path').data(data);
 
   //Add new elements
-  var circlesEnter = circles.enter().append('circle');
+  var linesEnter = lines.enter().append('path');
 
   var t = d3.transition().duration(500);
 
-  var circlesExit = circles.exit()
+  var linesExit = lines.exit()
     .attr('class','exit')
     .remove();
 
   //UPDATE old elements present (change class)
-  circles
+  lines
     .attr('class','update');
 
   //merge new and existing ell
-  circlesEnter
+  linesEnter
     .attr('class','enter')
-    .attr('fill', colorValue)
-    .attr('fill-opacity', .2)
-    .attr('r', pointSize)
-    .merge(circles)
-    .attr('cx', d => xScale(xValue(d)))
-    .attr('cy', d => yScale(yValue(d)));
+    .attr('stroke', 'grey')
+    .attr('stroke-width', 1)
+    .attr('d', line1);
+
+  linesEnter
+    .attr('class','enter')
+    .attr('stroke', 'grey')
+    .attr('stroke-width', 1)
+    .attr('d', line2);
+
+  linesEnter
+    .attr('class','enter')
+    .attr('stroke', 'grey')
+    .attr('stroke-width', 1)
+    .attr('d', line3);
 
   //remove elements for which there is no data
-  circlesExit
-
-
-      // const line2 = d3.line()
-      //   .x(d => xScale(xValue(d)))
-      //   .y(d => yScaleLeft(y2Value(d)))
-      //   .curve(d3.curveBasis);
-
-      // const line1 = d3.line()
-      //   .x(d => xScale(xValue(d)))
-      //   .y(d => yScaleLeft(y1Value(d)))
-      //   .curve(d3.curveBasis)
-
-      // const line3 = d3.line()
-      //   .x(d => xScale(xValue(d)))
-      //   .y(d => yScaleRight(y3Value(d)))
-      //   .curve(d3.curveBasis)
-
-
-
-      //   g.append('path')
-      //       .attr('fill', 'none')
-      //       .attr('stroke', 'grey')
-      //       .attr('stroke-width', 1)
-      //       .attr('d', line1(data));
-
-      //   g.append('path')
-      //       .attr('fill', 'none')
-      //       .attr('stroke', 'grey')
-      //       .attr('stroke-width', 1)
-      //       .attr('d', line2(data));
-
-
-      //   xAxisG.call(xAxis)
-      //         .selectAll("text")
-      //         .style("text-anchor", "end")
-      //         .attr("dx", "-.8em")
-      //         .attr("dy", ".15em")
-      //         .attr("transform", "rotate(-15)");
-      //   yAxisG.call(yAxisLeft);
-      //   yAxisRightG.call(yAxisRight);
-
-      //   g.append('path')
-      //       .attr('fill', 'none')
-      //       .attr('stroke', 'green')
-      //       .attr('stroke-width', 1)
-      //       .attr('d', line3(data));
-
-
-
+  linesExit
+  
   //call X and Y axis
   xAxisG.call(xAxis);
   yAxisG.call(yAxis);
@@ -689,7 +664,7 @@ const colorLegend = d3.legendColor()
   .scale(colorScale)
   .shape('circle');
 
-/* harmony default export */ __webpack_exports__["a"] = (function (div, props) {
+/* unused harmony default export */ var _unused_webpack_default_export = (function (div, props) {
   const {
     data,
     xValue,

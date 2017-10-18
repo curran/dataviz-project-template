@@ -61,17 +61,17 @@ import radialPlot from './radialPlot'
       const dataHourly = null;
 
 
-d3.csv(datafile, row, data => {
+d3.csv('data/day.csv', row, data => {
 
   const dataDaily = data;
   const dataHourly = data;
 
   const render =() => {
 
-    data = data.filter( d => d.yr == 0)
+    //data = data.filter( d => d.yr == 0)
 
     //first row of grids
-    radialPlot(div1, {
+    scatterPlot(div1, {
       data,
       xValue1,
       yValue1,
@@ -116,7 +116,7 @@ d3.csv(datafile, row, data => {
     });
 
     //second row of grid
-    radialPlot(div5, {
+    scatterPlot(div5, {
       data,
       xValue1,
       yValue2,
