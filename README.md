@@ -3,7 +3,7 @@
 A visualization of world population data from 2015 to 2100.
 
 Have a look => [Click here](https://bl.ocks.org/BruceHenry/raw/f9c8fdaa96182f18c5517a0d18323f40/) to visit.
-<br/><img src="https://gist.githubusercontent.com/BruceHenry/f9c8fdaa96182f18c5517a0d18323f40/raw/fc7658333565e637481f0164861c65030af95141/thumbnail.png"/>
+<br/><img src="https://gist.githubusercontent.com/BruceHenry/f9c8fdaa96182f18c5517a0d18323f40/raw/0c2763039f565f32412a994c7e437278bd687c43/thumbnail.png"/>
 <hr/>
 
 ## Introduction of Concept
