@@ -99,6 +99,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       const xLabel1 = 'Temperature';
       const xLabel2 = 'Humidity';
       const xLabel3 = 'Windspeed';
+      const xLabel3 = 'Date';
       const yValue2 = d => d.casual;
       const yValue1 = d => d.registered;
       const yValue3 = d => d.cnt;
