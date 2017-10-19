@@ -24,16 +24,35 @@ function parseDrivingMap(row) {
   return row;
 }
 
-// TODO: change this to a double map[personName][townName]
-//       (after I switch to the full people matrix)
-function buildRacesRunMap(townsAlreadyRun, townNames) {
+function createNewNameIfNeeded(name, namesAlreadySeen) {
+  let currentName = name;
+  let suffixIndex = 2;
+  while(currentName in namesAlreadySeen) {
+    currentName = name + ' (' + suffixIndex + ')';
+  }
+  return currentName;
+}
+
+function buildRacesRunMap(memberTownsRun, townNames) {
+  // access result as racesRunMap['Pasini, Jose']['Canton']
+  // and as memberTownsMap['Pasini, Jose']
   const racesRunMap = {};
-  townsAlreadyRun.forEach(row => racesRunMap[row.Town] = true);
-  // fill rest of towns with 'false'
-  townNames.forEach(town => {
-    racesRunMap[town] = town in racesRunMap;
+  const memberTownsMap = {};
+  memberTownsRun.forEach(row => {
+    const newName = createNewNameIfNeeded(row.Name, racesRunMap);
+    row.Name = newName;
+    memberTownsMap[row.Name] = row.Town;
+    racesRunMap[row.Name] = townNames.reduce((accumulator, currentValue) => {
+      accumulator[currentValue] = row[currentValue] == '1';
+      return accumulator;
+    }, {});
   });
-  return racesRunMap;
+  return { racesRunMap, memberTownsMap };
+}
+
+function parseTownsRunByMembers(row) {
+  row.TotalTowns = +row.TotalTowns;
+  return row;
 }
 
 function buildRaceHorizon(races, townNames) {
@@ -132,9 +151,11 @@ function choroplethMap(container, props, box) {
     townIndex,
     racesSoonByTown,
     raceHorizonByTown,
-    myTown
+    myTown,
+    myName
   ] = props.data;
 
+  // TODO: fix if town is 'Out of State'
   const myTownIndex = townIndex[myTown];
 
   completeTooltipTables(racesSoonByTown);
@@ -165,14 +186,15 @@ function choroplethMap(container, props, box) {
   const centerY = height/2;
 
   tip
-    .html(d => "<span [class='townname'>" + d.properties.NAME10 + ":</span> <span>"
-        + drivingTimeToString(drivingTimes[myTownIndex][d.properties.NAME10])
-        + " driving</span>" 
-        + "<span>" 
+    .html(d => '<span class="townname">' + d.properties.NAME10 + '</span>'
+        + (myTown == 'Out of State' ? '' :
+          '<br><span>' + drivingTimeToString(drivingTimes[myTownIndex][d.properties.NAME10])
+        + ' driving</span>')
+        + '<span>' 
         + (d.properties.NAME10 in racesSoonByTown ?
           racesSoonByTown[d.properties.NAME10]
-          : "")
-        + "</span>"
+          : '')
+        + '</span>'
     );
 
 
@@ -195,7 +217,7 @@ function choroplethMap(container, props, box) {
     .append('path')
       .attr('d', path)
       .attr('class', d =>
-          racesRunMap[d.properties.NAME10] ? 
+          racesRunMap[myName][d.properties.NAME10] ? 
             pathClassName + " area alreadyRun" : 
             pathClassName + " area " + raceHorizonByTown[d.properties.NAME10].raceType
       )

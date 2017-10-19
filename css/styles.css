@@ -73,7 +73,7 @@ body {
 }
 /* more tooltip formats */
 .townname {
-  font-weight: bold;
+  font-size: 1.2em;
 }
 .racedate {
   color: skyblue;
