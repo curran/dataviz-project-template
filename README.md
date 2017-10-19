@@ -31,3 +31,22 @@ For automatic refreshing during development, you can start the Webpack Dev Serve
 ```
 npm run serve
 ```
+
+## Deployment
+
+To deploy your project using GitHub Pages, first enable GitHub pages in the settings tab.
+
+Each time you want to deploy a new version of the site, run the following commands:
+
+```
+npm run build
+git add -f dist/bundle.js
+git commit -m 'updated bundle'
+git push
+```
+
+Be sure to also first install dependencies with
+
+```
+npm install
+```
