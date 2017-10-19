@@ -1,8 +1,12 @@
 import {
   choroplethMap,
-  buildDrivingMap,
+  parseDrivingMap,
   buildRacesRunMap,
-  parseRaces as parseRacesForMap
+  parseRaces as parseRacesForMap,
+  getTownNames,
+  buildTownIndex,
+  buildRaceHorizon,
+  buildRacesSoonTables
 } from './choroplethMap'
 
 import {
@@ -81,6 +85,14 @@ const sizes = {
 
 function dataLoaded(error, mapData, drivingTimes, racesRun, racesForMap, racesForCalendar) {
 
+  const townNames = getTownNames(drivingTimes);
+  const townIndex = buildTownIndex(townNames);
+  const racesRunMap = buildRacesRunMap(racesRun, townNames);
+  const raceHorizonByTown = buildRaceHorizon(racesForMap, townNames);
+  const racesSoonByTown = buildRacesSoonTables(racesForMap);
+
+  const myTown = 'Avon';
+
   const props = {
     calendar: {
       data: [
@@ -92,17 +104,19 @@ function dataLoaded(error, mapData, drivingTimes, racesRun, racesForMap, racesFo
       data: [
         mapData,
         drivingTimes,
-        racesRun,
-        racesForMap
+        racesRunMap,
+        racesForMap,
+        townNames,
+        townIndex,
+        racesSoonByTown,
+        raceHorizonByTown,
+        myTown
       ],
       margin: margin
     },
     selector: { },
     drivingTimesFilter: { }
   };
-
-
-
 
   const render = () => {
     // Extract the width and height that was computed by CSS.
@@ -132,11 +146,11 @@ function dataLoaded(error, mapData, drivingTimes, racesRun, racesForMap, racesFo
 }
 
 d3.queue()
-  .defer(d3.json, "data/ct_towns_simplified.topojson")
-  .defer(d3.csv, "data/driving_times_from_avon.csv", buildDrivingMap)
-  .defer(d3.csv, "data/towns_run.csv", buildRacesRunMap)
-  .defer(d3.csv, "data/races2017.csv", parseRacesForMap)
-  .defer(d3.csv, "data/races2017.csv", parseRacesForCalendar)
+  .defer(d3.json, 'data/ct_towns_simplified.topojson')
+  .defer(d3.csv, 'data/driving_times_full_symmetric.csv', parseDrivingMap)
+  .defer(d3.csv, 'data/towns_run.csv')
+  .defer(d3.csv, 'data/races2017.csv', parseRacesForMap)
+  .defer(d3.csv, 'data/races2017.csv', parseRacesForCalendar)
   .await(dataLoaded);
 
 
