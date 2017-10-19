@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/../dataviz-project-template/.tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/../dataviz-project-template/temp" />
+      <excludeFolder url="file://$MODULE_DIR$/../dataviz-project-template/tmp" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="bootstrap" level="application" />
+    <orderEntry type="library" name="d3-color.v1" level="application" />
+    <orderEntry type="library" name="d3-interpolate.v1" level="application" />
+    <orderEntry type="library" name="d3-scale-chromatic.v1" level="application" />
+    <orderEntry type="library" name="d3.v3" level="application" />
+    <orderEntry type="library" name="datamaps.all" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
+    <orderEntry type="library" name="jQuery-2.0.0" level="application" />
+    <orderEntry type="library" name="topojson" level="application" />
+  </component>
+</module>

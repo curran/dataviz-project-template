@@ -1,10 +1,9 @@
 {
-  "name": "dataviz-project-template",
+  "name": "WorldPopulationData",
   "version": "0.1.0",
   "description": "Interactive visualization project",
   "main": "webpack.config.js",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1"
@@ -15,9 +14,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/<your username here>/dataviz-project-template"
+    "url": "https://github.com/BruceHenry/WorldPopulationData.git"
   },
   "keywords": [],
-  "author": "<your name here>",
+  "author": "Han Bao",
   "license": "MIT"
 }

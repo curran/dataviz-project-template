@@ -1,28 +1,153 @@
-body {
-  margin: 0px;
-}
-.domain {
-  display: none;
-}
-.tick line {
-  stroke: #C0C0BB;
-}
-.tick text, .legendCells text {
-  fill: #8E8883;
-  font-size: 28pt;
-  font-family: sans-serif;
-}
-.axis-label, .legend-label {
-  fill: #635F5D;
-  font-size: 50pt;
-  font-family: sans-serif;
+#map {
+    width: 1024px;
+    height: 696px;
+    margin: -150px auto auto;
+    position: relative;
+    /*border: 1px black solid;*/
 }
 
-/* Make the chart container fill the page using CSS. */
-#visualization {
-  position: fixed;
-  left: 0px;
-  right: 0px;
-  top: 0px;
-  bottom: 0px;
+#map-legend {
+    stroke-width: 0.5;
+    stroke: #717171;
+}
+
+#map-legend-axis text {
+    font-size: 12px;
+    font-weight: bold;
+    fill: #717171;
+}
+
+#map-legend-axis line, #map-legend-axis path {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+#map-legend-axis path {
+    display: none;
+}
+
+#pyramid {
+    width: 250px;
+    height: 250px;
+}
+
+.age-rect {
+    stroke: #717171;
+    stroke-width: 1;
+}
+
+.age-rect:hover {
+    stroke: #717171;
+    stroke-width: 3;
+    opacity: 1;
+}
+
+.male-age-rect {
+    fill: #0073ff;
+    opacity: 0.7;
+}
+
+.female-age-rect {
+    fill: #FB7F5F;
+    opacity: 0.8;
+}
+
+#info-selector {
+    margin: auto;
+    top: -50px;
+    width: 1024px;
+    position: relative;
+    height: 80px;
+    /*overflow: auto;*/
+    /*border: 1px black solid;*/
+}
+
+#country-input-label {
+    position: absolute;
+    top: 20px;
+    left: 724px;
+    font-size: 15px;
+}
+
+#country-input {
+    position: absolute;
+    top: 45px;
+    left: 724px;
+    width: 300px;
+}
+
+#type-input-label {
+    position: absolute;
+    top: 20px;
+    left: 320px;
+    font-size: 15px;
+}
+
+#type-input {
+    position: absolute;
+    top: 45px;
+    left: 320px;
+    width: 395px;
+}
+
+#bar {
+    width: 1024px;
+    height: 280px;
+    top: -50px;
+    margin: auto;
+    position: relative;
+    border: 1px black solid;
+}
+
+.year {
+    fill: #0099cb;
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+.selected-year {
+    opacity: 0.9;
+    fill: #ff5a04;
+}
+
+.active-year {
+    opacity: 1;
+    stroke-width: 2;
+    stroke: #848484;
+}
+
+.bar-text {
+    fill: #7a765f;
+    font-weight: bold;
+}
+
+.bar-point {
+    fill: #c50059;
+}
+
+.bar-line {
+    stroke: #c50059;
+    stroke-width: 1
+}
+
+.grid line {
+    stroke: #717171;
+    stroke-opacity: 0.3;
+    shape-rendering: crispEdges;
+}
+
+.grid text {
+    fill: #717171;
+    font-weight: bold;
+}
+
+.grid .domain {
+    display: none;
+}
+
+#footer{
+    position: relative;
+    width: 1024px;
+    margin:auto;
 }
