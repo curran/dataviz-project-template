@@ -35,16 +35,19 @@ function createNewNameIfNeeded(name, namesAlreadySeen) {
 
 function buildRacesRunMap(memberTownsRun, townNames) {
   // access result as racesRunMap['Pasini, Jose']['Canton']
+  // and as memberTownsMap['Pasini, Jose']
   const racesRunMap = {};
+  const memberTownsMap = {};
   memberTownsRun.forEach(row => {
     const newName = createNewNameIfNeeded(row.Name, racesRunMap);
     row.Name = newName;
+    memberTownsMap[row.Name] = row.Town;
     racesRunMap[row.Name] = townNames.reduce((accumulator, currentValue) => {
       accumulator[currentValue] = row[currentValue] == '1';
       return accumulator;
     }, {});
   });
-  return racesRunMap;
+  return { racesRunMap, memberTownsMap };
 }
 
 function parseTownsRunByMembers(row) {
@@ -183,14 +186,15 @@ function choroplethMap(container, props, box) {
   const centerY = height/2;
 
   tip
-    .html(d => "<span [class='townname'>" + d.properties.NAME10 + ":</span> <span>"
-        + drivingTimeToString(drivingTimes[myTownIndex][d.properties.NAME10])
-        + " driving</span>" 
-        + "<span>" 
+    .html(d => '<span class="townname">' + d.properties.NAME10 + '</span>'
+        + (myTown == 'Out of State' ? '' :
+          '<br><span>' + drivingTimeToString(drivingTimes[myTownIndex][d.properties.NAME10])
+        + ' driving</span>')
+        + '<span>' 
         + (d.properties.NAME10 in racesSoonByTown ?
           racesSoonByTown[d.properties.NAME10]
-          : "")
-        + "</span>"
+          : '')
+        + '</span>'
     );
 
 

@@ -87,14 +87,16 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
 
   const townNames = getTownNames(drivingTimes);
   const townIndex = buildTownIndex(townNames);
-  const racesRunMap = buildRacesRunMap(membersTowns, townNames);
+  const { racesRunMap, memberTownsMap } = buildRacesRunMap(membersTowns, townNames);
   const raceHorizonByTown = buildRaceHorizon(racesForMap, townNames);
   const racesSoonByTown = buildRacesSoonTables(racesForMap);
 
-  const myTown = 'Avon';
-  //const myName = 'Pasini, Jose';
-  const myName = 'Aldi (Rose), Erin'; // out of state example
+
+  const myName = 'Pasini, Jose';
+  //const myName = 'Aldi (Rose), Erin'; // out of state example
   //const myName = 'Wisniewski, Amy (2)'; // example with duplicate name
+
+  const myTown = memberTownsMap[myName];
 
   const props = {
     calendar: {
