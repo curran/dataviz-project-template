@@ -83,15 +83,18 @@ const sizes = {
 };
 
 
-function dataLoaded(error, mapData, drivingTimes, racesRun, racesForMap, racesForCalendar) {
+function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, racesForCalendar) {
 
   const townNames = getTownNames(drivingTimes);
   const townIndex = buildTownIndex(townNames);
-  const racesRunMap = buildRacesRunMap(racesRun, townNames);
+  const racesRunMap = buildRacesRunMap(membersTowns, townNames);
   const raceHorizonByTown = buildRaceHorizon(racesForMap, townNames);
   const racesSoonByTown = buildRacesSoonTables(racesForMap);
 
   const myTown = 'Avon';
+  //const myName = 'Pasini, Jose';
+  const myName = 'Aldi (Rose), Erin'; // out of state example
+  //const myName = 'Wisniewski, Amy (2)'; // example with duplicate name
 
   const props = {
     calendar: {
@@ -110,7 +113,8 @@ function dataLoaded(error, mapData, drivingTimes, racesRun, racesForMap, racesFo
         townIndex,
         racesSoonByTown,
         raceHorizonByTown,
-        myTown
+        myTown,
+        myName
       ],
       margin: margin
     },
@@ -148,7 +152,7 @@ function dataLoaded(error, mapData, drivingTimes, racesRun, racesForMap, racesFo
 d3.queue()
   .defer(d3.json, 'data/ct_towns_simplified.topojson')
   .defer(d3.csv, 'data/driving_times_full_symmetric.csv', parseDrivingMap)
-  .defer(d3.csv, 'data/towns_run.csv')
+  .defer(d3.csv, 'data/members_towns_clean.csv')
   .defer(d3.csv, 'data/races2017.csv', parseRacesForMap)
   .defer(d3.csv, 'data/races2017.csv', parseRacesForCalendar)
   .await(dataLoaded);

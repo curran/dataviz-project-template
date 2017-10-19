@@ -24,16 +24,32 @@ function parseDrivingMap(row) {
   return row;
 }
 
-// TODO: change this to a double map[personName][townName]
-//       (after I switch to the full people matrix)
-function buildRacesRunMap(townsAlreadyRun, townNames) {
+function createNewNameIfNeeded(name, namesAlreadySeen) {
+  let currentName = name;
+  let suffixIndex = 2;
+  while(currentName in namesAlreadySeen) {
+    currentName = name + ' (' + suffixIndex + ')';
+  }
+  return currentName;
+}
+
+function buildRacesRunMap(memberTownsRun, townNames) {
+  // access result as racesRunMap['Pasini, Jose']['Canton']
   const racesRunMap = {};
-  townsAlreadyRun.forEach(row => racesRunMap[row.Town] = true);
-  // fill rest of towns with 'false'
-  townNames.forEach(town => {
-    racesRunMap[town] = town in racesRunMap;
+  memberTownsRun.forEach(row => {
+    const newName = createNewNameIfNeeded(row.Name, racesRunMap);
+    row.Name = newName;
+    racesRunMap[row.Name] = townNames.reduce((accumulator, currentValue) => {
+      accumulator[currentValue] = row[currentValue] == '1';
+      return accumulator;
+    }, {});
   });
   return racesRunMap;
+}
+
+function parseTownsRunByMembers(row) {
+  row.TotalTowns = +row.TotalTowns;
+  return row;
 }
 
 function buildRaceHorizon(races, townNames) {
@@ -132,9 +148,11 @@ function choroplethMap(container, props, box) {
     townIndex,
     racesSoonByTown,
     raceHorizonByTown,
-    myTown
+    myTown,
+    myName
   ] = props.data;
 
+  // TODO: fix if town is 'Out of State'
   const myTownIndex = townIndex[myTown];
 
   completeTooltipTables(racesSoonByTown);
@@ -195,7 +213,7 @@ function choroplethMap(container, props, box) {
     .append('path')
       .attr('d', path)
       .attr('class', d =>
-          racesRunMap[d.properties.NAME10] ? 
+          racesRunMap[myName][d.properties.NAME10] ? 
             pathClassName + " area alreadyRun" : 
             pathClassName + " area " + raceHorizonByTown[d.properties.NAME10].raceType
       )
