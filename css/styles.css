@@ -48,8 +48,8 @@ body {
 .d3-tip {
   font-size: 12pt;
   line-height: 1.2;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.85);
   color:  #fff;
   border-radius: 7px;
 }

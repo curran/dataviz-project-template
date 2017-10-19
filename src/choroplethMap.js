@@ -138,17 +138,6 @@ function choroplethMap(container, props, box) {
   const myTownIndex = townIndex[myTown];
 
   completeTooltipTables(racesSoonByTown);
-  tip
-    .html(d => "<span [class='townname'>" + d.properties.NAME10 + ":</span> <span>"
-        + drivingTimeToString(drivingTimes[myTownIndex][d.properties.NAME10])
-        + " driving</span>" 
-        + "<span>" 
-        + (d.properties.NAME10 in racesSoonByTown ?
-          racesSoonByTown[d.properties.NAME10]
-          : "")
-        + "</span>"
-    );
-
 
   const colorScale = d3.scaleOrdinal()
     .domain(["Race within 1 week", "Race within 2 weeks", "Town already run"])
@@ -174,6 +163,18 @@ function choroplethMap(container, props, box) {
 
   const centerX = width/2;
   const centerY = height/2;
+
+  tip
+    .html(d => "<span [class='townname'>" + d.properties.NAME10 + ":</span> <span>"
+        + drivingTimeToString(drivingTimes[myTownIndex][d.properties.NAME10])
+        + " driving</span>" 
+        + "<span>" 
+        + (d.properties.NAME10 in racesSoonByTown ?
+          racesSoonByTown[d.properties.NAME10]
+          : "")
+        + "</span>"
+    );
+
 
   // Start work on the choropleth map
   // idea from https://www.youtube.com/watch?v=lJgEx_yb4u0&t=23s
