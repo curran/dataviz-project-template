@@ -1,21 +1,7 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto");
 body {
-  margin: 0px;
-}
-.domain {
-  display: none;
-}
-.tick line {
-  stroke: #C0C0BB;
-}
-.tick text, .legendCells text {
-  fill: #8E8883;
-  font-size: 28pt;
-  font-family: sans-serif;
-}
-.axis-label, .legend-label {
-  fill: #635F5D;
-  font-size: 50pt;
-  font-family: sans-serif;
+  font-family: Roboto, sans-serif;
+  font-size: 10pt;
 }
 
 /* Make the chart container fill the page using CSS. */
@@ -26,3 +12,92 @@ body {
   top: 0px;
   bottom: 0px;
 }
+
+/***** Map CSS code *******/
+
+.area {
+  stroke: #fff;
+  stroke-width: 1.5px;
+  opacity: 0.9;
+  fill: #c6c6c6;
+}
+
+.area:hover {
+  opacity: 0.4;
+}
+
+.alreadyRun {
+  fill: #16a; /*darkgreen;*/
+}
+
+.hasRaceSoon {
+  fill: #feb24c; /* #428cd1;  */
+}
+
+.hasRaceVerySoon {
+  fill: #f03b20; /*#d14242;*/ 
+}
+.color-legend text {
+  font-size: 12pt;
+  color: #666;
+}
+.color-legend rect {
+  opacity: 0.9;
+}
+
+.d3-tip {
+  font-size: 12pt;
+  line-height: 1.2;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.85);
+  color:  #fff;
+  border-radius: 7px;
+}
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+/* style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+/* more tooltip formats */
+.townname {
+  font-size: 1.2em;
+}
+.racedate {
+  color: skyblue;
+  font-weight: bold;
+}
+.racedistance {
+  color: orange;
+  font-weight: bold;
+}
+.racename {
+  color: #fff;
+}
+
+/************ calendar CSS *********/
+
+.day_with_race:hover {
+  fill: #339;
+}
+
+.yearLabel {
+  fill: #666;
+}
+.monthLabel {
+  text-anchor: middle;
+  fill: #666;
+}
+
