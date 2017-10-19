@@ -2,15 +2,15 @@ const format = d3.format(".1f");
 const specials = ['World', 'High Income Countries', 'Middle Income Countries', 'Low Income Countries'];
 const ageGroups = ['0-4', '5-9', '10-14', '15-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54',
     '55-59', '60-64', '65-69', '70-74', '75-79', '80-84', '85-89', '90-94', '95-99', '100+'];
-let ageData = {};
-let codeToName = {};// {alpha 3 code : country name}
-let nameToCode = {};// {country name : alpha 3 code}
-let codeToValues = []; // [[alpha 3 code, {year: value}]]
-let nameToValues = {};//{country name: {values}}
-let countriesNames = [];
-let maxValue = Number.MIN_VALUE;//max value including 'World'
-let maxValue2 = Number.MIN_VALUE;//max value of a country
-let minValue = Number.MAX_VALUE;
+var ageData = {};
+var codeToName = {};// {alpha 3 code : country name}
+var nameToCode = {};// {country name : alpha 3 code}
+var codeToValues = []; // [[alpha 3 code, {year: value}]]
+var nameToValues = {};//{country name: {values}}
+var countriesNames = [];
+var maxValue = Number.MIN_VALUE;//max value including 'World'
+var maxValue2 = Number.MIN_VALUE;//max value of a country
+var minValue = Number.MAX_VALUE;
 
 const properties = {
     'Population (million)': {file: 'Population.json', color: d3.interpolateBlues, class: 'Population'},
@@ -67,6 +67,19 @@ const properties = {
     }
 };
 
+//for IE not supporting Array.includes()
+if (!Array.prototype.includes) {
+    Object.defineProperty(Array.prototype, "includes", {
+        enumerable: false,
+        value: function(obj) {
+            var newArr = this.filter(function(el) {
+                return el == obj;
+            });
+            return newArr.length > 0;
+        }
+    });
+}
+
 function dataInput() {
     codeToName = {};
     nameToCode = {};
@@ -74,7 +87,7 @@ function dataInput() {
     nameToValues = {};
     countriesNames = [];
     d3.json("data/" + properties[$("#type-input").val()].file, function (data) {
-        for (let code in data) {
+        for (var code in data) {
             if (code === 'min' || code === 'max' || code === 'max2')
                 continue;
             if (data.hasOwnProperty(code)) {
@@ -83,6 +96,7 @@ function dataInput() {
                 nameToValues[name] = values;
                 codeToName[code] = name;
                 nameToCode[name] = code;
+
                 if (specials.includes(code))
                     continue;
                 codeToValues.push([code, values]);
@@ -104,12 +118,18 @@ function dataInput() {
 }
 
 function renderMap() {
-    d3.select("#map").selectAll("*").remove();
+    // d3.select("#map").selectAll("*").remove();
+    $('#map').empty();
     if (document.getElementById("country-input").childElementCount !== countriesNames.length) {
         const previousCountry = $("#country-input").val();
         const countryList = d3.select('#country-input');
         countryList.selectAll('*').remove();
-        countriesNames.forEach(value => countryList.append('option').text(value));
+
+        // countriesNames.forEach(value => countryList.append('option').text(value));
+        countriesNames.forEach(function (value) {
+            countryList.append('option').text(value);
+        });
+
         if (countriesNames.includes(previousCountry))
             $("#country-input").val(previousCountry);
         else
@@ -121,11 +141,11 @@ function renderMap() {
     const max_value = type === 'Population (million)' ? maxValue2 : maxValue;
     const colorIndex = type === 'Population (million)' ? 3 : 1;
     const colorValue = d3.scale.linear().range([0, 1]).domain([minValue, max_value / colorIndex]);
-    const paletteScale = value => properties[type].color(colorValue(value));
+    // const paletteScale = value => properties[type].color(colorValue(value));
     // fill dataset in appropriate format
     codeToValues.forEach(function (item) { //item example value ["USA", 70]
         const value = item[1][$("#year-input").val()];
-        dataset[item[0]] = {numberOfThings: value, fillColor: paletteScale(value)};
+        dataset[item[0]] = {numberOfThings: value, fillColor: properties[type].color(colorValue(value))};
     });
     // renderMap map
     const datamap = new Datamap({
@@ -151,7 +171,7 @@ function renderMap() {
                 }
                 else {
                     if (type === 'Population (million)') {
-                        let number = data.numberOfThings;
+                        var number = data.numberOfThings;
                         number = number > 1000 ? format(number / 1000) + ' million' : format(number) + ' thousand';
                         const popupInfo = ['<div class="hoverinfo">', '<strong>', codeToName[geo.id], '</strong>'];
                         return popupInfo.concat(['<br/>', properties[$("#type-input").val()].class, ': <strong>',
@@ -184,7 +204,7 @@ function renderMap() {
     svg.select('#map-legend-axis').remove();
     const legend = svg.append("defs").append("svg:linearGradient").attr("id", "gradient")
         .attr("x1", "0%").attr("y1", "100%").attr("x2", "100%").attr("y2", "100%").attr("spreadMethod", "pad");
-    for (let i = 0; i <= 100; i += 10) {
+    for (var i = 0; i <= 100; i += 10) {
         legend.append("stop").attr("offset", i + '%').attr("stop-color", properties[$("#type-input").val()].color(i / 100))
     }
     svg.append("rect").attr("width", 150).attr("height", 15).style("fill", "url(#gradient)")
@@ -208,11 +228,11 @@ function renderPyramid() {
     const country = ageData[nameToCode[$("#country-input").val()]];
     if (country === undefined)
         return;
-    let maxValue = Number.MIN_VALUE;
+    var maxValue = Number.MIN_VALUE;
 
     const maleData = country['male'][index];
     const femaleData = country['female'][index];
-    for (let i = 0; i < 21; i++) {
+    for (var i = 0; i < 21; i++) {
         maxValue = maxValue > maleData[i] ? maxValue : maleData[i];
         maxValue = maxValue > femaleData[i] ? maxValue : femaleData[i];
     }
@@ -228,27 +248,53 @@ function renderPyramid() {
         .domain([0, maxValue])
         .range([0, 100]);
     const maleRects = g.selectAll('.male-age-rect').data(country['male'][index])
-        .attr('x', d => 140 - xScale(d))
-        .attr('width', d => xScale(d));
+        .attr('x', function (data) {
+            return 140 - xScale(data);
+        })
+        .attr('width', function (data) {
+            return xScale(data);
+        });
     maleRects.enter().append('rect').attr('class', 'age-rect male-age-rect')
-        .attr('x', d => 140 - xScale(d))
-        .attr('y', (d, i) => 240 - i * height)
-        .attr('width', d => xScale(d))
+        .attr('x', function (data) {
+            return 140 - xScale(data);
+        })
+        .attr('y', function (data, index) {
+            return 240 - index * height;
+        })
+        .attr('width', function (data) {
+            return xScale(data);
+        })
         .attr('height', height)
         .append('title')
-        .text(d => d + ' thousand');
+        .text(function (data) {
+            return data + 'thousand';
+        });
     const femaleRects = g.selectAll('.female-age-rect').data(country['female'][index])
-        .attr('width', d => xScale(d[1]));
+        .attr('width', function (data) {
+            return xScale(data[1]);
+        });
     femaleRects.enter().append('rect').attr('class', 'age-rect female-age-rect')
         .attr('x', 140)
-        .attr('y', (d, i) => 240 - i * height)
-        .attr('width', d => xScale(d))
+        .attr('y', function (data, index) {
+            return 240 - index * height;
+        })
+        .attr('width', function (data) {
+            return xScale(data);
+        })
         .attr('height', height)
         .append('title')
-        .text(d => d + ' thousand');
+        .text(function (data) {
+            return data + 'thousand';
+        });
     g.selectAll('text').data(ageGroups).enter()
-        .append('text').attr('x', (d, i) => i > 1 ? 1 : 7).attr('y', (d, i) => 250 - i * height)
-        .text(d => d)
+        .append('text').attr('x', function (data, index) {
+        return index > 1 ? 1 : 7;
+    }).attr('y', function (data, index) {
+        return 250 - index * height;
+    })
+        .text(function (data) {
+            return data;
+        })
         .style('font-size', '11px');
     g.append('text').attr('x', 60).attr('y', 45).text('Male').style('font-size', '20px');
     g.append('text').attr('x', 160).attr('y', 45).text('Female').style('font-size', '20px');

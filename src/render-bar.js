@@ -1,4 +1,4 @@
-let svg = d3.select("#bar").append("svg").attr('id', 'bar-svg').attr('width', '100%').attr('height', '100%');
+var svg = d3.select("#bar").append("svg").attr('id', 'bar-svg').attr('width', '100%').attr('height', '100%');
 const barWidth = 30;
 
 function clickRect() {
@@ -16,20 +16,24 @@ function mouseoutRect() {
 
 
 function drawBar(yearValue) {
-    let data = [];
-    let min = Number.MAX_VALUE;
-    let max = Number.MIN_VALUE;
-    const kiloToMillion = $("#type-input").val()==='Population (million)'?1000:1;
-    for (let i = 2015; i <= 2100; i += 5) {
-        const value = yearValue[i]/kiloToMillion;
+    var data = [];
+    var min = Number.MAX_VALUE;
+    var max = Number.MIN_VALUE;
+    const kiloToMillion = $("#type-input").val() === 'Population (million)' ? 1000 : 1;
+    for (var i = 2015; i <= 2100; i += 5) {
+        const value = yearValue[i] / kiloToMillion;
         data.push({year: String(i), value: value});
         min = min < value ? min : value;
         max = max > value ? max : value;
     }
     min = parseInt(min / 5) * 5;
     max = parseInt(max / 5 + 1) * 5;
-    const xValue = d => +d.year;
-    const yValue = d => +d.value;
+    const xValue = function (data) {
+        return data.year;
+    };
+    const yValue = function (data) {
+        return data.value;
+    };
     const xScale = d3.scale.linear()
         .domain(d3.extent(data, xValue))
         .range([0, 915]);
@@ -42,25 +46,43 @@ function drawBar(yearValue) {
 
 
     const rects = svg.selectAll('rect').data(data)
-        .attr('x', d => xScale(xValue(d)) + 12)
-        .attr('y', d => 280 - yScale(yValue(d)))
+        .attr('x', function (data) {
+            return xScale(xValue(data)) + 12;
+        })
+        .attr('y', function (data) {
+            return 280 - yScale(yValue(data));
+        })
         .attr('width', barWidth)
-        .attr('height', d => yScale(yValue(d)));
+        .attr('height', function (data) {
+            return yScale(yValue(data));
+        });
     svg.selectAll('title').data(data)
-        .text(d => yValue(d));
+        .text(function (data) {
+            return yValue(data)
+        });
     rects.enter().append('rect')
         .attr('class', 'year')
-        .attr('id', d => 'year-' + d.year)
-        .attr('x', d => xScale(xValue(d)) + 12)
-        .attr('y', d => 280 - yScale(yValue(d)))
+        .attr('id', function (data) {
+            return 'year-' + data.year;
+        })
+        .attr('x', function (data) {
+            return xScale(xValue(data)) + 12;
+        })
+        .attr('y', function (data) {
+            return 280 - yScale(yValue(data));
+        })
         .attr('width', barWidth)
-        .attr('height', d => yScale(yValue(d)))
+        .attr('height', function (data) {
+            return yScale(yValue(data));
+        })
         .on('click', clickRect)
         .on('mouseover', mouseoverRect)
         .on('mouseout', mouseoutRect)
         .append('title')
         .attr('class', 'rect-popup')
-        .text(d => yValue(d));
+        .text(function (data) {
+            return yValue(data)
+        });
 
     const yAxis = d3.svg.axis().scale(yAxisScale).orient("right").ticks(8).innerTickSize(-1000);
     svg.select('.grid').remove();
@@ -73,7 +95,7 @@ function drawBar(yearValue) {
     svg.selectAll('.bar-text').remove();
     svg.selectAll('.bar-point').remove();
 
-    for (let i = 0; i < data.length; i++) {
+    for (var i = 0; i < data.length; i++) {
         svg.append('text')
             .attr('class', 'bar-text')
             .attr('x', xScale(xValue(data[i])) + 10)
