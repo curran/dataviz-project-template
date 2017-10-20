@@ -1,4 +1,4 @@
-This is a visualization to help members of [Run169](https://debticonn.org/)
+This is a visualization to help members of [Run169](http://www.debticonn.org/)
 explore races in Connecticut to help them plan what races to run in order to
 reach the goal of running a race in every one of Connecticut's 169 towns.
 
