@@ -1,11 +1,12 @@
 import slider from './Slider'
+import scatterPlot from './ScatterPlot'
 
 export default function (width, height) {
 
     var sens = 0.3, focused;
     var projection = d3.geoOrthographic()
         .scale(245)
-        .rotate([100, -20])
+        .rotate([300, -20])
         .translate([width / 5, height / 2])
         .clipAngle(90);
 
@@ -64,6 +65,7 @@ export default function (width, height) {
             //Mouse events
             .on("dblclick", function (d) {
                 slider(countryById[d.id], width, height);
+                scatterPlot(countryById[d.id], width, height);
             })
 
             .on("mouseover", function (d) {
