@@ -91,40 +91,47 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
   const raceHorizonByTown = buildRaceHorizon(racesForMap, townNames);
   const racesSoonByTown = buildRacesSoonTables(racesForMap);
 
+  const memberNames = [];
+  membersTowns.sort((x, y) => d3.ascending(x.Name, y.Name)).forEach((row, i) => {
+    memberNames.push({ 
+      title: row.Name,
+      description:  row.Town + ' - ' + row.TotalTowns + ' towns'
+    });
+  });
 
-  const myName = 'Pasini, Jose';
-  //const myName = 'Aldi (Rose), Erin'; // out of state example
-  //const myName = 'Wisniewski, Amy (2)'; // example with duplicate name
-
-  const myTown = memberTownsMap[myName];
-
-  const props = {
-    calendar: {
-      data: [
-        racesForCalendar
-      ],
-      margin: margin
-    },
-    map: {
-      data: [
-        mapData,
-        drivingTimes,
-        racesRunMap,
-        racesForMap,
-        townNames,
-        townIndex,
-        racesSoonByTown,
-        raceHorizonByTown,
-        myTown,
-        myName
-      ],
-      margin: margin
-    },
-    selector: { },
-    drivingTimesFilter: { }
-  };
 
   const render = () => {
+    const defaultName = memberNames[0].title;
+
+    let myName = $('.ui.search').search('get value');
+    if(!(myName in memberTownsMap)) myName = defaultName;
+    const myTown = memberTownsMap[myName];
+    const props = {
+      calendar: {
+        data: [
+          racesForCalendar
+        ],
+        margin: margin
+      },
+      map: {
+        data: [
+          mapData,
+          drivingTimes,
+          racesRunMap,
+          racesForMap,
+          townNames,
+          townIndex,
+          racesSoonByTown,
+          raceHorizonByTown,
+          myTown,
+          myName
+        ],
+        margin: margin
+      },
+      selector: { },
+      drivingTimesFilter: { }
+    };
+
     // Extract the width and height that was computed by CSS.
     const width = visualizationDiv.clientWidth;
     const height = visualizationDiv.clientHeight;
@@ -149,6 +156,18 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
 
   // Redraw based on the new size whenever the browser window is resized.
   window.addEventListener('resize', render);
+
+  $('.ui.search').search({
+    source: memberNames,
+    maxResults: 10,
+    onSelect: function(result, response) {
+      // hack to prevent inconsistency when result is selected after
+      // entering a partial match
+      $('#searchText').val(result.title);
+      render();
+    }
+  });
+
 }
 
 d3.queue()

@@ -8,10 +8,19 @@
     <script src="https://d3js.org/topojson.v2.min.js"></script>
     <script src="lib/d3-tip.js"></script>
     <script src="https://unpkg.com/d3-boxes@0.0.2/build/d3-boxes.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
     <title>Run 169 Planning Tool</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
     <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
+    <div class="ui container">
+      <div class="ui search">
+        <input class="prompt" type="text" id="searchText" placeholder="Enter last name...">
+        <div class="results"></div>
+      </div>
+    </div>
     <div id="visualization">
       <svg></svg>
     </div>

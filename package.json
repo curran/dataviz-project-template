@@ -1,5 +1,5 @@
 {
-  "name": "dataviz-project-template",
+  "name": "Run169",
   "version": "0.1.0",
   "description": "Interactive visualization project",
   "main": "webpack.config.js",
@@ -15,9 +15,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/<your username here>/dataviz-project-template"
+    "url": "git+https://github.com/jpasini/run169"
   },
   "keywords": [],
-  "author": "<your name here>",
+  "author": "Jose Miguel Pasini",
   "license": "MIT"
 }
