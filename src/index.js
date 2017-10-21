@@ -94,17 +94,16 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
   const memberNames = [];
   membersTowns.sort((x, y) => d3.ascending(x.Name, y.Name)).forEach((row, i) => {
     memberNames.push({ 
-      name: row.Name + ' (' +  row.Town + ' - ' + row.TotalTowns + ' towns)',
-      value: row.Name,
-      selected: i == 0
+      title: row.Name,
+      description:  row.Town + ' - ' + row.TotalTowns + ' towns'
     });
   });
 
 
   const render = () => {
-    const defaultName = 'Pasini, Jose';
+    const defaultName = memberNames[0].title;
 
-    let myName = $('.ui.search.selection.dropdown').dropdown('get value');
+    let myName = $('.ui.search').search('get value');
     if(!(myName in memberTownsMap)) myName = defaultName;
     const myTown = memberTownsMap[myName];
     const props = {
@@ -158,10 +157,15 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
   // Redraw based on the new size whenever the browser window is resized.
   window.addEventListener('resize', render);
 
-  $('.ui.search.selection.dropdown').dropdown({
-    values: memberNames,
-    glyphWidth: '100em',
-    onChange: render
+  $('.ui.search').search({
+    source: memberNames,
+    maxResults: 10,
+    onSelect: function(result, response) {
+      // hack to prevent inconsistency when result is selected after
+      // entering a partial match
+      $('#searchText').val(result.title);
+      render();
+    }
   });
 
 }
