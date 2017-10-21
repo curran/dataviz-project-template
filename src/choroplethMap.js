@@ -215,15 +215,14 @@ function choroplethMap(container, props, box) {
   areas
     .enter()
     .append('path')
-      .attr('d', path)
+    .on("mouseover", tip.show)
+    .on("mouseout", tip.hide)
+    .merge(areas)
       .attr('class', d =>
           racesRunMap[myName][d.properties.NAME10] ? 
             pathClassName + " area alreadyRun" : 
             pathClassName + " area " + raceHorizonByTown[d.properties.NAME10].raceType
       )
-    .on("mouseover", tip.show)
-    .on("mouseout", tip.hide)
-    .merge(areas)
       .attr('d', path);
 }
 
