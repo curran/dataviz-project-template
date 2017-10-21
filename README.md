@@ -2,7 +2,7 @@
 
 A visualization of world population data from 2015 to 2100.
 
-Have a look => [Click here](https://bl.ocks.org/BruceHenry/raw/f9c8fdaa96182f18c5517a0d18323f40/) to visit.
+Have a look => [Click here](https://brucehenry.github.io/WorldPopulationData/) to visit.
 <br/><img src="https://gist.githubusercontent.com/BruceHenry/f9c8fdaa96182f18c5517a0d18323f40/raw/0c2763039f565f32412a994c7e437278bd687c43/thumbnail.png"/>
 <hr/>
 
