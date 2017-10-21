@@ -617,7 +617,7 @@ var line3 = d3.line()
     .attr('class','enter')
     .attr('stroke', 'red')
     .attr('stroke-width', 2)
-    .attr('d', line1);
+    .attr('d', line1(data));
 
   //remove elements for which there is no data
   lineExit
@@ -710,67 +710,34 @@ const colorLegend = d3.legendColor()
 
   xScale
     .domain(d3.extent(data, xValue))
-    .range([0, innerWidth])
-    .nice();
+    .range([0, 2*Math.pi]);
 
   yScale
     .domain(d3.extent(data, yValue)) //d3.extent(data, yValue
-    .range([innerHeight, 0])
+    .range([innerHeight/2, 0])
     .nice();
 
   var g = svg.selectAll('g').data([null]);
 
   g = g.enter().append('g')
     .merge(g)
-    .attr('transform', `translate(${margin.left},${margin.top})`);
+    .attr('transform', `translate(${innerWidth/2},${innerHeight/2})`);
 
-  var xAxisG = g.selectAll('#x-axis-g').data([null]);
 
-  xAxisG = xAxisG.enter().append('g').merge(xAxisG)
-    .attr('id','x-axis-g')
-    .attr('transform', `translate(0, ${innerHeight})`);
-
-  var yAxisG = g.selectAll('#y-axis-g').data([null]);
-
-  yAxisG = yAxisG.enter().append('g').merge(yAxisG)
-    .attr('id','y-axis-g');
-
-  var xAxisText = g.selectAll('#x-axis-label').data([null]);
-
-  xAxisText = xAxisText.enter().append('text').merge(xAxisText)
-    .attr('class', 'axis-label')
-    .attr('id', 'x-axis-label')
-    .attr('x', innerWidth / 2)
-    .attr('y', innerHeight+margin.bottom/2)
-    .style('text-anchor', 'middle')
-    .text(xLabel);
-
-  var yAxisText = g.selectAll('#y-axis-label').data([null]);
-
-  yAxisText = yAxisText.enter().append('text').merge(yAxisText)
-    .attr('class', 'axis-label')
-    .attr('id', 'y-axis-label')
-    .attr('x', -innerHeight / 2)
-    .attr('y',  -margin.left/2)
-    .attr('transform', `rotate(-90)`)
-    .style('text-anchor', 'middle')
-    .text(yLabel);
 
 
   //data join
-  var circles = g.selectAll('circle').data(data);
+  var line = g.selectAll('path').data(data);
 
   //Add new elements
-  var circlesEnter = circles.enter().append('circle');
+  var lineEnter = line.enter().append('path');
 
-  var t = d3.transition().duration(500);
-
-  var circlesExit = circles.exit()
+  var circlesExit = line.exit()
     .attr('class','exit')
     .remove();
 
   //UPDATE old elements present (change class)
-  circles
+  line
     .attr('class','update');
 
   //merge new and existing ell
@@ -808,43 +775,33 @@ const colorLegend = d3.legendColor()
 //         return (deltams/dayms)
 //         };
 
-//       const yMax = d3.max(yValue)
-//       const colorUser = {Total:"grey", Casual:"red",  Registered:"green"}
+       const colorUser = {Total:"grey", Casual:"red",  Registered:"green"}
 
-//       const minDate = new Date(2012,1,1)
-//       const centerOffset = innerHeight/2;
-//       const radialOffset = .25*Math.PI
-//       //getting a
-//       //const days = d => deltaDays(d.dteday,minDate);
-//       //days calc is a hack since pi is a periodic function
-//       //calculating days since 1/1/1970 and dividing by 365 gets data on the screen..
-//       const days = d =>(d.dteday.getTime()/(1000*60*60*24))
-//       const theta = d => (d.hr/24 *Math.PI*2+ radialOffset);
-
-//       const radialScale = d => (innerHeight/2* yValue/yMax);
-//       const radialX = d => (radialScale(d) * Math.cos(theta(d))+centerOffset);
-//       const radialY = d => (radialScale(d) * Math.sin(theta(d))+centerOffset);
-//       var plotColor = colorUser.Registered
+      const minDate = new Date(2012,1,1);
+      const msPerHour = (1000*60*60);
+      const msPerDay = msPerHour * 24;
+      const hoursSinceStart = d => ((d.dteday.getTime() - minDate.getTime())/msPerHour);
+      var plotColor = colorUser.Registered;
 //
-//       const radialPath = d3.line()
-//         .x(d => radialX(d))
-//         .y(d => radialY(d))
-//         .curve(d3.curveBasis);
+      const line = d3.lineRadial()
+        .angle(d => xScale(hoursSinceStart(d)))
+        .radius(d => yScale(yValue(d)))
+        .curve(d3.curveBasis);
 
-//         g.append('path')
-//             .attr('fill', 'none')
-//             .attr('stroke', plotColor)
-//             .attr('stroke-opacity', 0.7)
-//             .attr('stroke-width', .1)
-//             .attr('d', radialPath(data));
+        g.append('path')
+            .attr('fill', 'none')
+            .attr('stroke', plotColor)
+            .attr('stroke-opacity', 0.7)
+            .attr('stroke-width', .1)
+            .attr('d', line(data));
 
-//         g.append('circle')
-//             .attr('cx',centerOffset)
-//             .attr('cy',centerOffset)
-//             .attr('fill', 'none')
-//             .attr('stroke', 'grey')
-//             .attr('stroke-width', 2)
-//             .attr('r', centerOffset);
+        g.append('circle')
+            .attr('cx',innerWidth/2)
+            .attr('cy',innerHeight/2)
+            .attr('fill', 'none')
+            .attr('stroke', 'grey')
+            .attr('stroke-width', 2)
+            .attr('r', innerHeight/2);
 
 
 

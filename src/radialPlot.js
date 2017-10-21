@@ -134,15 +134,15 @@ export default function (div, props) {
 
        const colorUser = {Total:"grey", Casual:"red",  Registered:"green"}
 
-      const minDate = new Date(2012,1,1)
-      const msPerHour = (1000*60*60)
-      const msPerDay = msPerHour * 24
-      const hoursSinceStart = d => ()(d.dteday.getTime() - minDate.getTime())/msPerHour)
-      var plotColor = colorUser.Registered
+      const minDate = new Date(2012,1,1);
+      const msPerHour = (1000*60*60);
+      const msPerDay = msPerHour * 24;
+      const hoursSinceStart = d => ((d.dteday.getTime() - minDate.getTime())/msPerHour);
+      var plotColor = colorUser.Registered;
 //
-      const line = d3.lineradial()
-        .angle(d => xScale(hoursSinceStart(d))
-        .radius(d => yScale(yValue(d))
+      const line = d3.lineRadial()
+        .angle(d => xScale(hoursSinceStart(d)))
+        .radius(d => yScale(yValue(d)))
         .curve(d3.curveBasis);
 
         g.append('path')
