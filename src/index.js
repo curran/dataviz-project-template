@@ -160,6 +160,9 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
   $('.ui.search').search({
     source: memberNames,
     maxResults: 10,
+    searchFields: [
+      'title'
+    ],
     onSelect: function(result, response) {
       // hack to prevent inconsistency when result is selected after
       // entering a partial match
