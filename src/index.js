@@ -81,7 +81,7 @@ d3.csv('data/day.csv', row, data => {
       yValue:yValue1,
       xLabel:xLabel1,
       yLabel:yLabel1,
-      pointColor:pointColor1,
+      colorValue:pointColor1,
       pointSize:pointSize,
       margin:margin
     });
@@ -92,7 +92,7 @@ d3.csv('data/day.csv', row, data => {
       yValue:yValue1,
       xLabel:xLabel2,
       yLabel:yLabel1,
-      pointColor:pointColor1,
+      colorValue:pointColor1,
       pointSize:pointSize,
       margin:margin
     });
@@ -103,7 +103,7 @@ d3.csv('data/day.csv', row, data => {
       yValue:yValue1,
       xLabel:xLabel3,
       yLabel:yLabel1,
-      pointColor:pointColor1,
+      colorValue:pointColor1,
       pointSize:pointSize,
       margin:margin
     });
@@ -114,7 +114,7 @@ d3.csv('data/day.csv', row, data => {
       yValue:yValue1,
       xLabel:xLabel1,
       yLabel:yLabel1,
-      pointColor:pointColor1,
+      colorValue:pointColor1,
       pointSize:pointSize,
       margin:margin
     });
@@ -126,7 +126,7 @@ d3.csv('data/day.csv', row, data => {
       yValue:yValue2,
       xLabel:xLabel1,
       yLabel:yLabel2,
-      pointColor:pointColor2,
+      colorValue:pointColor2,
       pointSize:pointSize,
       margin:margin
     });
@@ -137,7 +137,7 @@ d3.csv('data/day.csv', row, data => {
       yValue:yValue2,
       xLabel:xLabel2,
       yLabel:yLabel2,
-      pointColor:pointColor2,
+      colorValue:pointColor2,
       pointSize:pointSize,
       margin:margin
     });
@@ -148,7 +148,7 @@ d3.csv('data/day.csv', row, data => {
       yValue:yValue2,
       xLabel:xLabel3,
       yLabel:yLabel2,
-      pointColor:pointColor2,
+      colorValue:pointColor2,
       pointSize:pointSize,
       margin:margin
     });
@@ -159,7 +159,7 @@ d3.csv('data/day.csv', row, data => {
       yValue:yValue2,
       xLabel:xLabel1,
       yLabel:yLabel2,
-      pointColor:pointColor2,
+      colorValue:pointColor2,
       pointSize:pointSize,
       margin:margin
     });
@@ -170,7 +170,7 @@ d3.csv('data/day.csv', row, data => {
       yValue:yValue3,
       xLabel:xLabel4,
       yLabel:"Users",
-      pointColor:pointColor3,
+      colorValue:pointColor2,
       pointSize:pointSize,
       margin:margin
     });

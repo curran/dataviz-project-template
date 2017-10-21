@@ -134,7 +134,7 @@ export default function (div, props) {
   circlesEnter
     .attr('class','enter')
     .attr('fill', colorValue)
-    .attr('fill-opacity', .2)
+    .attr('fill-opacity', .1)
     .attr('r', pointSize)
     .merge(circles)
     .attr('cx', d => xScale(xValue(d)))

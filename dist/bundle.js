@@ -155,7 +155,7 @@ d3.csv('data/day.csv', row, data => {
       yValue:yValue1,
       xLabel:xLabel1,
       yLabel:yLabel1,
-      pointColor:pointColor1,
+      colorValue:pointColor1,
       pointSize:pointSize,
       margin:margin
     });
@@ -166,7 +166,7 @@ d3.csv('data/day.csv', row, data => {
       yValue:yValue1,
       xLabel:xLabel2,
       yLabel:yLabel1,
-      pointColor:pointColor1,
+      colorValue:pointColor1,
       pointSize:pointSize,
       margin:margin
     });
@@ -177,7 +177,7 @@ d3.csv('data/day.csv', row, data => {
       yValue:yValue1,
       xLabel:xLabel3,
       yLabel:yLabel1,
-      pointColor:pointColor1,
+      colorValue:pointColor1,
       pointSize:pointSize,
       margin:margin
     });
@@ -188,7 +188,7 @@ d3.csv('data/day.csv', row, data => {
       yValue:yValue1,
       xLabel:xLabel1,
       yLabel:yLabel1,
-      pointColor:pointColor1,
+      colorValue:pointColor1,
       pointSize:pointSize,
       margin:margin
     });
@@ -200,7 +200,7 @@ d3.csv('data/day.csv', row, data => {
       yValue:yValue2,
       xLabel:xLabel1,
       yLabel:yLabel2,
-      pointColor:pointColor2,
+      colorValue:pointColor2,
       pointSize:pointSize,
       margin:margin
     });
@@ -211,7 +211,7 @@ d3.csv('data/day.csv', row, data => {
       yValue:yValue2,
       xLabel:xLabel2,
       yLabel:yLabel2,
-      pointColor:pointColor2,
+      colorValue:pointColor2,
       pointSize:pointSize,
       margin:margin
     });
@@ -222,7 +222,7 @@ d3.csv('data/day.csv', row, data => {
       yValue:yValue2,
       xLabel:xLabel3,
       yLabel:yLabel2,
-      pointColor:pointColor2,
+      colorValue:pointColor2,
       pointSize:pointSize,
       margin:margin
     });
@@ -233,7 +233,7 @@ d3.csv('data/day.csv', row, data => {
       yValue:yValue2,
       xLabel:xLabel1,
       yLabel:yLabel2,
-      pointColor:pointColor2,
+      colorValue:pointColor2,
       pointSize:pointSize,
       margin:margin
     });
@@ -244,7 +244,7 @@ d3.csv('data/day.csv', row, data => {
       yValue:yValue3,
       xLabel:xLabel4,
       yLabel:"Users",
-      pointColor:pointColor3,
+      colorValue:pointColor2,
       pointSize:pointSize,
       margin:margin
     });
@@ -404,7 +404,7 @@ const colorLegend = d3.legendColor()
   circlesEnter
     .attr('class','enter')
     .attr('fill', colorValue)
-    .attr('fill-opacity', .2)
+    .attr('fill-opacity', .1)
     .attr('r', pointSize)
     .merge(circles)
     .attr('cx', d => xScale(xValue(d)))
@@ -448,7 +448,7 @@ const colorScale = d3.scaleOrdinal()
 const xAxis = d3.axisBottom()
   .scale(xScale)
   .tickPadding(10)
-  .tickFormat(d3.format('0'))
+  .tickFormat(d3.timeFormat("%Y-%m-%d"))
   .tickSize(-innerHeight);
 
 const yAxisLeft = d3.axisLeft()
@@ -493,7 +493,6 @@ const colorLegend = d3.legendColor()
 
   const width = vizDiv.offsetWidth;
   const height = vizDiv.offsetHeight;
-  //const minDimension = d3.min([width, height]);
 
   var svgEnter = svg
     .enter()
@@ -506,7 +505,7 @@ const colorLegend = d3.legendColor()
     .attr('height',height);
 
 
-  console.log(width, height, minDimension);
+  console.log(width, height);
   console.log(svg.attr('width'), svg.attr('height'));
 
   const innerHeight = height - margin.top - margin.bottom;
@@ -540,10 +539,18 @@ const colorLegend = d3.legendColor()
     .attr('id','x-axis-g')
     .attr('transform', `translate(0, ${innerHeight})`);
 
-  var yAxisG = g.selectAll('#y-axis-g').data([null]);
+  var yAxisLeftG = g.selectAll('#y-axis-g').data([null]);
 
-  yAxisG = yAxisG.enter().append('g').merge(yAxisG)
+  yAxisLeftG = yAxisLeftG
+    .enter()
+      .append('g')
+    .merge(yAxisLeftG)
     .attr('id','y-axis-g');
+
+  //var yAxisRightG = g.selectAll('#y-axis-g').data([null]);
+
+  //yAxisRightG = yAxisRightG.enter().append('g').merge(yAxisRightG)
+  //    .attr('id','y-axis-g');
 
   var xAxisText = g.selectAll('#x-axis-label').data([null]);
 
@@ -556,6 +563,7 @@ const colorLegend = d3.legendColor()
     .text(xLabel);
 
   var yAxisText = g.selectAll('#y-axis-label').data([null]);
+  var yAxisTextLeft = g.selectAll('#y-axis-label').data([null]);
 
   yAxisText = yAxisText.enter().append('text').merge(yAxisText)
     .attr('class', 'axis-label')
@@ -564,75 +572,65 @@ const colorLegend = d3.legendColor()
     .attr('y',  -margin.left/2)
     .attr('transform', `rotate(-90)`)
     .style('text-anchor', 'middle')
-    .text(yLabel1);
+    .text(yLabelLeft);
 
-//TODO right Y axis text code
-// yAxisText = yAxisText.enter().append('text').merge(yAxisText)
-//     .attr('class', 'axis-label')
-//     .attr('id', 'y-axis-label')
-//     .attr('x', -innerHeight / 2)
-//     .attr('y',  -margin.right/2)
-//     .attr('transform', `rotate(-90)`)
-//     .style('text-anchor', 'middle')
-//     .text(yLabel3);
+  // yAxisTextLeft = yAxisTextLeft.enter().append('text').merge(yAxisTextLeft)
+  //    .attr('class', 'axis-label')
+  //    .attr('id', 'y-axis-label')
+  //    .attr('x', -innerHeight / 2)
+  //    .attr('y',  innerWidth-margin.right/2)
+  //    .attr('transform', `rotate(90)`)
+  //    .style('text-anchor', 'middle')
+  //    .text(yLabelRight);
 
-const line2 = d3.line()
+var line2 = d3.line()
   .x(d => xScale(xValue(d)))
   .y(d => yScaleLeft(y2Value(d)))
   .curve(d3.curveBasis);
 
-const line1 = d3.line()
+var line1 = d3.line()
   .x(d => xScale(xValue(d)))
   .y(d => yScaleLeft(y1Value(d)))
   .curve(d3.curveBasis)
 
-const line3 = d3.line()
+var line3 = d3.line()
   .x(d => xScale(xValue(d)))
   .y(d => yScaleRight(y3Value(d)))
   .curve(d3.curveBasis)
 
   //data join
-  var lines = g.selectAll('path').data(data);
+  const line = g.selectAll('path').data(data);
 
   //Add new elements
-  var linesEnter = lines.enter().append('path');
+  const lineEnter = line.enter().append('path');
 
-  var t = d3.transition().duration(500);
+  const t = d3.transition().duration(500);
 
-  var linesExit = lines.exit()
-    .attr('class','exit')
-    .remove();
+  const lineExit = line.exit().remove();
 
   //UPDATE old elements present (change class)
-  lines
+  line
     .attr('class','update');
 
   //merge new and existing ell
-  linesEnter
+  lineEnter
     .attr('class','enter')
-    .attr('stroke', 'grey')
-    .attr('stroke-width', 1)
+    .attr('stroke', 'red')
+    .attr('stroke-width', 2)
     .attr('d', line1);
 
-  linesEnter
-    .attr('class','enter')
-    .attr('stroke', 'grey')
-    .attr('stroke-width', 1)
-    .attr('d', line2);
-
-  linesEnter
-    .attr('class','enter')
-    .attr('stroke', 'grey')
-    .attr('stroke-width', 1)
-    .attr('d', line3);
-
   //remove elements for which there is no data
-  linesExit
-  
-  //call X and Y axis
-  xAxisG.call(xAxis);
-  yAxisG.call(yAxis);
+  lineExit
 
+  //call X and Y axis
+  xAxisG.call(xAxis)
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr("dy", ".15em")
+    .attr("transform", "rotate(-15)");;
+  yAxisLeftG.call(yAxisLeft);
+  // yAxisRightG.call(yAxisRight);
 
 
     });;
