@@ -40,7 +40,6 @@ needs to be put into the gh-pages branch:
 You'll need to build the JavaScript bundle using WebPack, using this command:
 
 ```
-git checkout gh-pages
 npm run build
 ```
 
@@ -55,6 +54,7 @@ After the first time, the full sequence is
 
 ```
 git checkout gh-pages
+git merge master
 npm run build
 git add dist/bundle.js
 git commit -m 'updated bundle'
