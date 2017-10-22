@@ -434,8 +434,8 @@ const colorLegend = d3.legendColor()
 const xScale = d3.scaleLinear();
 const yScaleLeft = d3.scaleLinear();
 const yScaleRight = d3.scaleLinear();
-const minDate = new Date(2011-1-1)
-const maxDate = new Date(2012-12-31)
+const minDate = new Date(2011,-1,1)
+const maxDate = new Date(2012,11,31)
 
 
 const yTicksLeft = 5
@@ -487,6 +487,8 @@ const colorLegend = d3.legendColor()
     margin
   } = props;
 
+  console.log(minDate, maxDate, d3.extent(xValue))
+
   var vizDiv = document.getElementById(div);
   var svg = d3.select(vizDiv)
     .selectAll('svg')
@@ -514,7 +516,7 @@ const colorLegend = d3.legendColor()
 
 
   xScale
-    .domain([minDate,maxDate])
+    .domain([minDate,maxDate]) //[minDate,maxDate] or d3.extent(data, xValue)
     .range([0, innerWidth])
     .nice();
 
