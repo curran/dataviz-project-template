@@ -291,7 +291,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
             }
         };
 
-        d3.csv('/data/combined2.csv', row, data => {
+        d3.csv('data/combined2.csv', row, data => {
             var keys = data.columns.slice(3)
             x0Scale.domain(data.map(function(d) { return d.Entity; }));
             x1Scale.domain(keys).rangeRound([0, x0Scale.bandwidth()]);
@@ -447,7 +447,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
         }
     };
 
-    d3.csv('/data/correlation-between-internet-users-as-a-share-of-the-population-and-gdp-per-capita-since-1980.csv', row, data => {
+    d3.csv('data/correlation-between-internet-users-as-a-share-of-the-population-and-gdp-per-capita-since-1980.csv', row, data => {
 
         xScale
             .domain(d3.extent(data, xValue))
