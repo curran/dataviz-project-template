@@ -113,8 +113,8 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
     var countryTooltip = d3.select("div#earthPanel").append("div").attr("class", "countryTooltip");
 
     queue()
-        .defer(d3.json, "/data/world-110m.json")
-        .defer(d3.tsv, "/data/world-110m-country-names.tsv")
+        .defer(d3.json, "/dataviz-project-QZhao/data/world-110m.json")
+        .defer(d3.tsv, "/dataviz-project-QZhao/data/world-110m-country-names.tsv")
         .await(ready);
 
     function ready(error, world, countryData) {
