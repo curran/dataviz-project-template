@@ -1,8 +1,10 @@
 
-
+Live Version (hosted on Github Pages):https://sajudson.github.io/dataviz-project/
 
 # The Visualization
-This is an exploratory visualization looking at the time of day use patterns and the relationship between the number of users and quantitative weather attributes (temperature, humidity and windspeed). 
+This is an exploratory visualization looking at the time of day use patterns and the relationship between the number of users and quantitative weather attributes (temperature, humidity and windspeed).
+
+
 
 # The Data
 ## Washington DC Bike Sharing Data Set
@@ -27,12 +29,12 @@ The dataset file can be found [here](https://archive.ics.uci.edu/ml/machine-lear
 The project is built from a template project that uses Webpack and D3. Designed as a starting point for interactive data visualization projects that require JavaScript code to be organized across many files (as ES6 modules).
 
 Build the JavaScript bundle using WebPack, using this command: npm run build
-To see the page run on a local HTTP server at localhost:8080 
-    
+To see the page run on a local HTTP server at localhost:8080
+
     npm install -g http-server
     http-server
 
-For automatic refreshing during development, start the Webpack Dev Server using: 
+For automatic refreshing during development, start the Webpack Dev Server using:
 
     npm run serve
 
@@ -48,5 +50,3 @@ We are using GitHub pages to deploy this project to the Web. Deployments are man
     git branch # Make sure you're on the gh-pages branch.
     git commit -m "Deploy the latest" -a
     git push
-
-
