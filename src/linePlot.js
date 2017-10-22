@@ -2,6 +2,9 @@
 const xScale = d3.scaleLinear();
 const yScaleLeft = d3.scaleLinear();
 const yScaleRight = d3.scaleLinear();
+const minDate = new Date(2011-1-1)
+const maxDate = new Date(2012-12-31)
+
 
 const yTicksLeft = 5
 const yTicksRight = 5
@@ -79,7 +82,7 @@ export default function (div, props) {
 
 
   xScale
-    .domain(d3.extent(data, xValue))
+    .domain([minDate,maxDate])
     .range([0, innerWidth])
     .nice();
 

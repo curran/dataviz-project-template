@@ -34,19 +34,11 @@ To see the page run on a local HTTP server at localhost:8080
     npm install -g http-server
     http-server
 
-For automatic refreshing during development, start the Webpack Dev Server using:
-
-    npm run serve
-
 We are using GitHub pages to deploy this project to the Web. Deployments are manual, and require the following steps:
 
     git checkout master
-    git pull
-    git checkout gh-pages
-    git merge master
     npm run build
+    git add -f dist/bundle.js
     git status -s # You should see that only build.js has been changed.
-    git add .
-    git branch # Make sure you're on the gh-pages branch.
     git commit -m "Deploy the latest" -a
     git push
