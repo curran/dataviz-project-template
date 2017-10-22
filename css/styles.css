@@ -20,7 +20,8 @@ body {
   stroke-width: 1.5px;
   opacity: 0.9;
   fill: #c6c6c6;
-  transition: fill 0.5s;
+  transition: fill 0.5s, opacity 0.1s;
+  -webkit-transition: fill 0.5s, opacity 0.1s; /* Safari */
 }
 
 .area:hover {
