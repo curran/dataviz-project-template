@@ -20,6 +20,7 @@ body {
   stroke-width: 1.5px;
   opacity: 0.9;
   fill: #c6c6c6;
+  transition: fill 0.5s;
 }
 
 .area:hover {
