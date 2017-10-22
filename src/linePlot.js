@@ -43,9 +43,7 @@ export default function (div, props) {
   const {
     data,
     xValue,
-    yValue1, //registered  Left Y Axis
-    yValue2, //casual      Left Y Axis
-    yValue3, //temp        Right Y Axis
+    yValue, //registered  Left Y Axis
     xLabel,
     yLabelLeft,
     yLabelRight,
@@ -86,12 +84,12 @@ export default function (div, props) {
     .nice();
 
   yScaleLeft
-    .domain(d3.extent(data, yValue1))
+    .domain(d3.extent(data, yValue))
     .range([innerHeight, 0])
     .nice(yTicksLeft);
 
   yScaleRight
-    .domain(d3.extent(data, yValue3))
+    .domain(d3.extent(data, yValue))
     .range([innerHeight, 0])
     .nice(yTicksRight);
 
@@ -151,20 +149,20 @@ export default function (div, props) {
   //    .style('text-anchor', 'middle')
   //    .text(yLabelRight);
 
-var line2 = d3.line()
-  .x(d => xScale(xValue(d)))
-  .y(d => yScaleLeft(y2Value(d)))
-  .curve(d3.curveBasis);
+// var line2 = d3.line()
+//   .x(d => xScale(xValue(d)))
+//   .y(d => yScaleLeft(y2Value(d)))
+//   .curve(d3.curveBasis);
 
 var line1 = d3.line()
   .x(d => xScale(xValue(d)))
-  .y(d => yScaleLeft(y1Value(d)))
+  .y(d => yScaleLeft(yValue(d)))
   .curve(d3.curveBasis)
 
-var line3 = d3.line()
-  .x(d => xScale(xValue(d)))
-  .y(d => yScaleRight(y3Value(d)))
-  .curve(d3.curveBasis)
+// var line3 = d3.line()
+//   .x(d => xScale(xValue(d)))
+//   .y(d => yScaleRight(y3Value(d)))
+//   .curve(d3.curveBasis)
 
   //data join
   const line = g.selectAll('path').data(data);
@@ -183,7 +181,8 @@ var line3 = d3.line()
   //merge new and existing ell
   lineEnter
     .attr('class','enter')
-    .attr('stroke', 'red')
+    .attr('fill','none')
+    .attr('stroke', 'purple')
     .attr('stroke-width', 2)
     .attr('d', line1(data));
 

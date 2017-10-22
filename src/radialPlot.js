@@ -62,10 +62,9 @@ export default function (div, props) {
   var g = svg.selectAll('g').data([null]);
 
   // translate origin to center of inner svg
-  g.enter().append('g')
+  g = g.enter().append('g')
     .merge(g)
-    .attr('transform', `translate( ${innerWidth/2+margin.left},
-      ${innerHeight/2+margin.top})`);
+    .attr('transform', `translate( ${innerWidth/2+margin.left},${innerHeight/2+margin.top})`);
 
   //draw ticklines
   const yMax = 1000;
