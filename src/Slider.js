@@ -110,7 +110,7 @@ export default function (countryName, width, height) {
             }
         };
 
-        d3.csv('/data/combined2.csv', row, data => {
+        d3.csv('data/combined2.csv', row, data => {
             var keys = data.columns.slice(3)
             x0Scale.domain(data.map(function(d) { return d.Entity; }));
             x1Scale.domain(keys).rangeRound([0, x0Scale.bandwidth()]);

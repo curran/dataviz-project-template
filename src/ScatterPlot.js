@@ -72,7 +72,7 @@ export default function (countryName, width, height) {
         }
     };
 
-    d3.csv('/data/correlation-between-internet-users-as-a-share-of-the-population-and-gdp-per-capita-since-1980.csv', row, data => {
+    d3.csv('data/correlation-between-internet-users-as-a-share-of-the-population-and-gdp-per-capita-since-1980.csv', row, data => {
 
         xScale
             .domain(d3.extent(data, xValue))
