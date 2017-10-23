@@ -74,8 +74,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var width = 1200, height = 800;
 Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, height);
-scatterPlot("China", width/2, height/2);
-slider("China", width/2, height/2);
+
 
 
 /***/ }),
@@ -89,6 +88,9 @@ slider("China", width/2, height/2);
 
 
 /* harmony default export */ __webpack_exports__["a"] = (function (width, height) {
+
+    Object(__WEBPACK_IMPORTED_MODULE_1__ScatterPlot__["a" /* default */])("China", width/2, height/2);
+    Object(__WEBPACK_IMPORTED_MODULE_0__Slider__["a" /* default */])("China", width/2, height/2);
 
     var sens = 0.3, focused;
     var projection = d3.geoOrthographic()
@@ -151,6 +153,8 @@ slider("China", width/2, height/2);
 
             //Mouse events
             .on("dblclick", function (d) {
+                document.getElementById("titleContent").innerHTML
+                    = "Internet User and Mobile Subscriptions of " + countryById[d.id];
                 Object(__WEBPACK_IMPORTED_MODULE_1__ScatterPlot__["a" /* default */])(countryById[d.id], width/2, height/2);
                 Object(__WEBPACK_IMPORTED_MODULE_0__Slider__["a" /* default */])(countryById[d.id], width/2, height/2);
             })
@@ -185,6 +189,7 @@ slider("China", width/2, height/2);
 
 /* harmony default export */ __webpack_exports__["a"] = (function (countryName, width, height) {
 
+    updateBarChart("China", 2010, width, height)
     const margin = { left: 60, right: 60, top: 0, bottom: 120 };
 
     d3.select("div#svg_chart2_container").remove();
@@ -319,7 +324,7 @@ slider("China", width/2, height/2);
                 .attr("dy", "0.33em")
                 .attr("fill", "#000")
                 .attr("font-weight", "bold")
-                .attr("text-anchor", "end")
+                .attr("text-anchor", "start")
                 .text("%");
 
             // Legend
@@ -336,14 +341,14 @@ slider("China", width/2, height/2);
             legend.append("rect")
                 .attr("class", function(d, i) { return "lgd_" + data.columns.slice(1)[i]; })
                 .attr("x", width)
-                .attr("y", -10)
+                .attr("y", -15)
                 .attr("width", 19)
                 .attr("height", 19)
                 .attr("fill", zScale);
 
             legend.append("text")
                 .attr("x", width - 5)
-                .attr("y", 0)
+                .attr("y", -5)
                 .attr("dy", "0.32em")
                 .text(function(d) { return d; });
         })
