@@ -72,7 +72,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__earthPanel__ = __webpack_require__(1);
 
 
-var width = 1200, height = 800;
+var width = 1000, height = 800;
 Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, height);
 
 
@@ -94,7 +94,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
 
     var sens = 0.3, focused;
     var projection = d3.geoOrthographic()
-        .scale(300)
+        .scale(280)
         .rotate([300, -20])
         .translate([width * 1.5/4, height/2])
         .clipAngle(90);
@@ -340,25 +340,20 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
 
             legend.append("rect")
                 .attr("class", function(d, i) { return "lgd_" + data.columns.slice(1)[i]; })
-                .attr("x", width)
+                .attr("x", width + 50)
                 .attr("y", -15)
                 .attr("width", 19)
                 .attr("height", 19)
                 .attr("fill", zScale);
 
             legend.append("text")
-                .attr("x", width - 5)
+                .attr("x", width + 45)
                 .attr("y", -5)
                 .attr("dy", "0.32em")
                 .text(function(d) { return d; });
         })
 
     }
-
-
-
-
-
 });
 
 

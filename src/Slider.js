@@ -153,23 +153,18 @@ export default function (countryName, width, height) {
 
             legend.append("rect")
                 .attr("class", function(d, i) { return "lgd_" + data.columns.slice(1)[i]; })
-                .attr("x", width)
+                .attr("x", width + 50)
                 .attr("y", -15)
                 .attr("width", 19)
                 .attr("height", 19)
                 .attr("fill", zScale);
 
             legend.append("text")
-                .attr("x", width - 5)
+                .attr("x", width + 45)
                 .attr("y", -5)
                 .attr("dy", "0.32em")
                 .text(function(d) { return d; });
         })
 
     }
-
-
-
-
-
 }
