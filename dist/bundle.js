@@ -94,7 +94,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
 
     var sens = 0.3, focused;
     var projection = d3.geoOrthographic()
-        .scale(350)
+        .scale(300)
         .rotate([300, -20])
         .translate([width * 1.5/4, height/2])
         .clipAngle(90);
