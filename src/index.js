@@ -1,4 +1,5 @@
 import earthPanel from './earthPanel'
 
-var width = 1300, height = 500;
+var width = 1200, height = 800;
 earthPanel(width, height);
+

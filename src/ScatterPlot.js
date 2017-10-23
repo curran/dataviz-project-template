@@ -1,7 +1,7 @@
 
 export default function (countryName, width, height) {
 
-    const margin = { left: 200, right: 200, top: 40, bottom: 120 };
+    const margin = { left: 100, right: 60, top: 20, bottom: 120 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -13,10 +13,6 @@ export default function (countryName, width, height) {
         .attr("width", width)
         .attr("height", height)
         .attr('transform', `translate(${margin.left},${margin.top})`);
-
-
-    // const xValue = d => d['Year'];
-    // const xLabel = 'Year';
 
     const xValue = d => d['Percentage of Individuals using the Internet (ICT)'];
     const xLabel = 'Percentage of Individuals using the Internet (ICT)';
@@ -35,7 +31,7 @@ export default function (countryName, width, height) {
     xAxisG.append('text')
         .attr('class', 'axis-label')
         .attr('x', innerWidth / 2)
-        .attr('y', 70)
+        .attr('y', 50)
         .text(xLabel);
 
     yAxisG.append('text')

@@ -3,11 +3,14 @@ import scatterPlot from './ScatterPlot'
 
 export default function (width, height) {
 
+    scatterPlot("China", width/2, height/2);
+    slider("China", width/2, height/2);
+
     var sens = 0.3, focused;
     var projection = d3.geoOrthographic()
-        .scale(245)
+        .scale(350)
         .rotate([300, -20])
-        .translate([width / 5, height / 2])
+        .translate([width * 1.5/4, height/2])
         .clipAngle(90);
 
     var path = d3.geoPath()
@@ -17,7 +20,7 @@ export default function (width, height) {
         .append("div")
         .attr("id", "svg-container")
         .append("svg")
-        .attr("width", width / 2)
+        .attr("width", width)
         .attr("height", height);
 
     svg_earth.append("path")
@@ -64,8 +67,10 @@ export default function (width, height) {
 
             //Mouse events
             .on("dblclick", function (d) {
-                slider(countryById[d.id], width, height);
-                scatterPlot(countryById[d.id], width, height);
+                document.getElementById("titleContent").innerHTML
+                    = "Internet User and Mobile Subscriptions of " + countryById[d.id];
+                scatterPlot(countryById[d.id], width/2, height/2);
+                slider(countryById[d.id], width/2, height/2);
             })
 
             .on("mouseover", function (d) {

@@ -1,4 +1,8 @@
 
+.backgroundDiv{
+    background-color: #F5F5DC;
+}
+
 /*General*/
 
 #chart {
@@ -119,7 +123,7 @@ path.domain {
 
 .axis-label {
     fill: #635F5D;
-    font-size: 18pt;
+    font-size: 14pt;
     font-family: sans-serif;
 }
 

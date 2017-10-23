@@ -72,8 +72,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__earthPanel__ = __webpack_require__(1);
 
 
-var width = 1300, height = 500;
+var width = 1200, height = 800;
 Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, height);
+scatterPlot("China", width/2, height/2);
+slider("China", width/2, height/2);
 
 
 /***/ }),
@@ -90,9 +92,9 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
 
     var sens = 0.3, focused;
     var projection = d3.geoOrthographic()
-        .scale(245)
+        .scale(350)
         .rotate([300, -20])
-        .translate([width / 5, height / 2])
+        .translate([width * 1.5/4, height/2])
         .clipAngle(90);
 
     var path = d3.geoPath()
@@ -102,7 +104,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
         .append("div")
         .attr("id", "svg-container")
         .append("svg")
-        .attr("width", width / 2)
+        .attr("width", width)
         .attr("height", height);
 
     svg_earth.append("path")
@@ -149,8 +151,8 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
 
             //Mouse events
             .on("dblclick", function (d) {
-                Object(__WEBPACK_IMPORTED_MODULE_0__Slider__["a" /* default */])(countryById[d.id], width, height);
-                Object(__WEBPACK_IMPORTED_MODULE_1__ScatterPlot__["a" /* default */])(countryById[d.id], width, height);
+                Object(__WEBPACK_IMPORTED_MODULE_1__ScatterPlot__["a" /* default */])(countryById[d.id], width/2, height/2);
+                Object(__WEBPACK_IMPORTED_MODULE_0__Slider__["a" /* default */])(countryById[d.id], width/2, height/2);
             })
 
             .on("mouseover", function (d) {
@@ -183,7 +185,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
 
 /* harmony default export */ __webpack_exports__["a"] = (function (countryName, width, height) {
 
-    const margin = { left: 10, right: 60, top: 20, bottom: 120 };
+    const margin = { left: 60, right: 60, top: 0, bottom: 120 };
 
     d3.select("div#svg_chart2_container").remove();
     var svg_chart2 = d3.select("div#detailChart2")
@@ -191,17 +193,17 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
         .attr("id", "svg_chart2_container")
         .append("svg")
         .attr("width", width)
-        .attr("height", height)
+        .attr("height", height/5)
         .attr('transform', `translate(${margin.left},${margin.top})`);
 
     var x = d3.scaleLinear()
         .domain([1990, 2013])
-        .range([0, width/2])
+        .range([0, width - margin.left - margin.right])
         .clamp(true);
 
     var slider = svg_chart2.append("g")
         .attr("class", "slider")
-        .attr("transform", "translate(" + margin.left + "," + height / 2 + ")");
+        .attr("transform", "translate(" + margin.left + "," + height / 20 + ")");
 
     slider.append("line")
         .attr("class", "track")
@@ -237,26 +239,16 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
     }
 
 
-
-
-
-
     function updateBarChart(selectedCountryName, selectedYear, outerWidth, outerHeight){
 
         d3.select("div#svg_chart3_container").remove();
 
-
-        var margin = {top: 20, right: 60, bottom: 30, left: 40},
-            padding = {top: 20, right: 20, bottom: 10, left: 60},
+        var margin = {top: 20, right: 60, bottom: 10, left: 60},
+            padding = {top: 0, right: 20, bottom: 40, left: 70},
             innerWidth = outerWidth - margin.left - margin.right,
             innerHeight = outerHeight - margin.top - margin.bottom,
             width = innerWidth - padding.left - padding.right,
             height = innerHeight - padding.top - padding.bottom;
-
-        // var margin = {top: 20, right: 20, bottom: 30, left: 40};
-        // var width = outerWidth - margin.left - margin.right;
-        // var height = outerHeight - margin.top - margin.bottom;
-
 
         var svg_chart3 = d3.select("div#detailChart3")
             .append("div")
@@ -272,13 +264,13 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
             .paddingInner(0.3);
 
         var x1Scale = d3.scaleBand()
-            .padding(0.4)
+            .padding(0.4);
 
         var yScale = d3.scaleLinear()
             .rangeRound([height, 0]);
 
         var zScale = d3.scaleOrdinal()
-            .range(["#7b6888", "#ff8c00"])
+            .range(["#7b6888", "#ff8c00"]);
 
         var g = svg_chart3.append("g")
             .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
@@ -292,22 +284,20 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
         };
 
         d3.csv('data/combined2.csv', row, data => {
-            var keys = data.columns.slice(3)
+            var keys = data.columns.slice(3);
             x0Scale.domain(data.map(function(d) { return d.Entity; }));
             x1Scale.domain(keys).rangeRound([0, x0Scale.bandwidth()]);
             yScale.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
 
-
-            // ENTER
             g.append("g")
                 .selectAll("g")
                 .data(data)
                 .enter().append("g")
                 .attr("transform", function(d) { return "translate(" + x0Scale(d.lead) + ",0)"; })
-                // rects
                 .selectAll("rect")
                 .data(function(d) { return keys.map(function(key) { return {key: key, value: d[key]}; }); })
-                .enter().append("rect")
+                .enter()
+                .append("rect")
                 .attr("class", function(d) { return d.key; })
                 .attr("x", function(d) { return x1Scale(d.key); })
                 .attr("y", function(d) { return yScale(d.value); })
@@ -315,12 +305,10 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
                 .attr("height", function(d) { return height - yScale(d.value); })
                 .attr("fill", function(d) { return zScale(d.key); });
 
-
-            // Axes
-            // g.append("g")
-            //     .attr("class", "x axis")
-            //     .attr("transform", "translate(0," + height + ")")
-            //     .call(d3.axisBottom(x0Scale));
+            g.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x0Scale));
 
             g.append("g")
                 .attr("class", "y axis")
@@ -331,7 +319,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
                 .attr("dy", "0.33em")
                 .attr("fill", "#000")
                 .attr("font-weight", "bold")
-                .attr("text-anchor", "start")
+                .attr("text-anchor", "end")
                 .text("%");
 
             // Legend
@@ -347,14 +335,15 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
 
             legend.append("rect")
                 .attr("class", function(d, i) { return "lgd_" + data.columns.slice(1)[i]; })
-                .attr("x", width - 19)
+                .attr("x", width)
+                .attr("y", -10)
                 .attr("width", 19)
                 .attr("height", 19)
                 .attr("fill", zScale);
 
             legend.append("text")
-                .attr("x", width - 24)
-                .attr("y", 9.5)
+                .attr("x", width - 5)
+                .attr("y", 0)
                 .attr("dy", "0.32em")
                 .text(function(d) { return d; });
         })
@@ -376,7 +365,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
 
 /* harmony default export */ __webpack_exports__["a"] = (function (countryName, width, height) {
 
-    const margin = { left: 200, right: 200, top: 40, bottom: 120 };
+    const margin = { left: 100, right: 60, top: 20, bottom: 120 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -388,10 +377,6 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
         .attr("width", width)
         .attr("height", height)
         .attr('transform', `translate(${margin.left},${margin.top})`);
-
-
-    // const xValue = d => d['Year'];
-    // const xLabel = 'Year';
 
     const xValue = d => d['Percentage of Individuals using the Internet (ICT)'];
     const xLabel = 'Percentage of Individuals using the Internet (ICT)';
@@ -410,7 +395,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
     xAxisG.append('text')
         .attr('class', 'axis-label')
         .attr('x', innerWidth / 2)
-        .attr('y', 70)
+        .attr('y', 50)
         .text(xLabel);
 
     yAxisG.append('text')
