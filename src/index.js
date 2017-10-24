@@ -29,14 +29,16 @@ import radialPlot from './radialPlot'
       const yValue2 = d => d.casual;
       const yValue1 = d => d.registered;
       const yValue3 = d => d.cnt;
-      const yLabel1 = 'Registered Users';
-      const yLabel2 = 'Casual Users';
+      const yValue4 = xValue1;
+      const yLabel1 = 'Users';
+      const yLabel2 = 'Users';
       const yLabel3 = 'Users';
       const yLabel4 = xLabel1;
       const pointSize = 2;
       const pointColor1 = "green";
       const pointColor2 = "blue";
       const pointColor3 = "grey";
+
 
       const margin = { left: 75, right: 10, top: 10, bottom: 75 };
 
@@ -167,7 +169,8 @@ d3.csv('data/day.csv', row, data => {
     linePlot(div9, {
       data:data,
       xValue:xValue4,
-      yValue:yValue3,
+      yValue1:yValue1,
+      yValue2:yValue2,
       xLabel:xLabel4,
       yLabel:"Users",
       colorValue:pointColor2,

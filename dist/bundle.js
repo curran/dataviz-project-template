@@ -103,14 +103,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       const yValue2 = d => d.casual;
       const yValue1 = d => d.registered;
       const yValue3 = d => d.cnt;
-      const yLabel1 = 'Registered Users';
-      const yLabel2 = 'Casual Users';
+      const yValue4 = xValue1;
+      const yLabel1 = 'Users';
+      const yLabel2 = 'Users';
       const yLabel3 = 'Users';
       const yLabel4 = xLabel1;
       const pointSize = 2;
       const pointColor1 = "green";
       const pointColor2 = "blue";
       const pointColor3 = "grey";
+
 
       const margin = { left: 75, right: 10, top: 10, bottom: 75 };
 
@@ -241,7 +243,8 @@ d3.csv('data/day.csv', row, data => {
     Object(__WEBPACK_IMPORTED_MODULE_1__linePlot__["a" /* default */])(div9, {
       data:data,
       xValue:xValue4,
-      yValue:yValue3,
+      yValue1:yValue1,
+      yValue2:yValue2,
       xLabel:xLabel4,
       yLabel:"Users",
       colorValue:pointColor2,
@@ -478,7 +481,8 @@ const colorLegend = d3.legendColor()
   const {
     data,
     xValue,
-    yValue, //registered  Left Y Axis
+    yValue1, //registered  Left Y Axis
+    yValue2,
     xLabel,
     yLabelLeft,
     yLabelRight,
@@ -521,12 +525,12 @@ const colorLegend = d3.legendColor()
     .nice();
 
   yScaleLeft
-    .domain(d3.extent(data, yValue))
+    .domain(d3.extent(data, yValue1))
     .range([innerHeight, 0])
     .nice(yTicksLeft);
 
   yScaleRight
-    .domain(d3.extent(data, yValue))
+    .domain(d3.extent(data, yValue1))
     .range([innerHeight, 0])
     .nice(yTicksRight);
 
@@ -593,8 +597,13 @@ const colorLegend = d3.legendColor()
 
 var line1 = d3.line()
   .x(d => xScale(xValue(d)))
-  .y(d => yScaleLeft(yValue(d)))
-  .curve(d3.curveBasis)
+  .y(d => yScaleLeft(yValue1(d)))
+  .curve(d3.curveBasis);
+
+  var line2 = d3.line()
+    .x(d => xScale(xValue(d)))
+    .y(d => yScaleLeft(yValue2(d)))
+    .curve(d3.curveCatmullRom);
 
 // var line3 = d3.line()
 //   .x(d => xScale(xValue(d)))
@@ -621,18 +630,22 @@ var line1 = d3.line()
     .attr('fill','none')
     .attr('stroke', 'purple')
     .attr('stroke-width', 2)
+    .merge(line)
     .attr('d', line1(data));
+
+  // lineEnter
+  //     .attr('class','enter')
+  //     .attr('fill','none')
+  //     .attr('stroke', 'red')
+  //     .attr('stroke-width', 1)
+  //     .merge(line)
+  //     .attr('d', line2(data));
 
   //remove elements for which there is no data
   lineExit
 
   //call X and Y axis
-  xAxisG.call(xAxis)
-    .selectAll("text")
-    .style("text-anchor", "end")
-    .attr("dx", "-.8em")
-    .attr("dy", ".15em")
-    .attr("transform", "rotate(-15)");;
+  xAxisG.call(xAxis);
   yAxisLeftG.call(yAxisLeft);
   // yAxisRightG.call(yAxisRight);
 

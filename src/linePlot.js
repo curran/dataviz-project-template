@@ -46,7 +46,8 @@ export default function (div, props) {
   const {
     data,
     xValue,
-    yValue, //registered  Left Y Axis
+    yValue1, //registered  Left Y Axis
+    yValue2,
     xLabel,
     yLabelLeft,
     yLabelRight,
@@ -89,12 +90,12 @@ export default function (div, props) {
     .nice();
 
   yScaleLeft
-    .domain(d3.extent(data, yValue))
+    .domain(d3.extent(data, yValue1))
     .range([innerHeight, 0])
     .nice(yTicksLeft);
 
   yScaleRight
-    .domain(d3.extent(data, yValue))
+    .domain(d3.extent(data, yValue1))
     .range([innerHeight, 0])
     .nice(yTicksRight);
 
@@ -161,8 +162,13 @@ export default function (div, props) {
 
 var line1 = d3.line()
   .x(d => xScale(xValue(d)))
-  .y(d => yScaleLeft(yValue(d)))
-  .curve(d3.curveBasis)
+  .y(d => yScaleLeft(yValue1(d)))
+  .curve(d3.curveBasis);
+
+  var line2 = d3.line()
+    .x(d => xScale(xValue(d)))
+    .y(d => yScaleLeft(yValue2(d)))
+    .curve(d3.curveCatmullRom);
 
 // var line3 = d3.line()
 //   .x(d => xScale(xValue(d)))
@@ -189,18 +195,22 @@ var line1 = d3.line()
     .attr('fill','none')
     .attr('stroke', 'purple')
     .attr('stroke-width', 2)
+    .merge(line)
     .attr('d', line1(data));
+
+  // lineEnter
+  //     .attr('class','enter')
+  //     .attr('fill','none')
+  //     .attr('stroke', 'red')
+  //     .attr('stroke-width', 1)
+  //     .merge(line)
+  //     .attr('d', line2(data));
 
   //remove elements for which there is no data
   lineExit
 
   //call X and Y axis
-  xAxisG.call(xAxis)
-    .selectAll("text")
-    .style("text-anchor", "end")
-    .attr("dx", "-.8em")
-    .attr("dy", ".15em")
-    .attr("transform", "rotate(-15)");;
+  xAxisG.call(xAxis);
   yAxisLeftG.call(yAxisLeft);
   // yAxisRightG.call(yAxisRight);
 
