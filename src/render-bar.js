@@ -98,7 +98,7 @@ function drawBar(yearValue) {
     for (var i = 0; i < data.length; i++) {
         svg.append('text')
             .attr('class', 'bar-text')
-            .attr('x', xScale(xValue(data[i])) + 10)
+            .attr('x', xScale(xValue(data[i]))+10-yValue(data[i])/1000)
             .attr('y', 280 - yScale(yValue(data[i])) - 8)
             .text(format(yValue(data[i])));
 
