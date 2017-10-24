@@ -1,6 +1,3 @@
-var svg = d3.select("#bar").append("svg").attr('id', 'bar-svg').attr('width', '100%').attr('height', '100%');
-const barWidth = 30;
-
 function clickRect() {
     const index = $(this).index() - 1;
     $('.range input').val(index * 5 + 2015).trigger('input');
@@ -15,7 +12,9 @@ function mouseoutRect() {
 }
 
 
-function drawBar(yearValue) {
+export default function (yearValue, barSvg) {
+    var format = d3.format(",.1f");
+    const barWidth = 30;
     var data = [];
     var min = Number.MAX_VALUE;
     var max = Number.MIN_VALUE;
@@ -45,7 +44,7 @@ function drawBar(yearValue) {
         .range([280 - yScale(max), 280 - yScale(min)]);
 
 
-    const rects = svg.selectAll('rect').data(data)
+    const rects = barSvg.selectAll('rect').data(data)
         .attr('x', function (data) {
             return xScale(xValue(data)) + 12;
         })
@@ -56,7 +55,7 @@ function drawBar(yearValue) {
         .attr('height', function (data) {
             return yScale(yValue(data));
         });
-    svg.selectAll('title').data(data)
+    barSvg.selectAll('title').data(data)
         .text(function (data) {
             return yValue(data)
         });
@@ -85,24 +84,24 @@ function drawBar(yearValue) {
         });
 
     const yAxis = d3.svg.axis().scale(yAxisScale).orient("right").ticks(8).innerTickSize(-1000);
-    svg.select('.grid').remove();
-    svg.insert("g", ":first-child")
+    barSvg.select('.grid').remove();
+    barSvg.insert("g", ":first-child")
         .attr("transform", "translate(972,0)")
         .attr("class", "grid")
         .call(yAxis);
 
-    svg.selectAll('.bar-line').remove();
-    svg.selectAll('.bar-text').remove();
-    svg.selectAll('.bar-point').remove();
+    barSvg.selectAll('.bar-line').remove();
+    barSvg.selectAll('.bar-text').remove();
+    barSvg.selectAll('.bar-point').remove();
 
     for (var i = 0; i < data.length; i++) {
-        svg.append('text')
+        barSvg.append('text')
             .attr('class', 'bar-text')
             .attr('x', xScale(xValue(data[i]))+10-yValue(data[i])/1000)
             .attr('y', 280 - yScale(yValue(data[i])) - 8)
             .text(format(yValue(data[i])));
 
-        svg.append('circle')
+        barSvg.append('circle')
             .attr('class', 'bar-point')
             .attr('cx', xScale(xValue(data[i])) + 12 + barWidth / 2)
             .attr('cy', 280 - yScale(yValue(data[i])))
@@ -110,7 +109,7 @@ function drawBar(yearValue) {
 
         if (i === data.length - 1)
             break;
-        svg.append("line")
+        barSvg.append("line")
             .attr('class', 'bar-line')
             .attr('x1', xScale(xValue(data[i])) + 12 + barWidth / 2)
             .attr('y1', 280 - yScale(yValue(data[i])))

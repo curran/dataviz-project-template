@@ -1,3 +1,4 @@
+import  drawBar from './render-bar'
 const format = d3.format(",.1f");
 const specials = ['World', 'High Income Countries', 'Middle Income Countries', 'Low Income Countries'];
 const ageGroups = ['0-4', '5-9', '10-14', '15-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54',
@@ -11,6 +12,7 @@ var countriesNames = [];
 var maxValue = Number.MIN_VALUE;//max value including 'World'
 var maxValue2 = Number.MIN_VALUE;//max value of a country
 var minValue = Number.MAX_VALUE;
+var barSvg = d3.select("#bar").append("svg").attr('id', 'bar-svg').attr('width', '100%').attr('height', '100%');
 
 const properties = {
     'Population (million)': {file: 'Population.json', color: d3.interpolateBlues, class: 'Population'},
@@ -71,8 +73,8 @@ const properties = {
 if (!Array.prototype.includes) {
     Object.defineProperty(Array.prototype, "includes", {
         enumerable: false,
-        value: function(obj) {
-            var newArr = this.filter(function(el) {
+        value: function (obj) {
+            var newArr = this.filter(function (el) {
                 return el == obj;
             });
             return newArr.length > 0;
@@ -108,7 +110,7 @@ function dataInput() {
         maxValue2 = parseInt(data['max2'] / 10 + 1) * 10;
         countriesNames = specials.concat(countriesNames.sort());
         renderMap();
-        drawBar(nameToValues[$("#country-input").val()]);
+        drawBar(nameToValues[$("#country-input").val()], barSvg);
         $("#year-2015").addClass('selected-year');
         d3.json("data/AgeComposition.json", function (data) {
             ageData = data;
@@ -118,7 +120,6 @@ function dataInput() {
 }
 
 function renderMap() {
-    // d3.select("#map").selectAll("*").remove();
     $('#map').empty();
     if (document.getElementById("country-input").childElementCount !== countriesNames.length) {
         const previousCountry = $("#country-input").val();
@@ -192,7 +193,7 @@ function renderMap() {
                 if (codeToName.hasOwnProperty(geography.id)) {
                     const country = $("#country-input");
                     country.val(codeToName[geography.id]);
-                    drawBar(nameToValues[country.val()]);
+                    drawBar(nameToValues[country.val()], barSvg);
                     renderPyramid();
                 }
             });
@@ -319,4 +320,44 @@ function renderPyramid() {
     g.append('text').attr('x', 75).attr('y', 280).text('Population (million)');
 }
 
+const sheet = document.createElement('style'),
+    $rangeInput = $('.range input'),
+    prefs = ['webkit-slider-runnable-track', 'moz-range-track', 'ms-track'];
+document.head.appendChild(sheet);
+const getTrackStyle = function (el) {
+    const curVal = el.value;
+    const val = (curVal - 2015) * 1.176470588;
+    var style = '';
+    $('.range-labels li').removeClass('active selected');
+    $('.year').removeClass('active-year selected-year');
+    const curLabel = $('.range-labels').find('li:nth-child(' + (curVal - 2010) / 5 + ')');
+    curLabel.addClass('active selected');
+    curLabel.prevAll().addClass('active selected');
+    const curYear = $("#bar-svg").find('rect:nth-child(' + (curVal - 2005) / 5 + ')');
+    curYear.addClass('active-year selected-year');
+    curYear.prevAll().addClass('selected-year');
+    for (var i = 0; i < prefs.length; i++) {
+        style += '.range {background: linear-gradient(to right, #ff5a04 0%, #ff5a04 ' + val + '%, #fff ' + val + '%, #fff 100%)}';
+        style += '.range input::-' + prefs[i] + '{background: linear-gradient(to right, #ff5a04 0%, #ff5a04 ' + val + '%, #0099cb ' + val + '%, #0099cb 100%)}';
+    }
+    return style;
+};
+$rangeInput.on('input', function () {
+    sheet.textContent = getTrackStyle(this);
+    renderMap();
+    renderPyramid();
+});
+$('.range-labels li').on('click', function () {
+    const index = $(this).index();
+    $rangeInput.val(index * 5 + 2015).trigger('input');
+});
+$("#country-input").change(function () {
+    const name = $("#country-input").val();
+    drawBar(nameToValues[name], barSvg);
+    renderPyramid();
+});
 
+$('#type-input').change(function () {
+    dataInput();
+});
+dataInput();

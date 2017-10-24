@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "description": "Interactive visualization project",
   "main": "webpack.config.js",
-  "dependencies": {},
+  "dependencies": {
+    "d3": "^4.11.0"
+  },
   "devDependencies": {
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1"
