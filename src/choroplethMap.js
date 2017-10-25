@@ -162,7 +162,7 @@ function choroplethMap(container, props, box) {
 
   const colorScale = d3.scaleOrdinal()
     .domain(["Race within 1 week", "Race within 2 weeks", "Town already run"])
-    .range(["#f03b20", "#feb24c", "#16a"]);
+    .range(["#7b3294", "#c2a5cf", "#a6dba0"]);
   // TODO: have legend scale with plot
   const colorLegend = d3.legendColor()
     .scale(colorScale)

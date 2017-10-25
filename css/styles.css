@@ -15,30 +15,65 @@ body {
 
 /***** Map CSS code *******/
 
+.car {
+  fill: #eaeaea; 
+  stroke: #666;
+  stroke-width:  1px;
+}
+
+.active {
+  fill: #ff7f00;
+  stroke: #333;
+}
+
+.instructions {
+  fill: #666;
+}
+
+.townLabel {
+  fill: #333;
+}
+
+.carLabel {
+  fill: #333;
+}
+
+.carLine {
+  fill: #aaa;
+}
+
 .area {
-  stroke: #fff;
-  stroke-width: 1.5px;
+  stroke: #888;
+  stroke-width: 1px;
   opacity: 0.9;
-  fill: #c6c6c6;
-  transition: fill 0.5s, opacity 0.1s;
-  -webkit-transition: fill 0.5s, opacity 0.1s; /* Safari */
+  fill: #eaeaea;
+  transition: opacity 0.2s;
 }
 
 .area:hover {
-  opacity: 0.4;
+  fill: #ff7f00;
+}
+
+.reachable {
+  opacity: 1;
+}
+
+.unreachable {
+  opacity: 0.3;
 }
 
 .alreadyRun {
-  fill: #16a; /*darkgreen;*/
+  fill: #a6dba0;
 }
 
 .hasRaceSoon {
-  fill: #feb24c; /* #428cd1;  */
+  fill: #c2a5cf;
 }
 
 .hasRaceVerySoon {
-  fill: #f03b20; /*#d14242;*/ 
+  fill: #7b3294;
 }
+
 .color-legend text {
   font-size: 12pt;
   color: #666;
