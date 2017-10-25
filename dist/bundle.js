@@ -611,38 +611,38 @@ var line1 = d3.line()
 //   .curve(d3.curveBasis)
 
   //data join
-  const line = g.selectAll('path').data(data);
+  const lines = g.selectAll('path').data(data);
 
   //Add new elements
-  const lineEnter = line.enter().append('path');
+  const linesEnter = lines.enter().append('path');
 
-  const t = d3.transition().duration(500);
-
-  const lineExit = line.exit().remove();
+  const linesExit = lines.exit()
+    .attr('class','exit')
+    .remove();
 
   //UPDATE old elements present (change class)
-  line
+  lines
     .attr('class','update');
 
   //merge new and existing ell
-  lineEnter
+  linesEnter
     .attr('class','enter')
     .attr('fill','none')
     .attr('stroke', 'purple')
     .attr('stroke-width', 2)
-    .merge(line)
+    .merge(lines)
     .attr('d', line1(data));
 
-  // lineEnter
+  // linesEnter
   //     .attr('class','enter')
   //     .attr('fill','none')
   //     .attr('stroke', 'red')
   //     .attr('stroke-width', 1)
-  //     .merge(line)
+  //     .merge(#line2)
   //     .attr('d', line2(data));
 
   //remove elements for which there is no data
-  lineExit
+  linesExit
 
   //call X and Y axis
   xAxisG.call(xAxis);
