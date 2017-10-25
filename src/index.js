@@ -1,4 +1,4 @@
-var vizDiv = document.getElementById("viz");
+ var vizDiv = document.getElementById("viz");
     
     // This stateless component renders a static "wheel" made of circles,
     // and rotates it depending on the value of props.angle.
@@ -78,7 +78,8 @@ var vizDiv = document.getElementById("viz");
       var xScale = d3.scaleLinear(),
           yScale = d3.scaleLinear(),
           colorScale = d3.scaleOrdinal()
-      			.range(d3.schemeCategory10);
+      			.range(d3.schemeCategory10),
+          radiusScale = d3.scaleSqrt(); // add new scale for circle
 
 
       function render(selection, d){
@@ -87,7 +88,11 @@ var vizDiv = document.getElementById("viz");
             color = d.color,
             margin = d.margin,
             innerWidth = d.width - margin.left - margin.right,
-            innerHeight = d.height - margin.top - margin.bottom;
+            innerHeight = d.height - margin.top - margin.bottom,
+            radius = d.radius,
+            minRadius = 1,
+            maxRadius = 15;
+            
             
         xScale
         	.domain(d3.extent(d.data, function (d){ return d[x]; }))
@@ -97,6 +102,10 @@ var vizDiv = document.getElementById("viz");
         	.range([innerHeight, 0]);
         colorScale
         	.domain(d3.extent(d.data, function (d){ return d[color]; }));
+        radiusScale
+          .range([1,10])
+          .domain(d3.extent(d.data, function (d){ return d[radius]; }));
+        
         
         selection
         		.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
@@ -128,7 +137,7 @@ var vizDiv = document.getElementById("viz");
           .transition()
           	.duration(2000)
         		.delay(function (d, i){ return i * 5; })
-            .attr("r", 10)
+            .attr("r", function (d){ return radiusScale(d[radius]); })
             .attr("cx", function (d){ return xScale(d[x]); })
             .attr("cy", function (d){ return yScale(d[y]); })
         		.attr("color", function (d){ return colorScale(d[color]); })
@@ -153,7 +162,9 @@ var vizDiv = document.getElementById("viz");
             "<div><strong>" + state.y + ": </strong>",
             "<span>" + d[state.y] + "</span></div>",
             "<div><strong>" + state.color + ": </strong>",
-            "<span>" + d[state.color] + "</span></div>"
+            "<span>" + d[state.color] + "</span></div>",
+            "<div><strong>" + state.radius + ": </strong>",
+            "<span>" + d[state.radius] + "</span></div>"
           ].join("");
         });
         svgSelection.call(tip);
@@ -235,6 +246,12 @@ var vizDiv = document.getElementById("viz");
             value: d.color,
             action: d.setColor,
             columns: d.ordinalColumns
+          },
+          {
+            label: "Radius",
+            value: d.radius,
+            action: d.setRadius,
+            columns: d.numericColumns
           }
         ], d);
         if(!d.loading && selection.style("opacity") === "0"){
@@ -299,7 +316,8 @@ var vizDiv = document.getElementById("viz");
         margin: {top: 12, right: 12, bottom: 40, left: 50},
         x: "Win Percentage",
         y: "Misc Score Per Game",
-        color: "Season"
+        color: "Season",
+        radius: "Games Played"
       };
       switch (action.type) {
         case "INGEST_DATA":
@@ -315,6 +333,8 @@ var vizDiv = document.getElementById("viz");
           return Object.assign({}, state, { y: action.column });
         case "SET_COLOR":
           return Object.assign({}, state, { color: action.column });
+        case "SET_RADIUS":
+          return Object.assign({}, state, { radius: action.column });
         default:
           return state;
       }
@@ -338,6 +358,9 @@ var vizDiv = document.getElementById("viz");
         },
         setColor: function (column){
           dispatch({ type: "SET_COLOR", column: column });
+        },
+        setRadius: function (column){
+          dispatch({ type: "SET_RADIUS", column: column });
         }
       };
     }
