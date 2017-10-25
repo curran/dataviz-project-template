@@ -268,7 +268,7 @@ function choroplethMap(container, props, box) {
     .enter().append('g')
       .attr('class', 'mapColorLegendG')
     .merge(colorLegendG)
-      .attr("transform", d => "translate(" + (50*d.scale) + "," + (d.y - 100*d.scale) + ")");
+      .attr("transform", d => "translate(" + (d.x + 1200*d.scale) + "," + (d.y + 2800*d.scale) + ")");
 
   const colorLegend = colorLegendG.selectAll('rect').data(legendColors);
   const legendLineHeight = 140*sliderParameters.scale;
