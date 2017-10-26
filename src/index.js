@@ -97,8 +97,8 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
   const memberNames = [];
   membersTowns.sort((x, y) => d3.ascending(x.Name, y.Name)).forEach((row, i) => {
     memberNames.push({ 
-      name: row.Name + ' (' + row.TotalTowns + ' towns)',
-      value: row.Name
+      title: row.Name,
+      description: row.Town + ' - ' + row.TotalTowns + ' towns'
     });
   });
 
@@ -175,11 +175,17 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
   // Redraw based on the new size whenever the browser window is resized.
   window.addEventListener('resize', render);
 
-  $('#personSearch').dropdown({
-    placeholder: 'Select Member',
-    values: memberNames,
-    onChange: (value, text, choice) => {
-      if(value != '') render({ personName: value });
+  $('#personSearch').search({
+    source: memberNames,
+    maxResults: 10,
+    searchFields: [
+      'title'
+    ],
+    onSelect: (result, response) => {
+      // hack to prevent inconsistent display when result is selected
+      // after entering a partial match
+      $('#searchPersonText').val(result.title);
+      if(result.title != '') render({ personName: result.title });
     }
   });
 
