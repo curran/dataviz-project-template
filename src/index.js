@@ -85,6 +85,9 @@ const sizes = {
 
 function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, racesForCalendar) {
 
+  const outOfState = 'Out of State';
+  const noPersonName = 'noPersonName';
+
   const townNames = getTownNames(drivingTimes);
   const townIndex = buildTownIndex(townNames);
   const { racesRunMap, memberTownsMap } = buildRacesRunMap(membersTowns, townNames);
@@ -99,13 +102,29 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
     });
   });
 
+  function getPersonAndTownName(params) {
+    // defaults
+    let myName = noPersonName;
+    let myTown = outOfState;
+    if(params != undefined) {
+      if('personName' in params) {
+        // if a person is provided, override the town selection
+        myName = params.personName;
+        myTown = memberTownsMap[myName];
+        // also set the town selector to the town to avoid confusion
+        $('#townSearch').dropdown('set selected', myTown);
+      } else if('townName' in params) {
+        myTown = params.townName;
+      }
+    }
+    return { myName, myTown }; // object literals in ES6
+  }
 
-  const render = () => {
+  const render = (params) => {
     const defaultName = memberNames[0].title;
 
-    let myName = $('.ui.search').search('get value');
-    if(!(myName in memberTownsMap)) myName = defaultName;
-    const myTown = memberTownsMap[myName];
+    const { myName, myTown } = getPersonAndTownName(params);
+
     const props = {
       calendar: {
         data: [
@@ -157,17 +176,25 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
   // Redraw based on the new size whenever the browser window is resized.
   window.addEventListener('resize', render);
 
-  $('.ui.search').search({
+  $('#personSearch').search({
     source: memberNames,
     maxResults: 10,
     searchFields: [
       'title'
     ],
-    onSelect: function(result, response) {
+    onSelect: (result, response) => {
       // hack to prevent inconsistency when result is selected after
       // entering a partial match
-      $('#searchText').val(result.title);
-      render();
+      $('#searchPersonText').val(result.title);
+      render({personName: result.title});
+    }
+  });
+
+  $('#townSearch').dropdown({
+    placeholder: 'Select Town',
+    values: [outOfState].concat(townNames).map(d => ({name: d, value: d})),
+    onChange: (value, text, choice) => {
+      if(value != '') render({townName: value});
     }
   });
 
