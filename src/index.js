@@ -112,7 +112,7 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
       myName = params.personName;
       myTown = memberTownsMap[myName];
       // also set the town selector to the town to avoid confusion
-      $('#townSearch').dropdown('set selected', myTown);
+      $('#townSearch').search('set value', myTown);
     } else if('townName' in params) {
       myTown = params.townName;
     }
@@ -175,7 +175,7 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
 
   $('#personSearch').search({
     source: memberNames,
-    maxResults: 10,
+    maxResults: 12,
     searchFields: [
       'title'
     ],
@@ -192,12 +192,19 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
     $('#personSearch').search('set value', '');
   });
 
-  $('#townSearch').dropdown({
-    placeholder: 'Select Town',
-    values: [outOfState].concat(townNames).map(d => ({name: d, value: d})),
-    onChange: (value, text, choice) => {
-      if(value != '') render({townName: value});
+  $('#townSearch').search({
+    source: [outOfState].concat(townNames).map(d => ({title: d})),
+    maxResults: 12,
+    searchFields: [ 'title' ],
+    searchFullText: false,
+    onSelect: (result, response) => {
+      $('#searchTownText').val(result.title);
+      if(result.title != '') render({townName: result.title});
     }
+  });
+
+  $('#townSearch').on('click', function (e) {
+    $('#townSearch').search('set value', '');
   });
 
 }
