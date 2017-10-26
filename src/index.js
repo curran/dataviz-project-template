@@ -42,6 +42,7 @@ function drawBox(name, box, functions, props) {
   g = gEnter.merge(g)
       .attr('transform', 'translate(' + x + ',' + y + ')');
 
+  /*
   // Draw a box (will remove this later)
   const rect = g.selectAll('.boxFrame').data([null]);
   rect
@@ -52,6 +53,7 @@ function drawBox(name, box, functions, props) {
     .merge(rect)
       .attr('width', width)
       .attr('height', height);
+  */
   // call the specific renderer
   functions[name](g, props[name], box);
 };
