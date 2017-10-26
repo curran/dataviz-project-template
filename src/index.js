@@ -65,7 +65,6 @@ const layout = {
       orientation: "horizontal",
       children: [
         "selector",
-        "drivingTimesFilter",
         "map"
       ],
       size: 3
@@ -146,8 +145,7 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
         ],
         margin: margin
       },
-      selector: { },
-      drivingTimesFilter: { }
+      selector: { }
     };
 
     // Extract the width and height that was computed by CSS.
@@ -181,6 +179,7 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
     searchFields: [
       'title'
     ],
+    searchFullText: false,
     onSelect: (result, response) => {
       // hack to prevent inconsistent display when result is selected
       // after entering a partial match
