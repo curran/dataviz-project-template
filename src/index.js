@@ -97,33 +97,32 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
   const memberNames = [];
   membersTowns.sort((x, y) => d3.ascending(x.Name, y.Name)).forEach((row, i) => {
     memberNames.push({ 
-      title: row.Name,
-      description:  row.Town + ' - ' + row.TotalTowns + ' towns'
+      name: row.Name + ' (' + row.TotalTowns + ' towns)',
+      value: row.Name
     });
   });
 
-  function getPersonAndTownName(params) {
-    // defaults
-    let myName = noPersonName;
-    let myTown = outOfState;
-    if(params != undefined) {
-      if('personName' in params) {
-        // if a person is provided, override the town selection
-        myName = params.personName;
-        myTown = memberTownsMap[myName];
-        // also set the town selector to the town to avoid confusion
-        $('#townSearch').dropdown('set selected', myTown);
-      } else if('townName' in params) {
-        myTown = params.townName;
-      }
+  // defaults
+  let myName = noPersonName;
+  let myTown = outOfState;
+
+  function setPersonAndTownName(params) {
+    if(params == undefined) return;
+    if('personName' in params) {
+      // if a person is provided, override the town selection
+      myName = params.personName;
+      myTown = memberTownsMap[myName];
+      // also set the town selector to the town to avoid confusion
+      $('#townSearch').dropdown('set selected', myTown);
+    } else if('townName' in params) {
+      myTown = params.townName;
     }
-    return { myName, myTown }; // object literals in ES6
   }
 
   const render = (params) => {
     const defaultName = memberNames[0].title;
 
-    const { myName, myTown } = getPersonAndTownName(params);
+    setPersonAndTownName(params);
 
     const props = {
       calendar: {
@@ -176,17 +175,11 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
   // Redraw based on the new size whenever the browser window is resized.
   window.addEventListener('resize', render);
 
-  $('#personSearch').search({
-    source: memberNames,
-    maxResults: 10,
-    searchFields: [
-      'title'
-    ],
-    onSelect: (result, response) => {
-      // hack to prevent inconsistency when result is selected after
-      // entering a partial match
-      $('#searchPersonText').val(result.title);
-      render({personName: result.title});
+  $('#personSearch').dropdown({
+    placeholder: 'Select Member',
+    values: memberNames,
+    onChange: (value, text, choice) => {
+      if(value != '') render({ personName: value });
     }
   });
 
