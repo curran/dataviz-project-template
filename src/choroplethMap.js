@@ -167,7 +167,10 @@ function choroplethMap(container, props, box) {
     myName
   ] = props.data;
 
-  const outOfState = 'Out of State'; // string marker
+  // string marker
+  // TODO: find a 'DRY' way of doing this -- these are also set in index.js
+  const outOfState = 'Out of State'; 
+  const noPersonName = 'noPersonName';
 
   const myTownIndex = townIndex[myTown];
 
@@ -334,7 +337,7 @@ function choroplethMap(container, props, box) {
       .attr('class', d => {
         const reachableClass = isReachable(d.properties.NAME10) ?
           ' reachable' : ' unreachable';
-        return racesRunMap[myName][d.properties.NAME10] ? 
+        return myName != noPersonName && racesRunMap[myName][d.properties.NAME10] ? 
             pathClassName + ' area alreadyRun' + reachableClass : 
             pathClassName + ' area ' + raceHorizonByTown[d.properties.NAME10].raceType + reachableClass;
       });
@@ -369,7 +372,7 @@ function choroplethMap(container, props, box) {
         .attr("class", d => {
             const reachableClass = isReachable(d.properties.NAME10) ?
               ' reachable' : ' unreachable';
-            return racesRunMap[myName][d.properties.NAME10] ? 
+            return myName != noPersonName && racesRunMap[myName][d.properties.NAME10] ? 
               pathClassName + ' area alreadyRun' + reachableClass : 
               pathClassName + ' area ' + raceHorizonByTown[d.properties.NAME10].raceType + reachableClass;
         });

@@ -24,10 +24,17 @@
       races in the next two weeks. Look up a member's name and it
       will mark the towns already run, and will use the member's
       registration town to help filter out towns by approximate
-      driving distance (assuming low traffic).</p>
-      <div class="ui search">
+      driving time (assuming low traffic).</p>
+      <div class="ui search" id="personSearch">
         <div class="ui icon input">
-          <input class="prompt" type="text" id="searchText" placeholder="Enter last name...">
+          <input class="prompt" type="text" id="searchPersonText" placeholder="Member last name...">
+          <i class="search icon"></i>
+        </div>
+        <div class="results"></div>
+      </div>
+      <div class="ui search" id="townSearch">
+        <div class="ui icon input">
+          <input class="prompt" type="text" id="searchTownText" placeholder="Select town...">
           <i class="search icon"></i>
         </div>
         <div class="results"></div>

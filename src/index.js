@@ -42,6 +42,7 @@ function drawBox(name, box, functions, props) {
   g = gEnter.merge(g)
       .attr('transform', 'translate(' + x + ',' + y + ')');
 
+  /*
   // Draw a box (will remove this later)
   const rect = g.selectAll('.boxFrame').data([null]);
   rect
@@ -52,6 +53,7 @@ function drawBox(name, box, functions, props) {
     .merge(rect)
       .attr('width', width)
       .attr('height', height);
+  */
   // call the specific renderer
   functions[name](g, props[name], box);
 };
@@ -65,7 +67,6 @@ const layout = {
       orientation: "horizontal",
       children: [
         "selector",
-        "drivingTimesFilter",
         "map"
       ],
       size: 3
@@ -85,6 +86,9 @@ const sizes = {
 
 function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, racesForCalendar) {
 
+  const outOfState = 'Out of State';
+  const noPersonName = 'noPersonName';
+
   const townNames = getTownNames(drivingTimes);
   const townIndex = buildTownIndex(townNames);
   const { racesRunMap, memberTownsMap } = buildRacesRunMap(membersTowns, townNames);
@@ -95,17 +99,32 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
   membersTowns.sort((x, y) => d3.ascending(x.Name, y.Name)).forEach((row, i) => {
     memberNames.push({ 
       title: row.Name,
-      description:  row.Town + ' - ' + row.TotalTowns + ' towns'
+      description: row.Town + ' - ' + row.TotalTowns + ' towns'
     });
   });
 
+  // defaults
+  let myName = noPersonName;
+  let myTown = outOfState;
 
-  const render = () => {
+  function setPersonAndTownName(params) {
+    if(params == undefined) return;
+    if('personName' in params) {
+      // if a person is provided, override the town selection
+      myName = params.personName;
+      myTown = memberTownsMap[myName];
+      // also set the town selector to the town to avoid confusion
+      $('#townSearch').search('set value', myTown);
+    } else if('townName' in params) {
+      myTown = params.townName;
+    }
+  }
+
+  const render = (params) => {
     const defaultName = memberNames[0].title;
 
-    let myName = $('.ui.search').search('get value');
-    if(!(myName in memberTownsMap)) myName = defaultName;
-    const myTown = memberTownsMap[myName];
+    setPersonAndTownName(params);
+
     const props = {
       calendar: {
         data: [
@@ -128,8 +147,7 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
         ],
         margin: margin
       },
-      selector: { },
-      drivingTimesFilter: { }
+      selector: { }
     };
 
     // Extract the width and height that was computed by CSS.
@@ -157,18 +175,38 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
   // Redraw based on the new size whenever the browser window is resized.
   window.addEventListener('resize', render);
 
-  $('.ui.search').search({
+  $('#personSearch').search({
     source: memberNames,
-    maxResults: 10,
+    maxResults: 12,
     searchFields: [
       'title'
     ],
-    onSelect: function(result, response) {
-      // hack to prevent inconsistency when result is selected after
-      // entering a partial match
-      $('#searchText').val(result.title);
-      render();
+    searchFullText: false,
+    onSelect: (result, response) => {
+      // hack to prevent inconsistent display when result is selected
+      // after entering a partial match
+      $('#searchPersonText').val(result.title);
+      if(result.title != '') render({ personName: result.title });
     }
+  });
+
+  $('#personSearch').on('click', function (e) {
+    $('#personSearch').search('set value', '');
+  });
+
+  $('#townSearch').search({
+    source: [outOfState].concat(townNames).map(d => ({title: d})),
+    maxResults: 12,
+    searchFields: [ 'title' ],
+    searchFullText: false,
+    onSelect: (result, response) => {
+      $('#searchTownText').val(result.title);
+      if(result.title != '') render({townName: result.title});
+    }
+  });
+
+  $('#townSearch').on('click', function (e) {
+    $('#townSearch').search('set value', '');
   });
 
 }
