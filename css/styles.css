@@ -13,6 +13,12 @@ body {
   bottom: 0px;
 }
 
+/***** member/town selector *****/
+
+#townSearch, #personSearch {
+  display: inline;
+}
+
 /***** Map CSS code *******/
 
 .car {
