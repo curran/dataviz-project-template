@@ -26,7 +26,7 @@ d3.csv('data/cfpb_complaints2.csv', row, data => {
     data = d3.nest()
       .key(function(d) {return d.date;})
       .key(function(d) {return d.product;})
-      .rollup(function(v) {return "prod_count": d3.sum(v,function(d) {return d.count;})})
+      .rollup(function(v) {return {"prod_count": d3.sum(v,function(d) {return d.count;})}})
       .entries(data);
 
     // Extract the width and height that was computed by CSS.
@@ -35,7 +35,7 @@ d3.csv('data/cfpb_complaints2.csv', row, data => {
       .attr('height', visualizationDiv.clientHeight);
 
     // Render the scatter plot.
-    scatterPlot(svg, {
+    stacked_area(svg, {
       data,
       xValue,
       xLabel,
