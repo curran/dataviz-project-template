@@ -244,9 +244,9 @@ function choroplethMap(container, props, box) {
 
   car
     .enter().append('path')
-      .attr('class', 'car')
       .attr('d', pathString)
     .merge(car)
+      .attr('class', myTown == outOfState ? 'car inactive' : 'car')
       .attr('transform', d => 'translate(' + d.x + ') scale(' + carScale + ')')
       .call(d3.drag()
           .on('start', myTown == outOfState ? () => {} : dragstarted)

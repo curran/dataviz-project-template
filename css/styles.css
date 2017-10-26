@@ -9,7 +9,7 @@ body {
   position: fixed;
   left: 0px;
   right: 0px;
-  top: 4em;
+  top: 12em;
   bottom: 0px;
 }
 
@@ -21,8 +21,16 @@ body {
   stroke-width:  1px;
 }
 
-.active {
+.car:hover {
   fill: #ff7f00;
+}
+
+.inactive, .inactive:hover {
+  fill: #fff;
+  stroke: #ccc;
+}
+
+.active {
   stroke: #333;
 }
 
