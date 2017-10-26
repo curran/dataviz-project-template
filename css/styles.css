@@ -71,15 +71,15 @@ body {
 }
 
 .alreadyRun {
-  fill: #a6dba0;
+  fill: #92c5de;
 }
 
 .hasRaceSoon {
-  fill: #c2a5cf;
+  fill: #d6604d;
 }
 
 .hasRaceVerySoon {
-  fill: #7b3294;
+  fill: #67001f;
 }
 
 .color-legend text {

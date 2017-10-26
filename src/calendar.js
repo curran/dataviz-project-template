@@ -20,7 +20,8 @@ function calendar(container, props, box) {
     cellSize = d3.min([width/(nWeeks+13), height/(nDays+8)]);
 
   
-  const legendColors = ['#fff', '#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
+  //const legendColors = ['#fff', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026'];
+  const legendColors = ['#fff', '#d1e5f0', '#92c5de', '#4393c3', '#2166ac', '#053061'];
   const legendLabels = [null, '&nbsp;&nbsp;1&ndash;5', '&nbsp;&nbsp;6&ndash;10', '11&ndash;15', '16&ndash;20', 'over 20'];
   const color = d3.scaleThreshold()
       .domain([1, 6, 11, 16, 21])

@@ -175,7 +175,7 @@ function choroplethMap(container, props, box) {
 
   // note: these colors must match the css above
   // TODO: DRY principle: perhaps do colors programmatically
-  const legendColors = ["#7b3294", "#c2a5cf", "#a6dba0"];
+  const legendColors = ["#67001f", "#d6604d", "#92c5de"];
   const legendLabels = ["Race within 1 week", "Race within 2 weeks", "Town already run"];
 
   // Extract the width and height that was computed by CSS.
