@@ -192,7 +192,7 @@ function choroplethMap(container, props, box) {
 
   const sliderScale = d3.scaleLinear()
     .domain([0, sliderParameters.width])
-    .range([0, 120])
+    .range([0, 150])
     .clamp(true);
 
   carSlider.x = sliderScale.invert(carSlider.value);
