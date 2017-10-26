@@ -1,11 +1,11 @@
-import scatterPlot from './scatterPlot'
+import stacked_area from './stacked_area'
 
-const xValue = d => d.sepalLength;
-const xLabel = 'Sepal Length';
-const yValue = d => d.petalLength;
-const yLabel = 'Petal Length';
-const colorValue = d => d.species;
-const colorLabel = 'Species';
+const xValue = "date";
+const xLabel = 'Time';
+const yValue = "prod_count";
+const yLabel = 'Complaint Count';
+const colorValue = "product";
+const colorLabel = 'product';
 const margin = { left: 120, right: 300, top: 20, bottom: 120 };
 
 const visualization = d3.select('#visualization');
@@ -13,16 +13,21 @@ const visualizationDiv = visualization.node();
 const svg = visualization.select('svg');
 
 const row = d => {
-  d.petalLength = +d.petalLength;
-  d.petalWidth = +d.petalWidth;
-  d.sepalLength = +d.sepalLength;
-  d.sepalWidth = +d.sepalWidth;
-  return d;
+d.date = new Date(d.date);
+d.product = +d.product;
+d.prod_count = +d.prod_count;
+return d;
 };
 
-d3.csv('data/iris.csv', row, data => {
+d3.csv('data/cfpb_complaints2.csv', row, data => {
 
   const render = () => {
+
+    data = d3.nest()
+      .key(function(d) {return d.date;})
+      .key(function(d) {return d.product;})
+      .rollup(function(v) {return "prod_count": d3.sum(v,function(d) {return d.count;})})
+      .entries(data);
 
     // Extract the width and height that was computed by CSS.
     svg
@@ -46,5 +51,5 @@ d3.csv('data/iris.csv', row, data => {
   render();
 
   // Redraw based on the new size whenever the browser window is resized.
-  window.addEventListener('resize', render);
+  //window.addEventListener('resize', render);
 });
