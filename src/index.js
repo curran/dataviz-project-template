@@ -189,6 +189,10 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
     }
   });
 
+  $('#personSearch').on('click', function (e) {
+    $('#personSearch').search('set value', '');
+  });
+
   $('#townSearch').dropdown({
     placeholder: 'Select Town',
     values: [outOfState].concat(townNames).map(d => ({name: d, value: d})),
