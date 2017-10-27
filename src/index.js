@@ -62,14 +62,14 @@ function drawBox(name, box, functions, props) {
 const layout = {
   orientation: "vertical",
   children: [
-    "calendar",
     {
       orientation: "horizontal",
       children: [
         "map"
       ],
       size: 3
-    }
+    },
+    "calendar"
   ]
 };
 
