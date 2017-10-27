@@ -20,8 +20,6 @@ var colorLegend = d3.legendColor()
 .labelOffset(4)
 .ascending(true);
 
-var areaColumn = colorValue;
-
 var xAxisLabelOffset = 48;
 var yAxisLabelOffset = 60;
 
@@ -36,6 +34,8 @@ export default function (svg, props) {
     colorLabel,
     margin
   } = props;
+
+  var areaColumn = colorValue;
 
   const width = svg.attr('width');
   const height = svg.attr('height');
