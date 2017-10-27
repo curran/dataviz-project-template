@@ -190,10 +190,6 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
     }
   });
 
-  $('#personSearch').on('click', function (e) {
-    $('#personSearch').search('set value', '');
-  });
-
   $('#townSearch').search({
     source: [outOfState].concat(townNames).map(d => ({title: d})),
     maxResults: 12,
@@ -203,10 +199,6 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
       $('#searchTownText').val(result.title);
       if(result.title != '') render({townName: result.title});
     }
-  });
-
-  $('#townSearch').on('click', function (e) {
-    $('#townSearch').search('set value', '');
   });
 
 }
