@@ -1,10 +1,10 @@
 import stacked_area from './stacked_area'
 
-const xValue = "date";
+const xValue = d => d.date;
 const xLabel = 'Time';
-const yValue = "prod_count";
+const yValue = d => d.prod_count;
 const yLabel = 'Complaint Count';
-const colorValue = "product";
+const colorValue = d => d.product;
 const colorLabel = 'product';
 const margin = { left: 120, right: 300, top: 20, bottom: 120 };
 
@@ -12,22 +12,27 @@ const visualization = d3.select('#visualization');
 const visualizationDiv = visualization.node();
 const svg = visualization.select('svg');
 
+const parseDate = d3.timeFormat("%Y-%m-%d");
+
 const row = d => {
 d.date = new Date(d.date);
-d.product = +d.product;
+d.product = d.product;
 d.prod_count = +d.prod_count;
 return d;
 };
 
 d3.csv('data/cfpb_complaints2.csv', row, data => {
 
-  const render = () => {
-
-    data = d3.nest()
-      .key(function(d) {return d.date;})
+  data = d3.nest()
+      .key(function(d) {return parseDate(d.date);})
       .key(function(d) {return d.product;})
       .rollup(function(v) {return {"prod_count": d3.sum(v,function(d) {return d.count;})}})
       .entries(data);
+
+      console.log(data)
+
+  const render = () => {
+
 
     // Extract the width and height that was computed by CSS.
     svg
