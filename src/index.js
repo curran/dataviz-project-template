@@ -66,7 +66,6 @@ const layout = {
     {
       orientation: "horizontal",
       children: [
-        "selector",
         "map"
       ],
       size: 3
@@ -146,8 +145,7 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
           myName
         ],
         margin: margin
-      },
-      selector: { }
+      }
     };
 
     // Extract the width and height that was computed by CSS.
