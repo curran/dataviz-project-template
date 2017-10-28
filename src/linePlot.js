@@ -165,10 +165,10 @@ var line1 = d3.line()
   .y(d => yScaleLeft(yValue1(d)))
   .curve(d3.curveBasis);
 
-  var line2 = d3.line()
-    .x(d => xScale(xValue(d)))
-    .y(d => yScaleLeft(yValue2(d)))
-    .curve(d3.curveCatmullRom);
+  // var line2 = d3.line()
+  //   .x(d => xScale(xValue(d)))
+  //   .y(d => yScaleLeft(yValue2(d)))
+  //   .curve(d3.curveCatmullRom);
 
 // var line3 = d3.line()
 //   .x(d => xScale(xValue(d)))
@@ -176,26 +176,24 @@ var line1 = d3.line()
 //   .curve(d3.curveBasis)
 
   //data join
-  const lines = g.selectAll('path').data(data);
+  var userLines = g.selectAll('path').data([null]);
 
   //Add new elements
-  const linesEnter = lines.enter().append('path');
+  var userLinesEnter = userLines.enter().append('path');
 
-  const linesExit = lines.exit()
-    .attr('class','exit')
-    .remove();
+  var userLinesExit = userLines.exit().remove();
 
   //UPDATE old elements present (change class)
-  lines
+  userLines
     .attr('class','update');
 
   //merge new and existing ell
-  linesEnter
+  userLinesEnter
     .attr('class','enter')
     .attr('fill','none')
     .attr('stroke', 'purple')
     .attr('stroke-width', 2)
-    .merge(lines)
+    .merge(userLines)
     .attr('d', line1(data));
 
   // linesEnter
@@ -207,7 +205,7 @@ var line1 = d3.line()
   //     .attr('d', line2(data));
 
   //remove elements for which there is no data
-  linesExit
+  userLinesExit
 
   //call X and Y axis
   xAxisG.call(xAxis);

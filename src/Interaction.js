@@ -33,7 +33,7 @@ var zoom = d3.zoom()
 export default function (div, props) {
       const {
         data,
-        xValue4,
+        date,
         yValue1,
         yValue2,
         yValue3,

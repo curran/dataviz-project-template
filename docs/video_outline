@@ -1,0 +1,63 @@
+video_outline.md
+
+1. Overview/Introduction
+  - explore the factors that influence the number of users of a bike share system
+  - time of use patterns
+  - relationships between users and quantitate attributes
+  - influence of categorical attributes
+
+2. The Data
+  - Source - DC Bike Sharing system
+  - Obtained from University of California Irvine
+  - Parameters in data set
+    - Date and Time:
+      - year, month, day, hour,
+      - derived: season, working day, holiday, day of week
+    - Weather:
+      - temperature, humidity, weathersit
+      -derived:  apparent temperature
+    - Users: casual, registered, total user count
+  - Processing
+    - Aggregate into daily intervals
+
+2. The questions
+  - What factors influence the number of casual and registered
+ users of the bike share system?
+  - How are these factors similar and different between the two types of users
+  - How much did ridership increase from 2011 to 2012, accounting for seasonality and weather?
+  - Where is growth in ridership coming - casual or registered users?3. The Design Intent
+
+3. Design Intent
+  - Show time based patterns using radial and rectilinear line charts
+  - Show relationships between continuous variables and the number of users using scatter plots
+  - Examine influences of categorical variables (weathersit, workingday, holiday) by filter the radial line plot and scatter plots (using working memory to spot changes in patterns)
+  - Look at differences in factors influencing casual and registered users using multiple views grouped type of user
+  - Use a one dimensional brush on the overview line chart to select specific time ranges shown in the radial and scatter plots
+
+4. The Visualizations
+  - Radial Time Series
+    - Data - Users vs Time of day
+    - Encoding
+      - User as line with time as angular position
+      - Color
+    - Interpretation -
+  - Scatter Plot
+    - Data - users (y-axis) vs temp, humidity and windspeed (x-axis)
+    - Encoding
+        - points shown as circles
+        - colors
+    - Interpretation
+  - Line chart overview
+    - Data - total number of daily users (y-axis) vs date
+    - Encoding
+      - users as line
+      - color
+    - Interpretation
+
+3. Interactions
+  - Panning & zooming from line chart overview
+  - Filtering by categorical variables
+
+4. Idioms Used
+  - Multiple Views
+  - Linked Navigation

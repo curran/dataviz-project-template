@@ -22,6 +22,7 @@ import radialPlot from './radialPlot'
       const xValue2 = d => d.hum;
       const xValue3 = d => d.windspeed;
       const xValue4 = d => d.dteday;
+      const xValue5 = d => d.hr;
       const xLabel1 = 'Temperature';
       const xLabel2 = 'Humidity';
       const xLabel3 = 'Windspeed';
@@ -40,10 +41,10 @@ import radialPlot from './radialPlot'
       const pointColor3 = "grey";
 
 
-      const margin = { left: 75, right: 10, top: 10, bottom: 75 };
+      const margin = { left: 50, right: 50, top: 50, bottom: 50 };
 
       //row function to parse daily csv
-      const row = d => {
+      const row1 = d => {
           d.instant = +d.instant;
           d.dteday = new Date(d.dteday); //need to parse date
           d.season = +d.season;
@@ -63,14 +64,30 @@ import radialPlot from './radialPlot'
           return d;
       };
 
-      const dataDaily = null;
-      const dataHourly = null;
+      const row2 = d => {
+          d.instant = +d.instant;
+          d.dteday = new Date(d.dteday); //need to parse date
+          d.hr = +d.hr;
+          d.season = +d.season;
+          d.yr = +d.yr;
+          d.mnth = +d.mnth;
+          d.holiday = +d.holiday; //flag
+          d.weekday = +d.weekday; //integer day of week (0-6)
+          d.workingday = +d.workingday; //flag
+          d.weathersit = +d.weathersit; //(1-4)
+          d.temp = +d.temp;
+          d.atemp = +d.atemp;
+          d.hum = +d.hum;
+          d.windspeed = +d.windspeed;
+          d.casual = +d.casual;
+          d.registered = +d.registered;
+          d.cnt = +d.cnt;
+          return d;
+      };
 
 
-d3.csv('data/day.csv', row, data => {
+d3.csv('data/day.csv', row1, data => {
 
-  const dataDaily = data;
-  const dataHourly = data;
 
   const render =() => {
 
@@ -88,6 +105,8 @@ d3.csv('data/day.csv', row, data => {
       margin:margin
     });
 
+    console.log("div1")
+
     scatterPlot(div2, {
       data:data,
       xValue:xValue2,
@@ -98,6 +117,8 @@ d3.csv('data/day.csv', row, data => {
       pointSize:pointSize,
       margin:margin
     });
+
+    console.log("div2")
 
     scatterPlot(div3, {
       data:data,
@@ -110,16 +131,18 @@ d3.csv('data/day.csv', row, data => {
       margin:margin
     });
 
-    scatterPlot(div4, {
+    console.log("div3")
+
+    radialPlot(div4, {
       data:data,
-      xValue:xValue1,
+      hour:xValue4,
       yValue:yValue1,
-      xLabel:xLabel1,
       yLabel:yLabel1,
       colorValue:pointColor1,
-      pointSize:pointSize,
       margin:margin
     });
+
+    console.log("div4")
 
     //second row of grid
     scatterPlot(div5, {
@@ -133,6 +156,8 @@ d3.csv('data/day.csv', row, data => {
       margin:margin
     });
 
+    console.log("div5")
+
     scatterPlot(div6, {
       data:data,
       xValue:xValue2,
@@ -143,6 +168,8 @@ d3.csv('data/day.csv', row, data => {
       pointSize:pointSize,
       margin:margin
     });
+
+    console.log("div6")
 
     scatterPlot(div7, {
       data:data,
@@ -155,16 +182,18 @@ d3.csv('data/day.csv', row, data => {
       margin:margin
     });
 
-    scatterPlot(div8, {
+    console.log("div7")
+
+    radialPlot(div8, {
       data:data,
-      xValue:xValue1,
+      hour:xValue4,
       yValue:yValue2,
-      xLabel:xLabel1,
       yLabel:yLabel2,
       colorValue:pointColor2,
-      pointSize:pointSize,
       margin:margin
     });
+
+    console.log("div8")
 
     linePlot(div9, {
       data:data,
@@ -178,6 +207,7 @@ d3.csv('data/day.csv', row, data => {
       margin:margin
     });
 
+    console.log("div9")
 
   }
 

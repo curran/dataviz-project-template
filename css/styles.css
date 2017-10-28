@@ -20,9 +20,23 @@ body {
 .tick line {
   stroke: LightGrey;
 }
+.tick line {
+stroke: #b5b5b5;
+stroke-width: 1;
+}
 
 .axis line {
   stroke: LightGrey;
+}
+.axis line,
+.axis circle {
+fill: none;
+stroke:  LightGrey;
+}
+
+.axis :last-of-type circle {
+  stroke: #333;
+  stroke-dasharray: none;
 }
 
 .tick text, .legendCells text {
@@ -35,4 +49,41 @@ body {
   fill: #635F5D;
   font-size: 8pt;
   font-family: sans-serif;
+}
+
+  .line {
+	fill: none;
+  stroke: red;
+  stroke-width: 2px;
+	clip-path: url(#clip)
+  }
+	.line_casual {
+	fill: none;
+  stroke: darkblue;
+  stroke-width: 2px;
+	clip-path: url(#clip)
+  }
+  .line_registered {
+	fill: none;
+  stroke: green;
+  stroke-width: 2px;
+	clip-path: url(#clip)
+  }
+ .line_total {
+	fill: none;
+  stroke: black;
+  stroke-width: 1px;
+	clip-path: url(#clip)
+  }
+	.line_temp {
+	fill: none;
+  stroke: orange;
+  stroke-width: 1px;
+  clip-path: url(#clip)
+  }
+
+  .zoom {
+  cursor: move;
+  fill: none;
+  pointer-events: all;
 }
