@@ -5,12 +5,12 @@ const colorScale = d3.scaleOrdinal(d3.schemeCategory20);
 
 const xAxis = d3.axisBottom()
 .scale(xScale)
-.tickPadding(15)
+.tickPadding(15);
 
 const yAxis = d3.axisLeft()
 .scale(yScale)
 .ticks(5)
-.tickPadding(15)
+.tickPadding(15);
 
 const colorLegend = d3.legendColor()
 .scale(colorScale)
@@ -24,7 +24,7 @@ const yAxisLabelOffset = 60;
 
 export default function (svg, props) {
   const { 
-    data,
+    data1,
     xValue,
     xLabel,
     yValue,
@@ -36,27 +36,25 @@ export default function (svg, props) {
 
   const areaColumn = colorValue;
 
-  svg.append("svg")
+  svg.select("svg")
 
   const width = svg.attr('width');
   const height = svg.attr('height');
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
 
-  const g = svg.append("g")
+  var g = svg.append("g")
   .attr("transform", `translate(${margin.left},${margin.top})`);
 
-  const xAxisG = g.append("g")
-  .attr("class", "x axis")
-  .attr("transform", `translate(0, ${innerHeight})`)
+  var xAxisG = g.append("g")
+  .attr("transform", `translate(0, ${innerHeight})`);
   xAxisG.append('text')
     .attr('class', 'axis-label')
     .attr('x', innerWidth / 2)
     .attr('y', 100)
     .text(xLabel);
 
-  const yAxisG = g.append("g")
-  .attr("class", "y axis");
+  var yAxisG = g.append("g");
   yAxisG.append('text')
     .attr('class', 'axis-label')
     .attr('x', -innerHeight / 2)
@@ -65,7 +63,7 @@ export default function (svg, props) {
     .style('text-anchor', 'middle')
     .text(yLabel);
 
-  const colorLegendG = g.append("g")
+  var colorLegendG = g.append("g")
   .attr("class", "color-legend")
   .attr('transform', `translate(${innerWidth + 60}, 150)`);
 
@@ -85,7 +83,7 @@ export default function (svg, props) {
 
   const nested = d3.nest()
     .key(areaColumn)
-    .entries(data);
+    .entries(data1);
 
   console.log(nested)
 
@@ -95,7 +93,7 @@ export default function (svg, props) {
   console.log(layers);
 
   xScale
-    .domain(d3.extent(data,xValue))
+    .domain(d3.extent(data1,xValue))
     .range([0, innerWidth]);
 
   yScale.domain([
@@ -111,7 +109,7 @@ export default function (svg, props) {
   colorScale.domain(d3.range(keys.length));
 
   var paths = g.selectAll(".chart-area").data(layers);
-  paths.enter().append("path").attr("class", "chart-line");
+  paths.enter().append("path").attr("class",".chart-area");
   paths.exit().remove();
   paths
     .attr("d", function (d){ return area(d.values); })
