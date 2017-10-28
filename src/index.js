@@ -41,7 +41,7 @@ import radialPlot from './radialPlot'
       const pointColor3 = "grey";
 
 
-      const margin = { left: 50, right: 50, top: 50, bottom: 50 };
+      const margin = { left: 60, right: 10, top: 10, bottom: 60 };
 
       //row function to parse daily csv
       const row1 = d => {
