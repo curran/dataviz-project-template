@@ -6,15 +6,17 @@ import {
   getTownNames,
   buildTownIndex,
   buildRaceHorizon,
-  buildRacesSoonTables
+  buildRacesSoonTables,
+  getMapHeight
 } from './choroplethMap'
 
 import {
   calendar,
-  parseRace as parseRacesForCalendar
+  parseRace as parseRacesForCalendar,
+  getCalendarHeight
 } from './calendar.js'
 
-const margin = { left: 120, right: 300, top: 20, bottom: 120 };
+const margin = { left: 0, right: 0, top: 0, bottom: 0 };
 
 const visualization = d3.select('#visualization');
 const visualizationDiv = visualization.node();
@@ -54,6 +56,7 @@ function drawBox(name, box, functions, props) {
       .attr('width', width)
       .attr('height', height);
   */
+
   // call the specific renderer
   functions[name](g, props[name], box);
 };
@@ -149,8 +152,10 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
     };
 
     // Extract the width and height that was computed by CSS.
-    const width = visualizationDiv.clientWidth;
-    const height = visualizationDiv.clientHeight;
+    //const width = visualizationDiv.clientWidth;
+    const containerBox = $('.ui.container').get(0).getBoundingClientRect();
+    const width = containerBox.width + containerBox.left;
+    const height = getMapHeight(width) + getCalendarHeight(width);
     svg
       .attr('width', width)
       .attr('height', height);
@@ -160,7 +165,14 @@ function dataLoaded(error, mapData, drivingTimes, membersTowns, racesForMap, rac
       height: height
     };
 
-    const boxes = d3.boxes(layout, sizes, box);
+    //const boxes = d3.boxes(layout, sizes, box);
+
+    const boxes = {
+      map: {x: containerBox.left, y: 0, width: containerBox.width, height: getMapHeight(containerBox.width)},
+      calendar: {x: containerBox.left, y: getMapHeight(containerBox.width), width: containerBox.width, height: getCalendarHeight(containerBox.width)}
+    };
+
+
 
     // Render the choropleth map.
     Object.keys(boxes).forEach( name => { drawBox(name, boxes[name], functions, props); } );

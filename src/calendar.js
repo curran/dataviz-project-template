@@ -9,16 +9,30 @@ const parseRace = d => {
 
 const formatCell = d3.format("0");
 
+const nWeeks = 52;
+const nDays = 7;
+
+function getNumRows(width) {
+  return width > 800 ? 1 : width > 400 ? 2 : 4;
+}
+
+function getCellSize(width) {
+  return width/(nWeeks+13)*Math.sqrt(getNumRows(width));
+}
+
+function getCalendarHeight(width) {
+  return getCellSize(width)*10 * getNumRows(width);
+}
+
 function calendar(container, props, box) {
   const [racesData] = props.data;
 
-  const nWeeks = 52;
-  const nDays = 7;
 
-  const width = box.width,
-    height = box.height,
-    cellSize = d3.min([width/(nWeeks+13), height/(nDays+8)]);
+  const width = box.width, height = box.height;
 
+  // note: wrapping algorithm designed for nRows = 1, 2, and 4
+  const nRows = getNumRows(width);
+  const cellSize = getCellSize(width);
   
   //const legendColors = ['#fff', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026'];
   const legendColors = ['#fff', '#d1e5f0', '#92c5de', '#4393c3', '#2166ac', '#053061'];
@@ -37,8 +51,8 @@ function calendar(container, props, box) {
       .attr('class', 'calendargroup');
   calendarG = calendarEnter.merge(calendarG)
       .attr("transform", "translate(" + 
-        ((width - cellSize * 53) / 2 - 2*cellSize) + "," + 
-        (height - cellSize * 7 - 1)/2 + ")");
+        ((width - cellSize * 53/nRows) / 2 - 1*2*cellSize/nRows) + "," + 
+        2*cellSize + ")");
 
   // year label
   const yearLabel = calendarG.selectAll('.yearLabel').data([null]);
@@ -63,6 +77,28 @@ function calendar(container, props, box) {
     .selectAll('rect')
     .data(d3.timeDays(new Date(currentYear, 0, 1), new Date(currentYear + 1, 0, 1)));
 
+
+  function getQuarter(d) {
+    return Math.floor(d.getMonth()/3);
+  }
+
+  function getRow(d) {
+    return Math.floor(getQuarter(d)/4*nRows);
+  }
+
+  function getColumn(d) {
+    const week = d3.timeWeek.count(d3.timeYear(d), d);
+    return week - getRow(d)*(52/nRows);
+  }
+
+  function getDateX(d) {
+    return getColumn(d)*cellSize;
+  }
+
+  function getDateY(d) {
+    return d.getDay()*cellSize + getRow(d)*10*cellSize;
+  }
+
   rect = rect
     .enter().append("rect")
       .attr('fill', 'none')
@@ -71,8 +107,8 @@ function calendar(container, props, box) {
     .merge(rect)
       .attr("width", cellSize)
       .attr("height", cellSize)
-      .attr("x", d => d3.timeWeek.count(d3.timeYear(d), d) * cellSize)
-      .attr("y", d => d.getDay() * cellSize);
+      .attr("x", d => getDateX(d))
+      .attr("y", d => getDateY(d));
 
   // fill the rects for each day
   const fmt2 = d3.timeFormat("%Y-%m-%d");
@@ -89,7 +125,7 @@ function calendar(container, props, box) {
     .enter().append('g')
       .attr('class', 'calendarLegendG')
     .merge(colorLegendG)
-      .attr("transform", "translate(" + (54*cellSize) + "," + (0.5*cellSize) + ")");
+      .attr("transform", "translate(" + (54*cellSize/nRows) + "," + (0.5*cellSize) + ")");
 
   const colorLegend = colorLegendG.selectAll('rect').data(legendColors.slice(1));
   const legendLineHeight = cellSize*1.4;
@@ -107,7 +143,6 @@ function calendar(container, props, box) {
     .enter().append('text')
       .attr('fill', d => d)
       .attr('fill', '#666')
-      //.attr('text-anchor', 'middle')
       .attr('alignment-baseline', 'middle')
       .html(d => d)
     .merge(colorLegendText)
@@ -130,7 +165,7 @@ function calendar(container, props, box) {
 
   // frame for today's date
   const today = d3.timeDay(new Date());
-  const todayRect = calendarG.selectAll('.todayDate').data([null]);
+  const todayRect = calendarG.selectAll('.todayDate').data([today]);
   todayRect
     .enter().append('rect')
       .attr('class', 'todayDate')
@@ -140,8 +175,8 @@ function calendar(container, props, box) {
       .attr('width', cellSize)
       .attr('height', cellSize)
       .attr('stroke-width', d3.min([3, cellSize/5]))
-      .attr('x', d3.timeWeek.count(d3.timeYear(today), today)*cellSize)
-      .attr('y', today.getDay() * cellSize);
+      .attr("x", d => getDateX(d))
+      .attr("y", d => getDateY(d));
 
   // monthOutlines
   let monthOutlinesG = calendarG.selectAll('#monthOutlines').data([null]);
@@ -169,13 +204,16 @@ function calendar(container, props, box) {
   // add the labels
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const monthLabels = calendarG.selectAll('.monthLabel').data(months);
+  function getMonthLabelRow(m) {
+    return Math.floor(m/(12/nRows));
+  }
   monthLabels
     .enter().append('text')
       .attr('class', 'monthLabel')
-      .attr('y', -10)
       .text(d => d)
     .merge(monthLabels)
-      .attr('x', (d,i) => monthX[i])
+      .attr('x', (d, i) => monthX[i])
+      .attr('y', (d, i) => -10 + getMonthLabelRow(i)*10*cellSize)
       .attr('font-size', cellSize*1.2);
 
   const weekDayText = ['Su','Mo','Tu','We','Th','Fr','Sa'];
@@ -191,18 +229,19 @@ function calendar(container, props, box) {
       .attr('y', (d, i) => cellSize*(i + 0.8));
 
 
-
   function pathMonth(t0) {
     const t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
         d0 = t0.getDay(), w0 = d3.timeWeek.count(d3.timeYear(t0), t0),
         d1 = t1.getDay(), w1 = d3.timeWeek.count(d3.timeYear(t1), t1);
-    return "M" + (w0 + 1) * cellSize + "," + d0 * cellSize
-        + "H" + w0 * cellSize + "V" + 7 * cellSize
-        + "H" + w1 * cellSize + "V" + (d1 + 1) * cellSize
-        + "H" + (w1 + 1) * cellSize + "V" + 0
-        + "H" + (w0 + 1) * cellSize + "Z";
+    const c0 = getColumn(t0), c1 = getColumn(t1);
+    const rowOffset = getRow(t0)*10*cellSize;
+    return "M" + (c0 + 1)*cellSize + "," + (d0*cellSize + rowOffset)
+        + "H" + c0*cellSize + "V" + (7*cellSize + rowOffset)
+        + "H" + c1 * cellSize + "V" + ((d1 + 1)*cellSize + rowOffset)
+        + "H" + (c1 + 1) * cellSize + "V" + rowOffset
+        + "H" + (c0 + 1) * cellSize + "Z";
   }
 }
 
-export { calendar, parseRace };
+export { calendar, parseRace, getCalendarHeight };
 

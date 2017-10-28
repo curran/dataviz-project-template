@@ -6,11 +6,11 @@ body {
 
 /* Make the chart container fill the page using CSS. */
 #visualization {
-  position: fixed;
   left: 0px;
   right: 0px;
-  top: 15em;
+  top: 5em;
   bottom: 0px;
+  display: block;
 }
 
 /***** member/town selector *****/

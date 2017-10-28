@@ -1,3 +1,7 @@
+function getMapHeight(width) {
+  return width*3/4;
+}
+
 function getTownNames(drivingTimeData) {
   return drivingTimeData.columns;
 }
@@ -391,6 +395,7 @@ export {
   getTownNames,
   buildTownIndex,
   buildRaceHorizon,
-  buildRacesSoonTables
+  buildRacesSoonTables,
+  getMapHeight
 };
 
