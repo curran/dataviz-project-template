@@ -97,7 +97,7 @@ function buildRacesSoonTables(races) {
     const daysToRace = d3.timeDay.count(today, row.raceDay);
     if(daysToRace >= 0 && daysToRace <= 14) {
       const raceString = "<tr><td><span class='racedate'>" + 
-          row["Date/Time"] + 
+          row["Date/Time"].slice(5) + 
           "</span></td><td><span class='racedistance'>" + 
           row.Distance + "</span></td><td><span class='racename'>" + 
           row.Name + "</span></td></tr>";          
@@ -182,8 +182,8 @@ function choroplethMap(container, props, box) {
 
   // note: these colors must match the css above
   // TODO: DRY principle: perhaps do colors programmatically
-  const legendColors = ["#67001f", "#d6604d", "#92c5de"];
-  const legendLabels = ["Race within 1 week", "Race within 2 weeks", "Town already run"];
+  const legendColors = ['#d73027', '#fdae61', '#2c7bb6'];
+  const legendLabels = ['Race within 1 week', 'Race within 2 weeks', 'Town already run'];
 
   // Extract the width and height that was computed by CSS.
   const width = box.width;

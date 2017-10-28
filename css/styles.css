@@ -22,16 +22,14 @@ body {
 /***** Map CSS code *******/
 
 .car {
-  fill: #ff7f00;
+  fill: #33a02c;
   opacity: 0.7;
-  /*fill: #eaeaea; */
   stroke: #666;
   stroke-width:  1px;
 }
 
 .car:hover {
   opacity: 1;
-  fill: #ff7f00;
 }
 
 .inactive, .inactive:hover {
@@ -41,7 +39,7 @@ body {
 
 .active {
   opacity: 1;
-  fill: #ff7f00;
+  fill: #33a02c;
   stroke: #333;
 }
 
@@ -70,7 +68,7 @@ body {
 }
 
 .area:hover {
-  fill: #ff7f00;
+  fill: #33a02c;
 }
 
 .reachable {
@@ -82,27 +80,19 @@ body {
 }
 
 .alreadyRun {
-  fill: #92c5de;
+  fill: #2c7bb6;
 }
 
 .hasRaceSoon {
-  fill: #d6604d;
+  fill: #fdae61;
 }
 
 .hasRaceVerySoon {
-  fill: #67001f;
-}
-
-.color-legend text {
-  font-size: 12pt;
-  color: #666;
-}
-.color-legend rect {
-  opacity: 0.9;
+  fill: #d73027;
 }
 
 .d3-tip {
-  font-size: 1.2em;
+  font-size: 1em;
   line-height: 1.2;
   padding: 0.5em;
   background: rgba(0, 0, 0, 0.85);
@@ -146,7 +136,7 @@ body {
 /************ calendar CSS *********/
 
 .day_with_race:hover {
-  fill: #ff7f00;
+  fill: #33a02c;
 }
 
 .yearLabel {
