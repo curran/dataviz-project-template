@@ -160,8 +160,43 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       };
 
 
-d3.csv('data/day.csv', row1, data => {
+d3.csv('data/hour.csv', row1, data => {
+  var dataHour = data
+  var nestbyday = d3.nest()
+    			.key(d => d.dteday)
+        	.rollup(function(d) {
+            return{
+              'dteday': new Date(d3.mean(d, e=>+e.dteday)),
+              'season': d3.mean(d, e=>+e.season),
+              'yr': d3.mean(d, e=>+e.yr),
+              'mnth': d3.mean(d, e=>+e.mnth),
+              'holiday': d3.mean(d, e=>+e.holiday),
+              'weekday': d3.mean(d, e=>+e.weekday),
+              'workingday': d3.mean(d, e=>+e.workingday),
+              'weathersit': d3.max(d, e=>+e.weathersit),
+              'temp': d3.mean(d, e=>+e.temp),
+              'atemp': d3.mean(d, e=>+e.atemp),
+              'hum': d3.mean(d, e=>+e.hum),
+              'windspeed':d3.mean(d, e=>+e.windspeed),
+              'casual': d3.sum(d, e=>+e.casual),
+              'registered': d3.sum(d, e=>+e.registered),
+              'cnt':  d3.sum(d, e=>+e.cnt)
+            };
+          })
+         	.entries(data);
+        console.log(nestbyday);
+        //unnest from 		      //https://bl.ocks.org/SpaceActuary/723b26e187e6bbc2608f
 
+      function unnest(data, children){
+          var output=[];
+          data.forEach((d,i)=>{
+            output.push(d[children]);
+            })
+				return output;
+        };
+
+      var dataDay = unnest(nestbyday, "value");
+      console.log(dataDay);
 
   const render =() => {
 
@@ -169,7 +204,7 @@ d3.csv('data/day.csv', row1, data => {
 
     //first row of grids
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div1, {
-      data:data,
+      data:dataDay,
       xValue:xValue1,
       yValue:yValue1,
       xLabel:xLabel1,
@@ -182,7 +217,7 @@ d3.csv('data/day.csv', row1, data => {
     console.log("div1")
 
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div2, {
-      data:data,
+      data:dataDay,
       xValue:xValue2,
       yValue:yValue1,
       xLabel:xLabel2,
@@ -195,7 +230,7 @@ d3.csv('data/day.csv', row1, data => {
     console.log("div2")
 
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div3, {
-      data:data,
+      data:dataDay,
       xValue:xValue3,
       yValue:yValue1,
       xLabel:xLabel3,
@@ -208,7 +243,7 @@ d3.csv('data/day.csv', row1, data => {
     console.log("div3")
 
     Object(__WEBPACK_IMPORTED_MODULE_2__radialPlot__["a" /* default */])(div4, {
-      data:data,
+      data:dataHour,
       hour:xValue4,
       yValue:yValue1,
       yLabel:yLabel1,
@@ -220,7 +255,7 @@ d3.csv('data/day.csv', row1, data => {
 
     //second row of grid
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div5, {
-      data:data,
+      data:dataDay,
       xValue:xValue1,
       yValue:yValue2,
       xLabel:xLabel1,
@@ -233,7 +268,7 @@ d3.csv('data/day.csv', row1, data => {
     console.log("div5")
 
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div6, {
-      data:data,
+      data:dataDay,
       xValue:xValue2,
       yValue:yValue2,
       xLabel:xLabel2,
@@ -246,7 +281,7 @@ d3.csv('data/day.csv', row1, data => {
     console.log("div6")
 
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div7, {
-      data:data,
+      data:dataDay,
       xValue:xValue3,
       yValue:yValue2,
       xLabel:xLabel3,
@@ -259,7 +294,7 @@ d3.csv('data/day.csv', row1, data => {
     console.log("div7")
 
     Object(__WEBPACK_IMPORTED_MODULE_2__radialPlot__["a" /* default */])(div8, {
-      data:data,
+      data:dataHour,
       hour:xValue4,
       yValue:yValue2,
       yLabel:yLabel2,
@@ -270,7 +305,7 @@ d3.csv('data/day.csv', row1, data => {
     console.log("div8")
 
     Object(__WEBPACK_IMPORTED_MODULE_1__linePlot__["a" /* default */])(div9, {
-      data:data,
+      data:dataDay,
       xValue:xValue4,
       yValue1:yValue1,
       yValue2:yValue2,
@@ -804,6 +839,7 @@ ga.append("text")
     .attr("transform", function(d) { return d < 270 && d > 90 ? "rotate(180 " + (yScaleMax + 6) + ",0)" : null; })
     .text(function(d,i) { return i*100 + "h"; });
 
+ga.exit().remove();
 
 //optional y axis
 // const yAxisG = g.append('g');
@@ -816,7 +852,7 @@ ga.append("text")
 //   .text(yLabel);
 //
 
-const angleHours = d => (hour/24 *Math.PI*2+ radialOffset);
+const angleHours = d => (d.hr/24 *Math.PI*2+ radialOffset);
 const curveFunction = d3.curveCatmullRom
 
 const radialPath = d3.lineRadial()

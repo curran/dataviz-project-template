@@ -116,6 +116,7 @@ ga.append("text")
     .attr("transform", function(d) { return d < 270 && d > 90 ? "rotate(180 " + (yScaleMax + 6) + ",0)" : null; })
     .text(function(d,i) { return i*100 + "h"; });
 
+ga.exit().remove();
 
 //optional y axis
 // const yAxisG = g.append('g');
@@ -128,7 +129,7 @@ ga.append("text")
 //   .text(yLabel);
 //
 
-const angleHours = d => (hour/24 *Math.PI*2+ radialOffset);
+const angleHours = d => (d.hr/24 *Math.PI*2+ radialOffset);
 const curveFunction = d3.curveCatmullRom
 
 const radialPath = d3.lineRadial()
