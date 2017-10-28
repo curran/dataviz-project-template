@@ -22,12 +22,15 @@ body {
 /***** Map CSS code *******/
 
 .car {
-  fill: #eaeaea; 
+  fill: #ff7f00;
+  opacity: 0.7;
+  /*fill: #eaeaea; */
   stroke: #666;
   stroke-width:  1px;
 }
 
 .car:hover {
+  opacity: 1;
   fill: #ff7f00;
 }
 
@@ -37,6 +40,7 @@ body {
 }
 
 .active {
+  opacity: 1;
   fill: #ff7f00;
   stroke: #333;
 }
