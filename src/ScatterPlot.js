@@ -1,17 +1,17 @@
 
-export default function (countryName, width, height) {
-
+export default function (countryName) {
     const margin = { left: 100, right: 60, top: 20, bottom: 120 };
-    const innerWidth = width - margin.left - margin.right;
-    const innerHeight = height - margin.top - margin.bottom;
+    const innerWidth = 500 - margin.left - margin.right;
+    const innerHeight = 400 - margin.top - margin.bottom;
 
     d3.select("div#svg_chart1_container").remove();
     var svg_chart1 = d3.select("div#detailChart1")
         .append("div")
         .attr("id", "svg_chart1_container")
         .append("svg")
-        .attr("width", width)
-        .attr("height", height)
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0 0 " + 700 + " " + 400)
+        .attr("id", "svg-content-responsive")
         .attr('transform', `translate(${margin.left},${margin.top})`);
 
     const xValue = d => d['Percentage of Individuals using the Internet (ICT)'];
@@ -51,7 +51,7 @@ export default function (countryName, width, height) {
         .scale(xScale)
         .tickPadding(15)
         .tickSize(-innerHeight)
-        //.tickFormat(d3.format("d"));
+    //.tickFormat(d3.format("d"));
     var yTicks = 5;
     const yAxis = d3.axisLeft()
         .scale(yScale)

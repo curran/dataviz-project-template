@@ -1,16 +1,30 @@
 import slider from './Slider'
 import scatterPlot from './ScatterPlot'
 
-export default function (width, height) {
+export default function () {
 
-    scatterPlot("China", width/2, height/2);
-    slider("China", width/2, height/2);
+    scatterPlot("China");
+    slider("China");
+
+    function getRatio(side) {
+        return (( margin[side] / width ) * 100 + 1) + "%";
+    }
+
+    var margin = {left: 5, top: 5, right: 5, bottom: 5},
+        width = 750,
+        height = 800,
+        marginRatio = {
+            left: getRatio("left"),
+            top: getRatio("top"),
+            right: getRatio("right"),
+            bottom: getRatio("bottom")
+        };
 
     var sens = 0.3, focused;
     var projection = d3.geoOrthographic()
         .scale(280)
         .rotate([300, -20])
-        .translate([width * 1.5/4, height/2])
+        .translate([281.25, 400])
         .clipAngle(90);
 
     var path = d3.geoPath()
@@ -20,8 +34,10 @@ export default function (width, height) {
         .append("div")
         .attr("id", "svg-container")
         .append("svg")
-        .attr("width", width)
-        .attr("height", height);
+        .style("padding", marginRatio.top + " " + marginRatio.right + " " + marginRatio.bottom + " " + 120)
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0 0 " + ( width + margin.left + margin.right  ) + " " + ( height + margin.top + margin.bottom ))
+        .attr("id", "svg-content-responsive");
 
     svg_earth.append("path")
         .datum({type: "Sphere"})
@@ -69,8 +85,8 @@ export default function (width, height) {
             .on("dblclick", function (d) {
                 document.getElementById("titleContent").innerHTML
                     = "Internet User and Mobile Subscriptions of " + countryById[d.id];
-                scatterPlot(countryById[d.id], width/2, height/2);
-                slider(countryById[d.id], width/2, height/2);
+                scatterPlot(countryById[d.id]);
+                slider(countryById[d.id]);
             })
 
             .on("mouseover", function (d) {

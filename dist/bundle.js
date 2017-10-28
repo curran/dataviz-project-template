@@ -77,6 +77,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
 
 
 
+
 /***/ }),
 /* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -87,16 +88,30 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
 
 
 
-/* harmony default export */ __webpack_exports__["a"] = (function (width, height) {
+/* harmony default export */ __webpack_exports__["a"] = (function () {
 
-    Object(__WEBPACK_IMPORTED_MODULE_1__ScatterPlot__["a" /* default */])("China", width/2, height/2);
-    Object(__WEBPACK_IMPORTED_MODULE_0__Slider__["a" /* default */])("China", width/2, height/2);
+    Object(__WEBPACK_IMPORTED_MODULE_1__ScatterPlot__["a" /* default */])("China");
+    Object(__WEBPACK_IMPORTED_MODULE_0__Slider__["a" /* default */])("China");
+
+    function getRatio(side) {
+        return (( margin[side] / width ) * 100 + 1) + "%";
+    }
+
+    var margin = {left: 5, top: 5, right: 5, bottom: 5},
+        width = 750,
+        height = 800,
+        marginRatio = {
+            left: getRatio("left"),
+            top: getRatio("top"),
+            right: getRatio("right"),
+            bottom: getRatio("bottom")
+        };
 
     var sens = 0.3, focused;
     var projection = d3.geoOrthographic()
         .scale(280)
         .rotate([300, -20])
-        .translate([width * 1.5/4, height/2])
+        .translate([281.25, 400])
         .clipAngle(90);
 
     var path = d3.geoPath()
@@ -106,8 +121,10 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
         .append("div")
         .attr("id", "svg-container")
         .append("svg")
-        .attr("width", width)
-        .attr("height", height);
+        .style("padding", marginRatio.top + " " + marginRatio.right + " " + marginRatio.bottom + " " + 120)
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0 0 " + ( width + margin.left + margin.right  ) + " " + ( height + margin.top + margin.bottom ))
+        .attr("id", "svg-content-responsive");
 
     svg_earth.append("path")
         .datum({type: "Sphere"})
@@ -155,8 +172,8 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
             .on("dblclick", function (d) {
                 document.getElementById("titleContent").innerHTML
                     = "Internet User and Mobile Subscriptions of " + countryById[d.id];
-                Object(__WEBPACK_IMPORTED_MODULE_1__ScatterPlot__["a" /* default */])(countryById[d.id], width/2, height/2);
-                Object(__WEBPACK_IMPORTED_MODULE_0__Slider__["a" /* default */])(countryById[d.id], width/2, height/2);
+                Object(__WEBPACK_IMPORTED_MODULE_1__ScatterPlot__["a" /* default */])(countryById[d.id]);
+                Object(__WEBPACK_IMPORTED_MODULE_0__Slider__["a" /* default */])(countryById[d.id]);
             })
 
             .on("mouseover", function (d) {
@@ -185,11 +202,10 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-//import barChart from './BarChart'
 
-/* harmony default export */ __webpack_exports__["a"] = (function (countryName, width, height) {
+/* harmony default export */ __webpack_exports__["a"] = (function (countryName) {
 
-    updateBarChart("China", 2010, width, height)
+    updateBarChart("China", 2010);
     const margin = { left: 60, right: 60, top: 0, bottom: 120 };
 
     d3.select("div#svg_chart2_container").remove();
@@ -197,18 +213,18 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
         .append("div")
         .attr("id", "svg_chart2_container")
         .append("svg")
-        .attr("width", width)
-        .attr("height", height/5)
+        .attr("width", 500)
+        .attr("height", 80)
         .attr('transform', `translate(${margin.left},${margin.top})`);
 
     var x = d3.scaleLinear()
         .domain([1990, 2013])
-        .range([0, width - margin.left - margin.right])
+        .range([0, 500 - margin.left - margin.right])
         .clamp(true);
 
     var slider = svg_chart2.append("g")
         .attr("class", "slider")
-        .attr("transform", "translate(" + margin.left + "," + height / 20 + ")");
+        .attr("transform", "translate(" + margin.left + "," + 400 / 20 + ")");
 
     slider.append("line")
         .attr("class", "track")
@@ -239,19 +255,18 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
     function handler(h) {
         h = Math.round(h);
         handle.attr("cx", x(h));
-        //svg_chart2.style("background-color", d3.hsl(h, 0.8, 0.8));
-        updateBarChart(countryName, h, width, height);
+        updateBarChart(countryName, h);
     }
 
 
-    function updateBarChart(selectedCountryName, selectedYear, outerWidth, outerHeight){
+    function updateBarChart(selectedCountryName, selectedYear){
 
         d3.select("div#svg_chart3_container").remove();
 
         var margin = {top: 20, right: 60, bottom: 10, left: 60},
             padding = {top: 0, right: 20, bottom: 40, left: 70},
-            innerWidth = outerWidth - margin.left - margin.right,
-            innerHeight = outerHeight - margin.top - margin.bottom,
+            innerWidth = 500 - margin.left - margin.right,
+            innerHeight = 400 - margin.top - margin.bottom,
             width = innerWidth - padding.left - padding.right,
             height = innerHeight - padding.top - padding.bottom;
 
@@ -259,8 +274,9 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
             .append("div")
             .attr("id", "svg_chart3_container")
             .append("svg")
-            .attr("width", outerWidth)
-            .attr("height", outerHeight)
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 " + 700 + " " + 400)
+            .attr("id", "svg-content-responsive")
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -317,7 +333,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
 
             g.append("g")
                 .attr("class", "y axis")
-                .call(d3.axisLeft(yScale).ticks(null, "s"))
+                .call(d3.axisLeft(yScale).ticks(null, "s").tickFormat(d3.format("")))
                 .append("text")
                 .attr("x", 10)
                 .attr("y", yScale(yScale.ticks().pop()) + 0.5)
@@ -363,19 +379,19 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
 
 "use strict";
 
-/* harmony default export */ __webpack_exports__["a"] = (function (countryName, width, height) {
-
+/* harmony default export */ __webpack_exports__["a"] = (function (countryName) {
     const margin = { left: 100, right: 60, top: 20, bottom: 120 };
-    const innerWidth = width - margin.left - margin.right;
-    const innerHeight = height - margin.top - margin.bottom;
+    const innerWidth = 500 - margin.left - margin.right;
+    const innerHeight = 400 - margin.top - margin.bottom;
 
     d3.select("div#svg_chart1_container").remove();
     var svg_chart1 = d3.select("div#detailChart1")
         .append("div")
         .attr("id", "svg_chart1_container")
         .append("svg")
-        .attr("width", width)
-        .attr("height", height)
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0 0 " + 700 + " " + 400)
+        .attr("id", "svg-content-responsive")
         .attr('transform', `translate(${margin.left},${margin.top})`);
 
     const xValue = d => d['Percentage of Individuals using the Internet (ICT)'];
@@ -415,7 +431,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
         .scale(xScale)
         .tickPadding(15)
         .tickSize(-innerHeight)
-        //.tickFormat(d3.format("d"));
+    //.tickFormat(d3.format("d"));
     var yTicks = 5;
     const yAxis = d3.axisLeft()
         .scale(yScale)
