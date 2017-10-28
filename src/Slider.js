@@ -1,7 +1,7 @@
 
 export default function (countryName) {
 
-    updateBarChart("China", 2010);
+    updateBarChart(countryName, 2010);
     const margin = { left: 60, right: 60, top: 0, bottom: 120 };
 
     d3.select("div#svg_chart2_container").remove();

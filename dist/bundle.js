@@ -205,7 +205,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
 
 /* harmony default export */ __webpack_exports__["a"] = (function (countryName) {
 
-    updateBarChart("China", 2010);
+    updateBarChart(countryName, 2010);
     const margin = { left: 60, right: 60, top: 0, bottom: 120 };
 
     d3.select("div#svg_chart2_container").remove();
