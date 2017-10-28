@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto");
 body {
   font-family: Roboto, sans-serif;
-  font-size: 10pt;
+  font-size: 1em;
 }
 
 /* Make the chart container fill the page using CSS. */
@@ -102,12 +102,12 @@ body {
 }
 
 .d3-tip {
-  font-size: 12pt;
+  font-size: 1.2em;
   line-height: 1.2;
-  padding: 10px;
+  padding: 0.5em;
   background: rgba(0, 0, 0, 0.85);
   color:  #fff;
-  border-radius: 7px;
+  border-radius: 0.5em;
 }
 /* Creates a small triangle extender for the tooltip */
 .d3-tip:after {
@@ -129,7 +129,7 @@ body {
 }
 /* more tooltip formats */
 .townname {
-  font-size: 1.2em;
+  font-size: 1.1em;
 }
 .racedate {
   color: skyblue;
