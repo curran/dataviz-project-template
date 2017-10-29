@@ -1,9 +1,9 @@
 
 export default function (countryName) {
-    const margin = { left: 100, right: 60, top: 20, bottom: 120 };
+    const margin = { left: 100, right: 60, top: 40, bottom: 120 };
     const innerWidth = 500 - margin.left - margin.right;
     const innerHeight = 400 - margin.top - margin.bottom;
-
+    var radius = 4;
     d3.select("div#svg_chart1_container").remove();
     var svg_chart1 = d3.select("div#detailChart1")
         .append("div")
@@ -61,6 +61,7 @@ export default function (countryName) {
 
     const row = d => {
         if((d['Year'] < 2014 && d['Year'] > 1990) && (d['Entity'] === countryName)){
+            d['Year'] = +d['Year'];
             d['Percentage of Individuals using the Internet (ICT)'] = +d['Percentage of Individuals using the Internet (ICT)'];
             d['GDP per capita'] = +d['GDP per capita'];
             d['Total population (Gapminder)'] = +d['Total population (Gapminder)'];
@@ -80,19 +81,57 @@ export default function (countryName) {
             .range([innerHeight, 0])
             .nice(yTicks);
 
-        g.selectAll('path').data(data)
+        g.selectAll('circle').data(data)
             .enter()
             .append('circle')
             .attr('cx', d => xScale(xValue(d)))
             .attr('cy', d => yScale(yValue(d)))
             .attr('fill', d => colorScale(colorValue(d)))
-            .attr('fill-opacity', 0.6)
-            .attr('r', 4);
+            .attr('fill-opacity', 0.8)
+            .attr('r', radius)
+            .on("mouseover", handleMouseOver)
+            .on("mouseout",handleMouseOut);
 
         xAxisG.call(xAxis);
         yAxisG.call(yAxis);
     });
 
 
+    function handleMouseOver(d, i){
+
+        d3.select(this).attrs({
+            r: radius * 3
+        });
+
+        // Specify where to put label of text
+        g.append("text").attrs({
+            id: "id" +
+            d['Year'] +
+            "-" +
+            Math.round(d['GDP per capita']) +
+            "-" +
+            i,
+            x: function() { return xScale(d['Percentage of Individuals using the Internet (ICT)']) - 50; },
+            y: function() { return yScale(d['GDP per capita']) - 15; },
+            fill: colorScale('#008000')
+        })
+            .text(function() {
+                return ['Year: ' + d['Year']];
+            });
+    }
+
+    function handleMouseOut(d, i) {
+        d3.select(this).attrs({
+            r: radius
+        });
+
+        d3.select("#id" +
+            d['Year'] +
+            "-" +
+            Math.round(d['GDP per capita']) +
+            "-" +
+            i)
+            .remove();
+    }
 
 }
