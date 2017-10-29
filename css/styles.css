@@ -62,7 +62,7 @@ body {
 .area {
   stroke: #888;
   stroke-width: 1px;
-  opacity: 0.9;
+  opacity: 1;
   fill: #eaeaea;
   transition: opacity 0.2s;
 }
@@ -83,12 +83,16 @@ body {
   fill: #2c7bb6;
 }
 
-.hasRaceSoon {
-  fill: #fdae61;
+.hasRaceTodayOrTomorrow {
+  fill: #d73027;
 }
 
 .hasRaceVerySoon {
-  fill: #d73027;
+  fill: #fc8d59;
+}
+
+.hasRaceSoon {
+  fill: #fee090;
 }
 
 .d3-tip {

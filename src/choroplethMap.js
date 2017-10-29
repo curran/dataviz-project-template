@@ -65,7 +65,9 @@ function buildRaceHorizon(races, townNames) {
   races.forEach(row => {
     const daysToRace = d3.timeDay.count(today, row.raceDay);
     if(daysToRace >= 0 && daysToRace <= 14) {
-      const raceType = daysToRace <= 7 ? 'hasRaceVerySoon' : 'hasRaceSoon'; 
+      const raceType = daysToRace <= 1 ? 
+        'hasRaceTodayOrTomorrow' : 
+        daysToRace <= 7 ? 'hasRaceVerySoon' : 'hasRaceSoon'; 
       if(row.Town in raceHorizonByTown) {
         if(daysToRace < raceHorizonByTown[row.Town].daysToRace) {
           raceHorizonByTown[row.Town] = { 
@@ -182,8 +184,8 @@ function choroplethMap(container, props, box) {
 
   // note: these colors must match the css above
   // TODO: DRY principle: perhaps do colors programmatically
-  const legendColors = ['#d73027', '#fdae61', '#2c7bb6'];
-  const legendLabels = ['Race within 1 week', 'Race within 2 weeks', 'Town already run'];
+  const legendColors = ['#d73027', '#fc8d59', '#fee090', '#2c7bb6'];
+  const legendLabels = ['Race today or tomorrow', 'Race within 1 week', 'Race within 2 weeks', 'Town already run'];
 
   // Extract the width and height that was computed by CSS.
   const width = box.width;
