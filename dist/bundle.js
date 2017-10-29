@@ -784,27 +784,27 @@ let g = svg.selectAll('g').data([null]);
    				`translate(${innerWidth/2+margin.left},
 										 ${innerHeight/2+margin.top})`);
 
-let gr = svg.selectAll('g').data([null]);
+// let gr = svg.selectAll('g').data([null]);
+//
+//  gr = gr.enter().append('g')
+//    .merge(gr)
+//    .attr('transform',
+//   				`translate(${innerWidth/2+margin.left},
+// 										 ${innerHeight/2+margin.top})`);
+//
 
- gr = g.enter().append('g')
-   .merge(gr)
-   .attr('transform',
-  				`translate(${innerWidth/2+margin.left},
-										 ${innerHeight/2+margin.top})`);
-
-
-let ga = svg.selectAll('g').data([null]);
-
- ga = ga.enter().append('g')
-   .merge(ga)
-   .attr('transform',
-  				`translate(${innerWidth/2+margin.left},
-										 ${innerHeight/2+margin.top})`);
+// let ga = svg.selectAll('g').data([null]);
+//
+//  ga = ga.enter().append('g')
+//    .merge(ga)
+//    .attr('transform',
+//   				`translate(${innerWidth/2+margin.left},
+// 										 ${innerHeight/2+margin.top})`);
 
 //draw ticklines
 //draw ticklines
-const xTickLength = rScaleMax *1.05;
-const numTicks =24;
+const xTickLength = rScaleMax;
+const numTicks =8;
 const xTickAngle =360/numTicks;
 const xTickLabelMultiplier = 2400/numTicks
 const rScale = d3.scaleLinear()
@@ -816,7 +816,7 @@ rScale
 
 const rScaleTicks = rScale.ticks(5).slice(1);
 
-var rAxisG = gr
+var rAxisG = g
 	.attr('class', 'r axis tick')
   .selectAll('ga')
   .data(rScale.ticks(5).slice(1))
@@ -833,21 +833,22 @@ rAxisG
   .style("text-anchor", "middle")
   .text(function(d) { return d; });
 
-var aAxisG = ga
+var aAxisG = svg.append('g')
+   .attr('transform',
+  				`translate(${innerWidth/2+margin.left},
+										 ${innerHeight/2+margin.top})`)
   .attr("class", "a axis tick")
-  .selectAll("ga")
     .data(d3.range(0, 360, xTickAngle))
+  .selectAll('g')
   .enter().append("g")
     .attr("transform", function(d) { return "rotate(" + d + ")"; });
 
 
 aAxisG
-    .selectAll('ga')
     .append("line")
     .attr("x2", rScaleMax);
 
 aAxisG
-    .selectAll('ga')
     .append("text")
     .attr("x", rScaleMax + 6)
     .attr("dy", ".35em")
