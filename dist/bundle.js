@@ -336,8 +336,8 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
 
         var row = d => {
             if(d['Entity'] === selectedCountryName && d.Year == selectedYear){
-                d['GDP per capita'] = +d['GDP per capita'];
-                d['Mobile cellular subscriptions'] = +d['Mobile cellular subscriptions'];
+                d['Internet Users'] = +d['Internet Users'];
+                d['Mobile subscriptions'] = +d['Mobile subscriptions'];
                 return d;
             }
         };
@@ -346,8 +346,8 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
             var keys = data.columns.slice(3);
             x0Scale.domain(data.map(function(d) { return d.Entity; }));
             x1Scale.domain(keys).rangeRound([0, x0Scale.bandwidth()]);
-            yScale.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
-
+            //yScale.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
+            yScale.domain([0, 120]).nice();
             g.append("g")
                 .selectAll("g")
                 .data(data)
@@ -358,7 +358,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
                 .enter()
                 .append("rect")
                 .attr("class", function(d) { return d.key; })
-                .attr("x", function(d) { return x1Scale(d.key); })
+                .attr("x", function(d) { return x1Scale(d.key) * 1.6; })
                 .attr("y", function(d) { return yScale(d.value); })
                 .attr("width", x1Scale.bandwidth())
                 .attr("height", function(d) { return height - yScale(d.value); })
@@ -394,14 +394,14 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
 
             legend.append("rect")
                 .attr("class", function(d, i) { return "lgd_" + data.columns.slice(1)[i]; })
-                .attr("x", width + 50)
+                .attr("x", width + 80)
                 .attr("y", -15)
                 .attr("width", 19)
                 .attr("height", 19)
                 .attr("fill", zScale);
 
             legend.append("text")
-                .attr("x", width + 45)
+                .attr("x", width + 75)
                 .attr("y", -5)
                 .attr("dy", "0.32em")
                 .text(function(d) { return d; });
@@ -433,8 +433,8 @@ Object(__WEBPACK_IMPORTED_MODULE_0__earthPanel__["a" /* default */])(width, heig
         .attr('transform', `translate(${margin.left},${margin.top})`);
 
     const xValue = d => d['Percentage of Individuals using the Internet (ICT)'];
-    const xLabel = 'Percentage of Individuals using the Internet (ICT)';
-
+    // const xLabel = 'Percentage of Individuals using the Internet (ICT)';
+    const xLabel = 'Internet Users per 100 people';
     const yValue = d => d['GDP per capita'];
     const yLabel = 'GDP per capita ($)';
     const colorValue = d => d['Entity'];
