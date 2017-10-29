@@ -15,8 +15,8 @@ export default function (countryName) {
         .attr('transform', `translate(${margin.left},${margin.top})`);
 
     const xValue = d => d['Percentage of Individuals using the Internet (ICT)'];
-    const xLabel = 'Percentage of Individuals using the Internet (ICT)';
-
+    // const xLabel = 'Percentage of Individuals using the Internet (ICT)';
+    const xLabel = 'Internet Users per 100 people';
     const yValue = d => d['GDP per capita'];
     const yLabel = 'GDP per capita ($)';
     const colorValue = d => d['Entity'];
