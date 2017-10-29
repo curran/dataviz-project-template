@@ -27,6 +27,10 @@ h2 {
     text-align: center
 }
 
+.selectPanel{
+    padding-left: 100px;
+}
+
 /*EarthPanel*/
 .earthPanel, .countrySelector{
     padding-top: 10px;
