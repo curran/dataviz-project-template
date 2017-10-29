@@ -81,7 +81,7 @@ export default function (div, props) {
   console.log(svg.attr('width'), svg.attr('height'));
 
   const innerHeight = height - margin.top - margin.bottom;
-  const innerWidth = width - margin.left - margin.right;
+  const innerWidth = width - margin.left - margin.right*4;
 
 
   xScale
@@ -156,15 +156,16 @@ export default function (div, props) {
   //    .text(yLabelRight);
 
 // var line2 = d3.line()
-//   .x(d => xScale(xValue(d)))
+//   .x(d => xScalße(xValue(d)))
 //   .y(d => yScaleLeft(y2Value(d)))
 //   .curve(d3.curveBasis);
 
-var line1 = d3.line()
+const line1 = d3.line()
   .x(d => xScale(xValue(d)))
   .y(d => yScaleLeft(yValue1(d)))
   .curve(d3.curveBasis);
 
+console.log(line1);
   // var line2 = d3.line()
   //   .x(d => xScale(xValue(d)))
   //   .y(d => yScaleLeft(yValue2(d)))
@@ -177,11 +178,17 @@ var line1 = d3.line()
 
   //data join
   var userLines = g.selectAll('path').data([null]);
-
-  //Add new elements
-  var userLinesEnter = userLines.enter().append('path');
-
+  var userLinesEnter = userLines
+      .enter()
+      .append('path')
+      .attr('id','line1');
   var userLinesExit = userLines.exit().remove();
+
+  // var userLines2 = g.selectAll('path').data([null]);
+  // var userLines2Enter = userLines2
+  //     .enter()
+  //     .append('path')
+  //     .attr('id','line2');
 
   //UPDATE old elements present (change class)
   userLines
@@ -189,23 +196,23 @@ var line1 = d3.line()
 
   //merge new and existing ell
   userLinesEnter
-    .attr('class','enter')
     .attr('fill','none')
     .attr('stroke', 'purple')
-    .attr('stroke-width', 2)
+    .attr('stroke-width', 1)
     .merge(userLines)
     .attr('d', line1(data));
 
-  // linesEnter
+  // userLines2Enter
+  //     .selectAll('#line2')
+  //     .attr('id','#line2')
   //     .attr('class','enter')
   //     .attr('fill','none')
   //     .attr('stroke', 'red')
   //     .attr('stroke-width', 1)
-  //     .merge(#line2)
-  //     .attr('d', line2(data));
+  //     .attr('d', line2(data))
+  //     .merge(userLines2);
 
   //remove elements for which there is no data
-  userLinesExit
 
   //call X and Y axis
   xAxisG.call(xAxis);

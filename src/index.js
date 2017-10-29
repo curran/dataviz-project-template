@@ -170,7 +170,7 @@ d3.csv('data/hour.csv', row1, data => {
 
     radialPlot(div4, {
       data:dataHour,
-      hour:xValue4,
+      hour:xValue5,
       yValue:yValue1,
       yLabel:yLabel1,
       colorValue:pointColor1,
@@ -221,7 +221,7 @@ d3.csv('data/hour.csv', row1, data => {
 
     radialPlot(div8, {
       data:dataHour,
-      hour:xValue4,
+      hour:xValue5,
       yValue:yValue2,
       yLabel:yLabel2,
       colorValue:pointColor2,

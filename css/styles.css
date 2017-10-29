@@ -18,9 +18,6 @@ body {
   width: 100vmin;}
 
 .tick line {
-  stroke: LightGrey;
-}
-.tick line {
 stroke: #b5b5b5;
 stroke-width: 1;
 }

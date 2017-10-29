@@ -244,7 +244,7 @@ d3.csv('data/hour.csv', row1, data => {
 
     Object(__WEBPACK_IMPORTED_MODULE_2__radialPlot__["a" /* default */])(div4, {
       data:dataHour,
-      hour:xValue4,
+      hour:xValue5,
       yValue:yValue1,
       yLabel:yLabel1,
       colorValue:pointColor1,
@@ -295,7 +295,7 @@ d3.csv('data/hour.csv', row1, data => {
 
     Object(__WEBPACK_IMPORTED_MODULE_2__radialPlot__["a" /* default */])(div8, {
       data:dataHour,
-      hour:xValue4,
+      hour:xValue5,
       yValue:yValue2,
       yLabel:yLabel2,
       colorValue:pointColor2,
@@ -581,7 +581,7 @@ const colorLegend = d3.legendColor()
   console.log(svg.attr('width'), svg.attr('height'));
 
   const innerHeight = height - margin.top - margin.bottom;
-  const innerWidth = width - margin.left - margin.right;
+  const innerWidth = width - margin.left - margin.right*4;
 
 
   xScale
@@ -656,15 +656,16 @@ const colorLegend = d3.legendColor()
   //    .text(yLabelRight);
 
 // var line2 = d3.line()
-//   .x(d => xScale(xValue(d)))
+//   .x(d => xScalße(xValue(d)))
 //   .y(d => yScaleLeft(y2Value(d)))
 //   .curve(d3.curveBasis);
 
-var line1 = d3.line()
+const line1 = d3.line()
   .x(d => xScale(xValue(d)))
   .y(d => yScaleLeft(yValue1(d)))
   .curve(d3.curveBasis);
 
+console.log(line1);
   // var line2 = d3.line()
   //   .x(d => xScale(xValue(d)))
   //   .y(d => yScaleLeft(yValue2(d)))
@@ -677,11 +678,17 @@ var line1 = d3.line()
 
   //data join
   var userLines = g.selectAll('path').data([null]);
-
-  //Add new elements
-  var userLinesEnter = userLines.enter().append('path');
-
+  var userLinesEnter = userLines
+      .enter()
+      .append('path')
+      .attr('id','line1');
   var userLinesExit = userLines.exit().remove();
+
+  // var userLines2 = g.selectAll('path').data([null]);
+  // var userLines2Enter = userLines2
+  //     .enter()
+  //     .append('path')
+  //     .attr('id','line2');
 
   //UPDATE old elements present (change class)
   userLines
@@ -689,23 +696,23 @@ var line1 = d3.line()
 
   //merge new and existing ell
   userLinesEnter
-    .attr('class','enter')
     .attr('fill','none')
     .attr('stroke', 'purple')
-    .attr('stroke-width', 2)
+    .attr('stroke-width', 1)
     .merge(userLines)
     .attr('d', line1(data));
 
-  // linesEnter
+  // userLines2Enter
+  //     .selectAll('#line2')
+  //     .attr('id','#line2')
   //     .attr('class','enter')
   //     .attr('fill','none')
   //     .attr('stroke', 'red')
   //     .attr('stroke-width', 1)
-  //     .merge(#line2)
-  //     .attr('d', line2(data));
+  //     .attr('d', line2(data))
+  //     .merge(userLines2);
 
   //remove elements for which there is no data
-  userLinesExit
 
   //call X and Y axis
   xAxisG.call(xAxis);
@@ -765,12 +772,9 @@ svg = svgEnter
 
 const innerHeight = minDimension - margin.top - margin.bottom;
 const innerWidth = minDimension - margin.left - margin.right;
-const yScaleMax = innerHeight/2
-const yMax = 1000
+const rScaleMax = innerHeight/2
+const rMax = 1000
 
-const yScale = d3.scaleLinear()
-  .domain([0,yMax])
-  .range([0,yScaleMax]);
 
 let g = svg.selectAll('g').data([null]);
 
@@ -780,84 +784,91 @@ let g = svg.selectAll('g').data([null]);
    				`translate(${innerWidth/2+margin.left},
 										 ${innerHeight/2+margin.top})`);
 
+let gr = svg.selectAll('g').data([null]);
+
+ gr = g.enter().append('g')
+   .merge(gr)
+   .attr('transform',
+  				`translate(${innerWidth/2+margin.left},
+										 ${innerHeight/2+margin.top})`);
+
+
+let ga = svg.selectAll('g').data([null]);
+
+ ga = ga.enter().append('g')
+   .merge(ga)
+   .attr('transform',
+  				`translate(${innerWidth/2+margin.left},
+										 ${innerHeight/2+margin.top})`);
+
 //draw ticklines
 //draw ticklines
-const xTickLength = yScaleMax *1.05;
+const xTickLength = rScaleMax *1.05;
 const numTicks =24;
+const xTickAngle =360/numTicks;
+const xTickLabelMultiplier = 2400/numTicks
+const rScale = d3.scaleLinear()
+const aScale = d3.scaleLinear()
 
-const gr= svg.append('g')
-    .attr('transform',
-   				`translate(${innerWidth/2+margin.left},
-										 ${innerHeight/2+margin.top})`)
-  .attr("class", "r axis")
-  .selectAll("g")
-  .data([null])
+rScale
+  .domain([0,rMax])
+  .range([0,rScaleMax]);
 
-const grEnter = gr.enter().append('circle');
+const rScaleTicks = rScale.ticks(5).slice(1);
 
+var rAxisG = gr
+	.attr('class', 'r axis tick')
+  .selectAll('ga')
+  .data(rScale.ticks(5).slice(1))
+  .enter().append('g');
 
-//Update
-gr
+rAxisG
+  .append('circle')
+	.attr("r",rScale);
 
-//merge new and existing
-grEnter
-  .attr("class", "r axis")
-  .data(yScale.ticks(5).slice(1))
-  .enter().append("g");
+rAxisG
+  .append('text')
+	.attr("y", function(d) { return -rScale(d) + 10; })
+  .attr("transform", "rotate(22.5)")
+  .style("text-anchor", "middle")
+  .text(function(d) { return d; });
 
-grEnter.append("circle")
-    .attr("r",yScale);
-
-gr.append("text")
-    .attr('class','tick')
-    .attr("y", function(d) { return -yScale(d) + 10; })
-    .attr("transform", "rotate(0)")
-    .style("text-anchor", "middle")
-    .text(function(d) { return d; });
-
-gr.exit().remove();
-
-const xtickAngle =360/numTicks;
-
-var ga = svg.append('g')
-    .attr('transform',
-   				`translate(${innerWidth/2+margin.left},
-										 ${innerHeight/2+margin.top})`)
-  .attr("class", "a axis")
-  .selectAll("g")
-    .data(d3.range(0, 360, xtickAngle))
+var aAxisG = ga
+  .attr("class", "a axis tick")
+  .selectAll("ga")
+    .data(d3.range(0, 360, xTickAngle))
   .enter().append("g")
     .attr("transform", function(d) { return "rotate(" + d + ")"; });
 
-ga.append("line")
-    .attr("x2", yScaleMax);
 
-ga.append("text")
-    .attr("x", yScaleMax + 6)
+aAxisG
+    .selectAll(ga)
+    .append("line")
+    .attr("x2", rScaleMax);
+
+aAxisG
+    .selectAll(ga)
+    .append("text")
+    .attr("x", rScaleMax + 6)
     .attr("dy", ".35em")
     .style("text-anchor", function(d) { return d < 270 && d > 90 ? "end" : null; })
-    .attr("transform", function(d) { return d < 270 && d > 90 ? "rotate(180 " + (yScaleMax + 6) + ",0)" : null; })
-    .text(function(d,i) { return i*100 + "h"; });
+    .attr("transform", function(d) { return d < 270 && d > 90 ? "rotate(180 " + (rScaleMax + 6) + ",0)" : null; })
+    .text(function(d,i) { return i*xTickLabelMultiplier + "h"; });
 
-ga.exit().remove();
 
-//optional y axis
-// const yAxisG = g.append('g');
-// yAxisG.append('text')
-//   .attr('class', 'axis-label')
-//   .attr('x', +innerHeight / 4+5)
-//   .attr('y', -5)
-//   .attr('transform', `rotate(0)`)
-//   .style('text-anchor', 'middle')
-//   .text(yLabel);
-//
+
+
 
 const angleHours = d => (d.hr/24 *Math.PI*2+ radialOffset);
 const curveFunction = d3.curveCatmullRom
+//
+// aScale
+//   .domain(d3.extent(data,hour))
+//   .range([0,Math.PI*2]);
 
 const radialPath = d3.lineRadial()
   .angle(d => angleHours(d))
-  .radius(d => yScale(yValue(d)))
+  .radius(d => rScale(yValue(d)))
   .curve(curveFunction);
 
 
