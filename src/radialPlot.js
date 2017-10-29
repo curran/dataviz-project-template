@@ -112,12 +112,12 @@ var aAxisG = ga
 
 
 aAxisG
-    .selectAll(ga)
+    .selectAll('ga')
     .append("line")
     .attr("x2", rScaleMax);
 
 aAxisG
-    .selectAll(ga)
+    .selectAll('ga')
     .append("text")
     .attr("x", rScaleMax + 6)
     .attr("dy", ".35em")
