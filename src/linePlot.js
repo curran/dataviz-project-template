@@ -6,6 +6,7 @@ const minDate = new Date(2011,-1,1)
 const maxDate = new Date(2012,11,31)
 
 
+const xTicks = 24
 const yTicksLeft = 5
 const yTicksRight = 5
 
@@ -87,7 +88,7 @@ export default function (div, props) {
   xScale
     .domain([minDate,maxDate]) //[minDate,maxDate] or d3.extent(data, xValue)
     .range([0, innerWidth])
-    .nice();
+    .nice(xTicks);
 
   yScaleLeft
     .domain(d3.extent(data, yValue1))
@@ -159,13 +160,17 @@ export default function (div, props) {
 //   .x(d => xScalße(xValue(d)))
 //   .y(d => yScaleLeft(y2Value(d)))
 //   .curve(d3.curveBasis);
+// CatmullRom curve selected because it
+// it passes through all points and
+// has less overshoot that others
+const curveFunction = d3.curveCatmullRom
 
-const line1 = d3.line()
+const lineRegistered = d3.line()
   .x(d => xScale(xValue(d)))
   .y(d => yScaleLeft(yValue1(d)))
-  .curve(d3.curveBasis);
+  .curve(curveFunction);
 
-console.log(line1);
+console.log(lineRegistered);
   // var line2 = d3.line()
   //   .x(d => xScale(xValue(d)))
   //   .y(d => yScaleLeft(yValue2(d)))
@@ -180,8 +185,7 @@ console.log(line1);
   var userLines = g.selectAll('path').data([null]);
   var userLinesEnter = userLines
       .enter()
-      .append('path')
-      .attr('id','line1');
+      .append('path');
   var userLinesExit = userLines.exit().remove();
 
   // var userLines2 = g.selectAll('path').data([null]);
@@ -196,11 +200,12 @@ console.log(line1);
 
   //merge new and existing ell
   userLinesEnter
+    .attr('class','enter')
     .attr('fill','none')
-    .attr('stroke', 'purple')
+    .attr('stroke', 'green')
     .attr('stroke-width', 1)
     .merge(userLines)
-    .attr('d', line1(data));
+    .attr('d', lineRegistered(data));
 
   // userLines2Enter
   //     .selectAll('#line2')

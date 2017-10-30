@@ -339,8 +339,6 @@ d3.csv('data/hour.csv', row1, data => {
 
 const xScale = d3.scaleLinear();
 const yScale = d3.scaleLinear();
-
-
 const colorScale = d3.scaleOrdinal()
   .range(d3.schemeCategory10);
 
@@ -458,7 +456,6 @@ const colorLegend = d3.legendColor()
   //Add new elements
   var circlesEnter = circles.enter().append('circle');
 
-  var t = d3.transition().duration(500);
 
   var circlesExit = circles.exit()
     .attr('class','exit')
@@ -506,6 +503,7 @@ const minDate = new Date(2011,-1,1)
 const maxDate = new Date(2012,11,31)
 
 
+const xTicks = 24
 const yTicksLeft = 5
 const yTicksRight = 5
 
@@ -587,7 +585,7 @@ const colorLegend = d3.legendColor()
   xScale
     .domain([minDate,maxDate]) //[minDate,maxDate] or d3.extent(data, xValue)
     .range([0, innerWidth])
-    .nice();
+    .nice(xTicks);
 
   yScaleLeft
     .domain(d3.extent(data, yValue1))
@@ -659,13 +657,17 @@ const colorLegend = d3.legendColor()
 //   .x(d => xScalße(xValue(d)))
 //   .y(d => yScaleLeft(y2Value(d)))
 //   .curve(d3.curveBasis);
+// CatmullRom curve selected because it
+// it passes through all points and
+// has less overshoot that others
+const curveFunction = d3.curveCatmullRom
 
-const line1 = d3.line()
+const lineRegistered = d3.line()
   .x(d => xScale(xValue(d)))
   .y(d => yScaleLeft(yValue1(d)))
-  .curve(d3.curveBasis);
+  .curve(curveFunction);
 
-console.log(line1);
+console.log(lineRegistered);
   // var line2 = d3.line()
   //   .x(d => xScale(xValue(d)))
   //   .y(d => yScaleLeft(yValue2(d)))
@@ -680,8 +682,7 @@ console.log(line1);
   var userLines = g.selectAll('path').data([null]);
   var userLinesEnter = userLines
       .enter()
-      .append('path')
-      .attr('id','line1');
+      .append('path');
   var userLinesExit = userLines.exit().remove();
 
   // var userLines2 = g.selectAll('path').data([null]);
@@ -696,11 +697,12 @@ console.log(line1);
 
   //merge new and existing ell
   userLinesEnter
+    .attr('class','enter')
     .attr('fill','none')
-    .attr('stroke', 'purple')
+    .attr('stroke', 'green')
     .attr('stroke-width', 1)
     .merge(userLines)
-    .attr('d', line1(data));
+    .attr('d', lineRegistered(data));
 
   // userLines2Enter
   //     .selectAll('#line2')
@@ -775,7 +777,7 @@ const innerWidth = minDimension - margin.left - margin.right;
 const rScaleMax = innerHeight/2
 const rMax = 1000
 
-
+// g object for main plot
 let g = svg.selectAll('g').data([null]);
 
   g = g.enter().append('g')
@@ -784,6 +786,12 @@ let g = svg.selectAll('g').data([null]);
    				`translate(${innerWidth/2+margin.left},
 										 ${innerHeight/2+margin.top})`);
 
+ // angular and radial tick marks need to be tied to different g
+ //objects. If same g object used for both, if you have r radial
+ //tick lines and a angular tick lines, only a-r angular tick
+ //lines will plot. first five will be undefined
+
+//g object for radial tick lines and labels
 let gr = svg.selectAll('g').data([null]);
 
  gr = gr.enter().append('g')
@@ -792,8 +800,11 @@ let gr = svg.selectAll('g').data([null]);
   				`translate(${innerWidth/2+margin.left},
 										 ${innerHeight/2+margin.top})`);
 
+const grExit = gr.exit().remove();
+//g object for angular tick lines and labels
 
 let ga = svg.selectAll('g').data([null]);
+
 
 ga = ga.enter().append('g')
     .merge(ga)
@@ -801,8 +812,9 @@ ga = ga.enter().append('g')
    				`translate(${innerWidth/2+margin.left},
  										 ${innerHeight/2+margin.top})`);
 
-//draw ticklines
-//draw ticklines
+const gaExit = ga.exit().remove();
+
+//set up to draw ticklines
 const xTickLength = rScaleMax;
 const numTicks =8;
 const xTickAngle =360/numTicks;
@@ -816,34 +828,52 @@ rScale
 
 const rScaleTicks = rScale.ticks(5).slice(1);
 
-var rAxisG = gr.selectAll('#r-axis-g').data([null]);
-//creates 5 objects
-// rAxisG = rAxisG
-//   .data(rScale.ticks(5).slice(1))
-//   .enter().append('g').merge(rAxisG)
-// 	.attr('id','r-axis-g')
-//   .data(rScale.ticks(5).slice(1))
-//   .enter().append('g');
+//drawing radial tick lines
+
+var rAxisG = gr.selectAll('r-axis-g').data([null]);
+
+// var rAxisGExit = gr.selectAll('r-axis-g').exit().remove();
+
+// following code creates 5 objects
+// does not appear to do anything useful
+// tried with code commented out and result did not change
+// may be because I am tying circles and text to gr
+//
+rAxisG = rAxisG
+  .data(rScale.ticks(5).slice(1))
+  .enter().append('g').merge(rAxisG)
+	.attr('class','r-axis-g')
+  .data(rScale.ticks(5).slice(1))
+  .enter().append('g');
+
+// rAxisGExit;
 
 var rAxisTicks = gr.selectAll('#r-axis-ticks').data([null]);
+var rAxisTickExit = gr.selectAll('#r-axis-ticks').exit().remove();
 
 //these are created in dom (and update properly based on browser
 // window size, but they are not visible
 // is this an  issue with the class?
+
 rAxisTicks=rAxisTicks
   .data(rScale.ticks(5).slice(1))
   .enter().append('circle').merge(rAxisTicks)
+  .attr('class','r-axis-g')
   .attr('class','axis circle')
   .attr('id', 'r-axis-tick')
   .append('circle')
 	.attr("r",rScale);
 
+// rAxisTickExit;
+
 var rAxisText = gr.selectAll('#r-axis-text').data([null]);
+var rAxisTextExit = gr.selectAll('#r-axis-text').exit().remove();
 // these are create but 'ghosts' of previously drawn labels
 // remain on chart. Their angular position relative to the origin // stays the same, but the radius varies
 rAxisText =rAxisText
   .data(rScale.ticks(5).slice(1))
   .enter().append('text').merge(rAxisText)
+  .attr('class','r-axis-g')
   .attr('class','tick')
   .attr('id', 'r-axis-text')
   .attr("y", function(d) { return -rScale(d) + 10; })
@@ -851,9 +881,16 @@ rAxisText =rAxisText
   .style("text-anchor", "middle")
   .text(function(d) { return d; });
 
+//tried exit pattern, old tick labels did not go away
+gaExit;
+
+
+
+//draw angular tick lines
 var aAxisG = gr.selectAll('#a-axis-g').data([null]);
 // these appear to function as intended - they exist in the dom,
 //and they are visible
+
 aAxisG = aAxisG
     .data(d3.range(0, 360, xTickAngle))
     .enter().append("g").merge(aAxisG)
@@ -864,6 +901,8 @@ aAxisG = aAxisG
 aAxisG
     .append("line")
     .attr("x2", rScaleMax);
+
+
 
 var aAxisText = gr.selectAll('#a-axis-text').data([null]);
 // these do no appear in the dom at all
@@ -877,13 +916,20 @@ aAxisText = aAxisG
     .attr("transform", function(d) { return d < 270 && d > 90 ? "rotate(180 " + (rScaleMax + 6) + ",0)" : null; })
     .text(function(d,i) { return i*xTickLabelMultiplier + "h"; });
 
+gaExit;
 
 
-
-
+//d.hr variable is hardcoded for time being
+// waiting until other issues debugged
 const angleHours = d => (d.hr/24 *Math.PI*2+ radialOffset);
+
+// CatmullRom curve selected because it
+// it passes through all points and
+// has less overshoot that others
 const curveFunction = d3.curveCatmullRom
-//
+
+
+//refactored code for aScale
 // aScale
 //   .domain(d3.extent(data,hour))
 //   .range([0,Math.PI*2]);
@@ -910,7 +956,7 @@ radialLinesEnter
   .attr('stroke-opacity', 0.7)
   .attr('stroke-width', .25)
   .merge(radialLines)
-  .attr('d', radialPath(data));;
+  .attr('d', radialPath(data));
 
 //remove elements for which there is no data
 radialLinesExit;

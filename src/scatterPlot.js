@@ -1,8 +1,6 @@
 
 const xScale = d3.scaleLinear();
 const yScale = d3.scaleLinear();
-
-
 const colorScale = d3.scaleOrdinal()
   .range(d3.schemeCategory10);
 
@@ -120,7 +118,6 @@ export default function (div, props) {
   //Add new elements
   var circlesEnter = circles.enter().append('circle');
 
-  var t = d3.transition().duration(500);
 
   var circlesExit = circles.exit()
     .attr('class','exit')
