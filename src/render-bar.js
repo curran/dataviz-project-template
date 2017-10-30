@@ -15,6 +15,9 @@ function mouseoutRect() {
 export default function (yearValue, barSvg) {
     var format = d3.format(",.1f");
     const barWidth = 30;
+    const height=window.innerHeight>925?280:200;
+    $("#bar").css("height",height);
+    $("#map").css("margin-top",window.innerHeight>925?'-150px':'-180px');
     var data = [];
     var min = Number.MAX_VALUE;
     var max = Number.MIN_VALUE;
@@ -38,10 +41,10 @@ export default function (yearValue, barSvg) {
         .range([0, 915]);
     const yScale = d3.scale.linear()
         .domain([min, max])
-        .range([10, 260]);
+        .range([10, height-20]);
     const yAxisScale = d3.scale.linear()
         .domain([max, min])
-        .range([280 - yScale(max), 280 - yScale(min)]);
+        .range([height - yScale(max), height - yScale(min)]);
 
 
     const rects = barSvg.selectAll('rect').data(data)
@@ -49,7 +52,7 @@ export default function (yearValue, barSvg) {
             return xScale(xValue(data)) + 12;
         })
         .attr('y', function (data) {
-            return 280 - yScale(yValue(data));
+            return height - yScale(yValue(data));
         })
         .attr('width', barWidth)
         .attr('height', function (data) {
@@ -68,7 +71,7 @@ export default function (yearValue, barSvg) {
             return xScale(xValue(data)) + 12;
         })
         .attr('y', function (data) {
-            return 280 - yScale(yValue(data));
+            return height - yScale(yValue(data));
         })
         .attr('width', barWidth)
         .attr('height', function (data) {
@@ -98,13 +101,13 @@ export default function (yearValue, barSvg) {
         barSvg.append('text')
             .attr('class', 'bar-text')
             .attr('x', xScale(xValue(data[i]))+10-yValue(data[i])/1000)
-            .attr('y', 280 - yScale(yValue(data[i])) - 8)
+            .attr('y', height - yScale(yValue(data[i])) - 8)
             .text(format(yValue(data[i])));
 
         barSvg.append('circle')
             .attr('class', 'bar-point')
             .attr('cx', xScale(xValue(data[i])) + 12 + barWidth / 2)
-            .attr('cy', 280 - yScale(yValue(data[i])))
+            .attr('cy', height - yScale(yValue(data[i])))
             .attr('r', 3);
 
         if (i === data.length - 1)
@@ -112,8 +115,8 @@ export default function (yearValue, barSvg) {
         barSvg.append("line")
             .attr('class', 'bar-line')
             .attr('x1', xScale(xValue(data[i])) + 12 + barWidth / 2)
-            .attr('y1', 280 - yScale(yValue(data[i])))
+            .attr('y1', height - yScale(yValue(data[i])))
             .attr('x2', xScale(xValue(data[i + 1])) + 12 + barWidth / 2)
-            .attr('y2', 280 - yScale(yValue(data[i + 1])));
+            .attr('y2', height - yScale(yValue(data[i + 1])));
     }
 }

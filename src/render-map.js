@@ -361,3 +361,5 @@ $('#type-input').change(function () {
     dataInput();
 });
 dataInput();
+
+

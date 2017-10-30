@@ -1,7 +1,10 @@
 #map {
     width: 1024px;
     height: 696px;
-    margin: -150px auto auto;
+    margin-top: -150px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: auto;
     position: relative;
     /*border: 1px black solid;*/
 }
@@ -59,8 +62,6 @@
     width: 1024px;
     position: relative;
     height: 80px;
-    /*overflow: auto;*/
-    /*border: 1px black solid;*/
 }
 
 #country-input-label {
