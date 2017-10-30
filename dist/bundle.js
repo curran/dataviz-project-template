@@ -784,22 +784,22 @@ let g = svg.selectAll('g').data([null]);
    				`translate(${innerWidth/2+margin.left},
 										 ${innerHeight/2+margin.top})`);
 
-// let gr = svg.selectAll('g').data([null]);
-//
-//  gr = gr.enter().append('g')
-//    .merge(gr)
-//    .attr('transform',
-//   				`translate(${innerWidth/2+margin.left},
-// 										 ${innerHeight/2+margin.top})`);
-//
+let gr = svg.selectAll('g').data([null]);
 
-// let ga = svg.selectAll('g').data([null]);
-//
-//  ga = ga.enter().append('g')
-//    .merge(ga)
-//    .attr('transform',
-//   				`translate(${innerWidth/2+margin.left},
-// 										 ${innerHeight/2+margin.top})`);
+ gr = gr.enter().append('g')
+   .merge(gr)
+   .attr('transform',
+  				`translate(${innerWidth/2+margin.left},
+										 ${innerHeight/2+margin.top})`);
+
+
+let ga = svg.selectAll('g').data([null]);
+
+ga = ga.enter().append('g')
+    .merge(ga)
+    .attr('transform',
+   				`translate(${innerWidth/2+margin.left},
+ 										 ${innerHeight/2+margin.top})`);
 
 //draw ticklines
 //draw ticklines
@@ -816,40 +816,57 @@ rScale
 
 const rScaleTicks = rScale.ticks(5).slice(1);
 
-var rAxisG = g
-	.attr('class', 'r axis tick')
-  .selectAll('ga')
+var rAxisG = gr.selectAll('#r-axis-g').data([null]);
+
+rAxisG = rAxisG
+  .data(rScale.ticks(5).slice(1))
+  .enter().append('g').merge(rAxisG)
+	.attr('id','r-axis-g')
   .data(rScale.ticks(5).slice(1))
   .enter().append('g');
 
-rAxisG
+var rAxisTicks = gr.selectAll('#r-axis-ticks').data([null]);
+
+rAxisTicks=rAxisTicks
+  .data(rScale.ticks(5).slice(1))
+  .enter().append('circle').merge(rAxisTicks)
+  .attr('class','axis circle')
+  .attr('id', 'r-axis-tick')
   .append('circle')
 	.attr("r",rScale);
 
-rAxisG
-  .append('text')
-	.attr("y", function(d) { return -rScale(d) + 10; })
+var rAxisText = gr.selectAll('#r-axis-text').data([null]);
+
+rAxisText =rAxisText
+  .data(rScale.ticks(5).slice(1))
+  .enter().append('text').merge(rAxisText)
+  .attr('class','tick')
+  .attr('id', 'r-axis-text')
+  .attr("y", function(d) { return -rScale(d) + 10; })
   .attr("transform", "rotate(22.5)")
   .style("text-anchor", "middle")
   .text(function(d) { return d; });
 
-var aAxisG = svg.append('g')
-   .attr('transform',
-  				`translate(${innerWidth/2+margin.left},
-										 ${innerHeight/2+margin.top})`)
-  .attr("class", "a axis tick")
-    .data(d3.range(0, 360, xTickAngle))
-  .selectAll('g')
-  .enter().append("g")
-    .attr("transform", function(d) { return "rotate(" + d + ")"; });
+var aAxisG = gr.selectAll('#a-axis-g').data([null]);
 
+aAxisG = aAxisG
+    .data(d3.range(0, 360, xTickAngle))
+    .enter().append("g").merge(aAxisG)
+    .attr('id', 'a-axis-g')
+    .attr('class', 'axis tick')
+    .attr("transform", function(d) { return "rotate(" + d + ")"; });
 
 aAxisG
     .append("line")
     .attr("x2", rScaleMax);
 
-aAxisG
+var aAxisText = gr.selectAll('#a-axis-text').data([null]);
+
+aAxisText = aAxisG
+    .data(d3.range(0, 360, xTickAngle))
+    .enter().append("text").merge(aAxisText)
     .append("text")
+    .attr('id','a-axis-text')
     .attr("x", rScaleMax + 6)
     .attr("dy", ".35em")
     .style("text-anchor", function(d) { return d < 270 && d > 90 ? "end" : null; })
