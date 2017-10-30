@@ -817,16 +817,19 @@ rScale
 const rScaleTicks = rScale.ticks(5).slice(1);
 
 var rAxisG = gr.selectAll('#r-axis-g').data([null]);
-
-rAxisG = rAxisG
-  .data(rScale.ticks(5).slice(1))
-  .enter().append('g').merge(rAxisG)
-	.attr('id','r-axis-g')
-  .data(rScale.ticks(5).slice(1))
-  .enter().append('g');
+//creates 5 objects
+// rAxisG = rAxisG
+//   .data(rScale.ticks(5).slice(1))
+//   .enter().append('g').merge(rAxisG)
+// 	.attr('id','r-axis-g')
+//   .data(rScale.ticks(5).slice(1))
+//   .enter().append('g');
 
 var rAxisTicks = gr.selectAll('#r-axis-ticks').data([null]);
 
+//these are created in dom (and update properly based on browser
+// window size, but they are not visible
+// is this an  issue with the class?
 rAxisTicks=rAxisTicks
   .data(rScale.ticks(5).slice(1))
   .enter().append('circle').merge(rAxisTicks)
@@ -836,7 +839,8 @@ rAxisTicks=rAxisTicks
 	.attr("r",rScale);
 
 var rAxisText = gr.selectAll('#r-axis-text').data([null]);
-
+// these are create but 'ghosts' of previously drawn labels
+// remain on chart. Their angular position relative to the origin // stays the same, but the radius varies
 rAxisText =rAxisText
   .data(rScale.ticks(5).slice(1))
   .enter().append('text').merge(rAxisText)
@@ -848,7 +852,8 @@ rAxisText =rAxisText
   .text(function(d) { return d; });
 
 var aAxisG = gr.selectAll('#a-axis-g').data([null]);
-
+// these appear to function as intended - they exist in the dom,
+//and they are visible
 aAxisG = aAxisG
     .data(d3.range(0, 360, xTickAngle))
     .enter().append("g").merge(aAxisG)
@@ -861,11 +866,10 @@ aAxisG
     .attr("x2", rScaleMax);
 
 var aAxisText = gr.selectAll('#a-axis-text').data([null]);
-
+// these do no appear in the dom at all
 aAxisText = aAxisG
     .data(d3.range(0, 360, xTickAngle))
     .enter().append("text").merge(aAxisText)
-    .append("text")
     .attr('id','a-axis-text')
     .attr("x", rScaleMax + 6)
     .attr("dy", ".35em")
