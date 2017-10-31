@@ -15,6 +15,10 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
     <title>DC Bike Share Test Chart</title>
 
 
@@ -25,6 +29,30 @@
   <div class='container-fluid'>
 
     <h1>DC Bike Share User Trends and Patterns</h1>
+
+    <div class='row'>
+      Year
+      <input checked data-toggle="toggle" data-on="2011" data-off="2011" data-onstyle="success" data-offstyle="disabled" type="checkbox"
+      data-size = "mini">
+      <input checked data-toggle="toggle" data-on="2012" data-off="2012" data-onstyle="success" data-offstyle="disabled" type="checkbox"
+      data-size = "mini">
+      DayType
+      <input checked data-toggle="toggle" data-on="Working" data-off="Working" data-onstyle="success" data-offstyle="disabled" type="checkbox"
+      data-size = "mini">
+      <input checked data-toggle="toggle" data-on="Non-Working" data-off="Working" data-onstyle="success" data-offstyle="disabled" type="checkbox"
+      data-size = "mini">
+
+      Weather Situation
+      <input checked data-toggle="toggle" data-on="1" data-off="1" data-onstyle="success" data-offstyle="disabled" type="checkbox"
+      data-size = "mini">
+      <input checked data-toggle="toggle" data-on="2" data-off="2" data-onstyle="success" data-offstyle="disabled" type="checkbox"
+      data-size = "mini">
+      <input checked data-toggle="toggle" data-on="3" data-off="3" data-onstyle="success" data-offstyle="disabled" type="checkbox"
+      data-size = "mini">
+
+      <input class="btn btn-primary btn-sm" type="reset" value="Reset">
+
+    </div>
 
     <div class='row'>
 
