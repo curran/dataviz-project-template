@@ -23,9 +23,10 @@ var svg = d3.select(vizDiv)
 const width = vizDiv.offsetWidth;
 const height = vizDiv.offsetHeight;
 
+console.log(`radial plot ${width}, ${height}`)
 //maintain 1:1 aspect ration for scatter plot
 const minDimension = d3.min([width, height]);
-
+console.log(`radial plot- min dimension ${width}, ${height}`)
 var svgEnter = svg
   .enter()
   .append('svg');
@@ -44,7 +45,7 @@ const innerHeight = minDimension - margin.top - margin.bottom;
 const innerWidth = minDimension - margin.left - margin.right;
 const rScaleMax = innerHeight/2
 const rMax = 1000
-
+console.log(`radial plot iH/iW/rSM/rM${innerWidth}, ${innerHeight},${rScaleMax},${rMax}`)
 // g object for main plot
 let g = svg.selectAll('g').data([null]);
 
@@ -89,13 +90,14 @@ const xTickAngle =360/numTicks;
 const xTickLabelMultiplier = 2400/numTicks
 const rScale = d3.scaleLinear()
 const aScale = d3.scaleLinear()
-
+console.log(`xTickLength ${xTickLength}, numTicks${numTicks},xTickAngle ${xTickAngle}, xTickLabelMultiplier ${xTickLabelMultiplier}`)
 rScale
   .domain([0,rMax])
   .range([0,rScaleMax]);
 
 const rScaleTicks = rScale.ticks(5).slice(1);
 
+console.log(`rScaleTicks ${rScaleTicks}`)
 //drawing radial tick lines
 
 var rAxisG = gr.selectAll('r-axis-g').data([null]);
@@ -118,6 +120,8 @@ rAxisG = rAxisG
 
 var rAxisTicks = gr.selectAll('#r-axis-ticks').data([null]);
 var rAxisTickExit = gr.selectAll('#r-axis-ticks').exit().remove();
+
+console.log(`gr`)
 
 //these are created in dom (and update properly based on browser
 // window size, but they are not visible
@@ -150,7 +154,8 @@ rAxisText =rAxisText
   .text(function(d) { return d; });
 
 //tried exit pattern, old tick labels did not go away
-gaExit;
+grExit;
+console.log(`grExit`)
 
 
 
@@ -185,11 +190,13 @@ aAxisText = aAxisG
     .text(function(d,i) { return i*xTickLabelMultiplier + "h"; });
 
 gaExit;
+console.log(`gaExit`)
 
 
 //d.hr variable is hardcoded for time being
 // waiting until other issues debugged
 const angleHours = d => (d.hr/24 *Math.PI*2+ radialOffset);
+console.log(`angleHours ${angleHours}`)
 
 // CatmullRom curve selected because it
 // it passes through all points and
@@ -228,4 +235,5 @@ radialLinesEnter
 
 //remove elements for which there is no data
 radialLinesExit;
+console.log('radialLinesExit')
 };
