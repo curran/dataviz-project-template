@@ -68,14 +68,19 @@ export default function (svg, props) {
     .attr("class", "color-legend")
     .attr("transform", "translate(620,14)");
 
-  const nested = d3.nest()
-    .key(function (d) {return d[layerColumn];})
-    .entries(data2);
+
+  var dataset = d3.values(data2).map(function(d) {
+    return d.values;
+  })
+
+  const keys = ["Bank account or service","Consumer Loan","Credit card","Credit reporting","Debt collection","Money transfers",
+  "Mortgage","Other financial service","Payday loan","Prepaid card","Student loan","Virtual currency"];
 
   var stack = d3.stack()
-    .keys(nested)
+    .keys(keys);
 
-  var stacked = stack(data2);
+  var stacked = stack(dataset);
+  console.log(stacked)
 
   xScale
     .domain(data2.map(function (d) { return yScale(d[xValue]); })).range([0, innerWidth]);
