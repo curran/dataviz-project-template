@@ -43,6 +43,25 @@ import radialPlot from './radialPlot'
 
       const margin = { left: 60, right: 10, top: 10, bottom: 60 };
 
+
+      var filterStatus ={
+        year:{
+          2011:true,
+          2012:true
+        },
+        daytype:{
+          workingday:true,
+          nonworkingday:true
+        },
+        weathersit:{
+          1:true,
+          2:true,
+          3:true
+        },
+      };
+
+console.log(filterStatus);
+
       //row function to parse daily csv
       const row1 = d => {
           d.instant = +d.instant;
