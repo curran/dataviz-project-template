@@ -32,49 +32,58 @@
 
     <div class='row filter-controls'>
       Year
-      <input checked data-toggle="toggle" data-on="2011" data-off="2011" data-onstyle="success" data-offstyle="disabled" type="checkbox"
-      data-size = "mini">
+      <input checked data-toggle="toggle"
+      data-on="2011"
+      data-off="2011"
+      data-onstyle="success"
+      data-offstyle="disabled"
+      type="checkbox"
+      data-size = "mini"
+      id="year2011">
+
       <input checked data-toggle="toggle" data-on="2012" data-off="2012" data-onstyle="success" data-offstyle="disabled" type="checkbox"
-      data-size = "mini">
+      data-size = "mini"   id="year2012">
+
       DayType
+
       <input checked data-toggle="toggle" data-on="Working" data-off="Working" data-onstyle="success" data-offstyle="disabled" type="checkbox"
-      data-size = "mini">
+      data-size = "mini" id="dayTypeWorking">
+
       <input checked data-toggle="toggle" data-on="Non-Working" data-off="Working" data-onstyle="success" data-offstyle="disabled" type="checkbox"
-      data-size = "mini">
+      data-size = "mini"  id="dayTypeNonWorking">
 
       Weather Situation
       <input checked data-toggle="toggle" data-on="1" data-off="1" data-onstyle="success" data-offstyle="disabled" type="checkbox"
-      data-size = "mini">
-      <input checked data-toggle="toggle" data-on="2" data-off="2" data-onstyle="success" data-offstyle="disabled" type="checkbox"
-      data-size = "mini">
-      <input checked data-toggle="toggle" data-on="3" data-off="3" data-onstyle="success" data-offstyle="disabled" type="checkbox"
-      data-size = "mini">
+      data-size = "mini" id="weatherSit1">
 
-      <input class="btn btn-primary btn-sm" type="reset" value="Reset">
+      <input checked data-toggle="toggle" data-on="2" data-off="2" data-onstyle="success" data-offstyle="disabled" type="checkbox"
+      data-size = "mini" id="weatherSit2">
+
+      <input checked data-toggle="toggle" data-on="3" data-off="3" data-onstyle="success" data-offstyle="disabled" type="checkbox"
+      data-size = "mini"  id="weatherSit3">
 
     </div>
 
-    <div class='row'>
+    <div class='row registered'>
 
     <h2>Registered Users</h1>
 
       <div class ="col-md-3 column square" id="viz4"></div>
       <div class ="col-md-3 column square" id="viz1"></div>
       <div class ="col-md-3 column square" id="viz2"></div>
-      <div class ="col-md-3 column square" id="viz3"></div></div>
+      <div class ="col-md-3 column square" id="viz3"></div>
+    </div>
 
-    <div class='row'>
+    <div class='row casual'>
     <h2>Casual Users</h1>
       <div class ="col-md-3 column square" id="viz8"></div>
       <div class ="col-md-3 column square" id="viz5"></div>
       <div class ="col-md-3 column square" id="viz6"></div>
       <div class ="col-md-3 column square" id="viz7"></div>
     </div>
-    <div class='row'>
+    <div class='row overview'>
       <div class ="col-md-12 column long" id="viz9"></div>
     </div>
-    <div class='row'>
-  </div>
 
   <script src="./dist/bundle.js"></script>
 
