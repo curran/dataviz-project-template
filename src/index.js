@@ -293,7 +293,7 @@
           ];
 
       setTimeout(function (){ // Show off the spinner for a few seconds ;)
-        d3.csv("rkl_3seasons.csv", type, function (data){
+        d3.csv("data/rkl_3seasons.csv", type, function (data){
           actions.ingestData(data, numericColumns, ordinalColumns)
         });
       }, 500);
