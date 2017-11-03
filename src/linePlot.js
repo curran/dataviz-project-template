@@ -46,6 +46,16 @@ export default function (div, props) {
   const width = vizDiv.offsetWidth;
   const height = vizDiv.offsetHeight;
 
+  var brush = d3.brushX()
+      .extent([[0, 0], [width, height]])
+      .on("brush end", brushed);
+
+  function brushed() {
+      var s = d3.event.selection || xScale.range();
+      //xScale.domain(s.map(xScale.invert, x2));
+      console.log(s.map(xScale.invert, xScale));
+    };
+
   var svgEnter = svg
     .enter()
     .append('svg');
@@ -126,6 +136,12 @@ export default function (div, props) {
     .attr('transform', `rotate(-90)`)
     .style('text-anchor', 'middle')
     .text(yLabelLeft);
+
+//add brush to line chart
+    g.append("g")
+         .attr("class", "brush")
+         .call(brush)
+         .call(brush.move, xScale.range())
 
 const curveFunction = d3.curveCatmullRom
 
