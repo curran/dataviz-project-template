@@ -69,9 +69,20 @@ export default function (svg, props) {
     .attr("transform", "translate(620,14)");
 
 
-  var dataset = d3.values(data2).map(function(d) {
-    return d.values;
-  })
+  // var dataset = d3.values(data2).map(function(d) {
+  //   return d.values;
+  // })
+
+  var dataset = data2.map(function(d){ 
+  var ob = {};
+    ob.Key = d.product.key
+    ob.value = d.product.value
+  return ob; 
+});
+
+
+console.log(dataset)
+  //console.log(dataset.key)
 
   const keys = ["Bank account or service","Consumer Loan","Credit card","Credit reporting","Debt collection","Money transfers",
   "Mortgage","Other financial service","Payday loan","Prepaid card","Student loan","Virtual currency"];
@@ -79,7 +90,7 @@ export default function (svg, props) {
   var stack = d3.stack()
     .keys(keys);
 
-  var stacked = stack(dataset);
+  var stacked = stack(d.product);
   console.log(stacked)
 
   xScale

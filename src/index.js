@@ -35,8 +35,15 @@ d3.csv('data/cfpb_complaints3.csv', row, data => {
   var data2 = d3.nest()
     .key(function(d) {return d.issues;})
     .key(function(d){return d.product;})
-    .rollup(function(v) {return d3.sum(v,function(d) {return d.count;})})
-    .entries(data);
+    .rollup(function(v) {return  d3.sum(v,function(d) {return d.count;})})
+    .entries(data)
+    .map(function(group){
+      return {
+        issue: group.key,
+        product: group.values,
+      }
+    });
+
 
   console.log(data1)
   console.log(data2)
