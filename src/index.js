@@ -16,12 +16,12 @@ const svg = visualization.select('svg');
 const parseDate = d3.timeFormat("%Y-%m-%d");
 
 const row = d => {
-d.date = new Date(d.date);
-d.product = d.product;
-d.issues = d.issues;
-d.prod_count = +d.prod_count;
+  d.date = new Date(d.date);
+  d.product = d.product;
+  d.issues = d.issues;
+  d.prod_count = +d.prod_count;
 
-return d;
+  return d;
 };
 
 d3.csv('data/cfpb_complaints3.csv', row, data => {
@@ -45,8 +45,8 @@ d3.csv('data/cfpb_complaints3.csv', row, data => {
     });
 
 
-  console.log(data1)
-  console.log(data2)
+  //console.log(data1)
+  //console.log(data2)
 
   const render = () => {
 
