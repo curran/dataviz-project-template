@@ -168,8 +168,7 @@ d3.csv('data/hour.csv', row1, data => {
 
     //set defaultOpacity
     let unfilteredOpacity = .25;
-
-    const dataHourFiltered = filterData(dataHour,{
+    applyFilter(dataHour,{
       dateRange,
       year2011Filter,
       year2012Filter,
@@ -182,7 +181,7 @@ d3.csv('data/hour.csv', row1, data => {
     });
     console.log(dataHour);
 
-    const dataDayFiltered =filterData(dataDay,{
+    applyFilter(dataDay,{
       dateRange,
       year2011Filter,
       year2012Filter,
@@ -194,6 +193,31 @@ d3.csv('data/hour.csv', row1, data => {
       unfilteredOpacity
     });
     console.log(dataDay);
+    // const dataHourFiltered = filterData(dataHour,{
+    //   dateRange,
+    //   year2011Filter,
+    //   year2012Filter,
+    //   dayTypeWorkingFilter,
+    //   dayTypeNonWorkingFilter,
+    //   weatherSit1Filter,
+    //   weatherSit2Filter,
+    //   weatherSit3Filter,
+    //   unfilteredOpacity
+    // });
+    // console.log(dataHour);
+    //
+    // const dataDayFiltered =filterData(dataDay,{
+    //   dateRange,
+    //   year2011Filter,
+    //   year2012Filter,
+    //   dayTypeWorkingFilter,
+    //   dayTypeNonWorkingFilter,
+    //   weatherSit1Filter,
+    //   weatherSit2Filter,
+    //   weatherSit3Filter,
+    //   unfilteredOpacity
+    // });
+    // console.log(dataDay);
 
 
     //first row of grids
@@ -201,7 +225,7 @@ d3.csv('data/hour.csv', row1, data => {
     //note that div1 labels do not correspond to
     //final sequence of charts
     scatterPlot(div1, {
-      data:dataDayFiltered,
+      data:dataDay, //Filtered,
       xValue:xValue1,
       yValue:yValue1,
       xLabel:xLabel1,
@@ -215,7 +239,7 @@ d3.csv('data/hour.csv', row1, data => {
     console.log("div1")
 
     scatterPlot(div2, {
-      data:dataDayFiltered,
+      data:dataDay, //Filtered,
       xValue:xValue2,
       yValue:yValue1,
       xLabel:xLabel2,
@@ -229,7 +253,7 @@ d3.csv('data/hour.csv', row1, data => {
     console.log("div2")
 
     scatterPlot(div3, {
-      data:dataDayFiltered,
+      data:dataDay, //Filtered,
       xValue:xValue3,
       yValue:yValue1,
       xLabel:xLabel3,
@@ -243,7 +267,7 @@ d3.csv('data/hour.csv', row1, data => {
     console.log("div3")
 
     radialPlot2(div4, {
-      data:dataHourFiltered,
+      data:dataHour, //Filtered,
       hour:xValue5,
       yValue:yValue1,
       yLabel:yLabel1,
@@ -255,7 +279,7 @@ d3.csv('data/hour.csv', row1, data => {
 
     //second row of grid
     scatterPlot(div5, {
-      data:dataDayFiltered,
+      data:dataDay, //Filtered,
       xValue:xValue1,
       yValue:yValue2,
       xLabel:xLabel1,
@@ -269,7 +293,7 @@ d3.csv('data/hour.csv', row1, data => {
     console.log("div5")
 
     scatterPlot(div6, {
-      data:dataDayFiltered,
+      data:dataDay, //Filtered,
       xValue:xValue2,
       yValue:yValue2,
       xLabel:xLabel2,
@@ -283,7 +307,7 @@ d3.csv('data/hour.csv', row1, data => {
     console.log("div6")
 
     scatterPlot(div7, {
-      data:dataDayFiltered,
+      data:dataDay, //Filtered,
       xValue:xValue3,
       yValue:yValue2,
       xLabel:xLabel3,
@@ -297,7 +321,7 @@ d3.csv('data/hour.csv', row1, data => {
     console.log("div7")
 
     radialPlot(div8, {
-      data:dataHourFiltered,
+      data:dataHour, //Filtered,
       hour:xValue5,
       yValue:yValue2,
       yLabel:yLabel2,

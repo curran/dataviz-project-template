@@ -245,8 +245,7 @@ d3.csv('data/hour.csv', row1, data => {
 
     //set defaultOpacity
     let unfilteredOpacity = .25;
-
-    const dataHourFiltered = Object(__WEBPACK_IMPORTED_MODULE_5__filterData__["a" /* default */])(dataHour,{
+    Object(__WEBPACK_IMPORTED_MODULE_4__applyFilter__["a" /* default */])(dataHour,{
       dateRange,
       year2011Filter,
       year2012Filter,
@@ -259,7 +258,7 @@ d3.csv('data/hour.csv', row1, data => {
     });
     console.log(dataHour);
 
-    const dataDayFiltered =Object(__WEBPACK_IMPORTED_MODULE_5__filterData__["a" /* default */])(dataDay,{
+    Object(__WEBPACK_IMPORTED_MODULE_4__applyFilter__["a" /* default */])(dataDay,{
       dateRange,
       year2011Filter,
       year2012Filter,
@@ -271,6 +270,31 @@ d3.csv('data/hour.csv', row1, data => {
       unfilteredOpacity
     });
     console.log(dataDay);
+    // const dataHourFiltered = filterData(dataHour,{
+    //   dateRange,
+    //   year2011Filter,
+    //   year2012Filter,
+    //   dayTypeWorkingFilter,
+    //   dayTypeNonWorkingFilter,
+    //   weatherSit1Filter,
+    //   weatherSit2Filter,
+    //   weatherSit3Filter,
+    //   unfilteredOpacity
+    // });
+    // console.log(dataHour);
+    //
+    // const dataDayFiltered =filterData(dataDay,{
+    //   dateRange,
+    //   year2011Filter,
+    //   year2012Filter,
+    //   dayTypeWorkingFilter,
+    //   dayTypeNonWorkingFilter,
+    //   weatherSit1Filter,
+    //   weatherSit2Filter,
+    //   weatherSit3Filter,
+    //   unfilteredOpacity
+    // });
+    // console.log(dataDay);
 
 
     //first row of grids
@@ -278,7 +302,7 @@ d3.csv('data/hour.csv', row1, data => {
     //note that div1 labels do not correspond to
     //final sequence of charts
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div1, {
-      data:dataDayFiltered,
+      data:dataDay, //Filtered,
       xValue:xValue1,
       yValue:yValue1,
       xLabel:xLabel1,
@@ -292,7 +316,7 @@ d3.csv('data/hour.csv', row1, data => {
     console.log("div1")
 
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div2, {
-      data:dataDayFiltered,
+      data:dataDay, //Filtered,
       xValue:xValue2,
       yValue:yValue1,
       xLabel:xLabel2,
@@ -306,7 +330,7 @@ d3.csv('data/hour.csv', row1, data => {
     console.log("div2")
 
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div3, {
-      data:dataDayFiltered,
+      data:dataDay, //Filtered,
       xValue:xValue3,
       yValue:yValue1,
       xLabel:xLabel3,
@@ -320,7 +344,7 @@ d3.csv('data/hour.csv', row1, data => {
     console.log("div3")
 
     Object(__WEBPACK_IMPORTED_MODULE_3__radialPlot2__["a" /* default */])(div4, {
-      data:dataHourFiltered,
+      data:dataHour, //Filtered,
       hour:xValue5,
       yValue:yValue1,
       yLabel:yLabel1,
@@ -332,7 +356,7 @@ d3.csv('data/hour.csv', row1, data => {
 
     //second row of grid
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div5, {
-      data:dataDayFiltered,
+      data:dataDay, //Filtered,
       xValue:xValue1,
       yValue:yValue2,
       xLabel:xLabel1,
@@ -346,7 +370,7 @@ d3.csv('data/hour.csv', row1, data => {
     console.log("div5")
 
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div6, {
-      data:dataDayFiltered,
+      data:dataDay, //Filtered,
       xValue:xValue2,
       yValue:yValue2,
       xLabel:xLabel2,
@@ -360,7 +384,7 @@ d3.csv('data/hour.csv', row1, data => {
     console.log("div6")
 
     Object(__WEBPACK_IMPORTED_MODULE_0__scatterPlot__["a" /* default */])(div7, {
-      data:dataDayFiltered,
+      data:dataDay, //Filtered,
       xValue:xValue3,
       yValue:yValue2,
       xLabel:xLabel3,
@@ -374,7 +398,7 @@ d3.csv('data/hour.csv', row1, data => {
     console.log("div7")
 
     Object(__WEBPACK_IMPORTED_MODULE_2__radialPlot__["a" /* default */])(div8, {
-      data:dataHourFiltered,
+      data:dataHour, //Filtered,
       hour:xValue5,
       yValue:yValue2,
       yLabel:yLabel2,
@@ -499,6 +523,8 @@ const colorLegend = d3.legendColor()
     filterValue
   } = props;
 
+ console.log(data);
+
   var vizDiv = document.getElementById(div);
   var svg = d3.select(vizDiv)
     .selectAll('svg')
@@ -597,9 +623,9 @@ const colorLegend = d3.legendColor()
   circlesEnter
     .attr('class','enter')
     .attr('fill', colorValue)
-    .attr('fill-opacity', d =>filterValue(d))
     .attr('r', pointSize)
     .merge(circles)
+    .attr('fill-opacity', d =>filterValue(d))
     .attr('cx', d => xScale(xValue(d)))
     .attr('cy', d => yScale(yValue(d)));
 
@@ -1285,7 +1311,7 @@ radialLinesExit;
 "use strict";
 
 
-/* unused harmony default export */ var _unused_webpack_default_export = (function (data, props) {
+/* harmony default export */ __webpack_exports__["a"] = (function (data, props) {
   const {
     dateRange,
     year2011Filter,
@@ -1329,7 +1355,7 @@ radialLinesExit;
 "use strict";
 
 
-/* harmony default export */ __webpack_exports__["a"] = (function (data, props) {
+/* unused harmony default export */ var _unused_webpack_default_export = (function (data, props) {
   const {
     dateRange,
     year2011Filter,

@@ -34,6 +34,8 @@ export default function (div, props) {
     filterValue
   } = props;
 
+ console.log(data);
+
   var vizDiv = document.getElementById(div);
   var svg = d3.select(vizDiv)
     .selectAll('svg')
@@ -132,9 +134,9 @@ export default function (div, props) {
   circlesEnter
     .attr('class','enter')
     .attr('fill', colorValue)
-    .attr('fill-opacity', d =>filterValue(d))
     .attr('r', pointSize)
     .merge(circles)
+    .attr('fill-opacity', d =>filterValue(d))
     .attr('cx', d => xScale(xValue(d)))
     .attr('cy', d => yScale(yValue(d)));
 
