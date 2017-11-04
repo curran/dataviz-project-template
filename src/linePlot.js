@@ -1,7 +1,7 @@
 
 const xScale = d3.scaleLinear();
 const yScale = d3.scaleLinear();
-const minDate = new Date(2011,-1,1)
+const minDate = new Date(2011,0,1)
 const maxDate = new Date(2012,11,31)
 
 
@@ -36,7 +36,7 @@ export default function (div, props) {
     margin
   } = props;
 
-  console.log(minDate, maxDate, d3.extent(xValue))
+  console.log(minDate, maxDate, d3.extent(data, xValue))
 
   var vizDiv = document.getElementById(div);
   var svg = d3.select(vizDiv)
@@ -52,9 +52,16 @@ export default function (div, props) {
 
   function brushed() {
       var s = d3.event.selection || xScale.range();
+      var dateRange=s.map(xScale.invert, xScale);
+      //startDate and endDate appear to be undeclared in this function
+      //- even though they are desclared in index.js
+      // startDate = dateRange[0];
+      // endDate = dateRange[1];
       //xScale.domain(s.map(xScale.invert, x2));
-      console.log(s.map(xScale.invert, xScale));
-    };
+      console.log(dateRange)
+      // console.log(startDate);
+      // console.log(endDate);
+      };
 
   var svgEnter = svg
     .enter()

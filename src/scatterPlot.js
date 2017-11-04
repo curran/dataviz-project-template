@@ -30,9 +30,9 @@ export default function (div, props) {
     yLabel,
     colorValue,
     pointSize,
-    margin
+    margin,
+    filterValue
   } = props;
-
 
   var vizDiv = document.getElementById(div);
   var svg = d3.select(vizDiv)
@@ -56,8 +56,8 @@ export default function (div, props) {
     .attr('height',minDimension);
 
 
-  console.log(width, height, minDimension);
-  console.log(svg.attr('width'), svg.attr('height'));
+  // console.log(width, height, minDimension);
+  // console.log(svg.attr('width'), svg.attr('height'));
 
   const innerHeight = minDimension - margin.top - margin.bottom;
   const innerWidth = minDimension - margin.left - margin.right;
@@ -121,6 +121,7 @@ export default function (div, props) {
 
   var circlesExit = circles.exit()
     .attr('class','exit')
+    .attr('fill-opacity',0)
     .remove();
 
   //UPDATE old elements present (change class)
@@ -131,7 +132,7 @@ export default function (div, props) {
   circlesEnter
     .attr('class','enter')
     .attr('fill', colorValue)
-    .attr('fill-opacity', .1)
+    .attr('fill-opacity', d =>filterValue(d))
     .attr('r', pointSize)
     .merge(circles)
     .attr('cx', d => xScale(xValue(d)))
@@ -149,4 +150,4 @@ export default function (div, props) {
   //   .attr('dy', '0.1em');
 
 
-    };
+  };

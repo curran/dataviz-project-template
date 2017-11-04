@@ -3,7 +3,7 @@ import linePlot from './linePlot'
 import radialPlot from './radialPlot'
 import radialPlot2 from './radialPlot2'
 import applyFilter from './applyFilter'
-
+import filterData from './filterData'
 
 
      const div1 = "viz1";
@@ -34,18 +34,32 @@ import applyFilter from './applyFilter'
       const yLabel2 = 'Users';
       const yLabel3 = 'Users';
       const yLabel4 = xLabel1;
-      const pointSize = 2;
+      const pointSize = 5;
       const pointColor1 = "green";
       const pointColor2 = "blue";
       const pointColor3 = "grey";
+      const filterValue = d => d.filterOpacity;
+
+
+      const minDate = new Date(2011,0,1);
+      const maxDate = new Date(2012,11,31);
+
+      // initialize filter variables
+      var startDate = new Date(2011,0,1);
+      var endDate = new Date(2012,11,31);
+      var year2011Filter=true;
+      var year2012Filter=true;
+      var dayTypeWorkingFilter=true;
+      var dayTypeNonWorkingFilter=true;
+      var weatherSit1Filter=true;
+      var weatherSit2Filter=true;
+      var weatherSit3Filter=true;
 
 
       const margin = { left: 60, right: 10, top: 10, bottom: 60 };
 
       //initialize these variables in the Global Scope
       //so they can be accessed by any function
-      var startDate, endDate;
-
 
       //row function to parse daily csv
       const row1 = d => {
@@ -87,7 +101,7 @@ import applyFilter from './applyFilter'
           d.casual = +d.casual;
           d.registered = +d.registered;
           d.cnt = +d.cnt;
-          d.filterOpacity=1;
+          d.filterOpacity=.25;
           return d;
       };
 
@@ -140,22 +154,46 @@ d3.csv('data/hour.csv', row1, data => {
       dataDay = unnest(nestbyday, "value");
       //console.log(dataDay);
 
-      startDate = d3.min(dataDay, d=>d.dteDay);
-      endDate = d3.max(dataDay, d=>d.dteDay);
-      console.log('date range: '+ startDate +" to "+endDate);
+      // startDate = d3.min(dataDay, d=>d.dteDay);
+      // endDate = d3.max(dataDay, d=>d.dteDay);
+      console.log(dataHour)
+      console.log(dataDay)
 
-
-  console.log('setup toggle buttons')
-
-
-
-
-
-  //render function for all visualizations
-  const render =() => {
+//render function for all visualizations
+  function render(){
     console.log("update filter and echo to console")
 
-    applyFilter
+    var dateRange = d3.extent(dataDay, d=>d.dteday);
+    console.log('date range: '+ dateRange[0] +" to "+dateRange[1]);
+
+    //set defaultOpacity
+    let unfilteredOpacity = .25;
+
+    const dataHourFiltered = filterData(dataHour,{
+      dateRange,
+      year2011Filter,
+      year2012Filter,
+      dayTypeWorkingFilter,
+      dayTypeNonWorkingFilter,
+      weatherSit1Filter,
+      weatherSit2Filter,
+      weatherSit3Filter,
+      unfilteredOpacity
+    });
+    console.log(dataHour);
+
+    const dataDayFiltered =filterData(dataDay,{
+      dateRange,
+      year2011Filter,
+      year2012Filter,
+      dayTypeWorkingFilter,
+      dayTypeNonWorkingFilter,
+      weatherSit1Filter,
+      weatherSit2Filter,
+      weatherSit3Filter,
+      unfilteredOpacity
+    });
+    console.log(dataDay);
 
 
     //first row of grids
@@ -163,46 +201,49 @@ d3.csv('data/hour.csv', row1, data => {
     //note that div1 labels do not correspond to
     //final sequence of charts
     scatterPlot(div1, {
-      data:dataDay,
+      data:dataDayFiltered,
       xValue:xValue1,
       yValue:yValue1,
       xLabel:xLabel1,
       yLabel:yLabel1,
       colorValue:pointColor1,
       pointSize:pointSize,
-      margin:margin
+      margin:margin,
+      filterValue:filterValue
     });
 
     console.log("div1")
 
     scatterPlot(div2, {
-      data:dataDay,
+      data:dataDayFiltered,
       xValue:xValue2,
       yValue:yValue1,
       xLabel:xLabel2,
       yLabel:yLabel1,
       colorValue:pointColor1,
       pointSize:pointSize,
-      margin:margin
+      margin:margin,
+      filterValue:filterValue
     });
 
     console.log("div2")
 
     scatterPlot(div3, {
-      data:dataDay,
+      data:dataDayFiltered,
       xValue:xValue3,
       yValue:yValue1,
       xLabel:xLabel3,
       yLabel:yLabel1,
       colorValue:pointColor1,
       pointSize:pointSize,
-      margin:margin
+      margin:margin,
+      filterValue:filterValue
     });
 
     console.log("div3")
 
     radialPlot2(div4, {
-      data:dataHour,
+      data:dataHourFiltered,
       hour:xValue5,
       yValue:yValue1,
       yLabel:yLabel1,
@@ -214,46 +255,49 @@ d3.csv('data/hour.csv', row1, data => {
 
     //second row of grid
     scatterPlot(div5, {
-      data:dataDay,
+      data:dataDayFiltered,
       xValue:xValue1,
       yValue:yValue2,
       xLabel:xLabel1,
       yLabel:yLabel2,
       colorValue:pointColor2,
       pointSize:pointSize,
-      margin:margin
+      margin:margin,
+      filterValue:filterValue
     });
 
     console.log("div5")
 
     scatterPlot(div6, {
-      data:dataDay,
+      data:dataDayFiltered,
       xValue:xValue2,
       yValue:yValue2,
       xLabel:xLabel2,
       yLabel:yLabel2,
       colorValue:pointColor2,
       pointSize:pointSize,
-      margin:margin
+      margin:margin,
+      filterValue:filterValue
     });
 
     console.log("div6")
 
     scatterPlot(div7, {
-      data:dataDay,
+      data:dataDayFiltered,
       xValue:xValue3,
       yValue:yValue2,
       xLabel:xLabel3,
       yLabel:yLabel2,
       colorValue:pointColor2,
       pointSize:pointSize,
-      margin:margin
+      margin:margin,
+      filterValue:filterValue
     });
 
     console.log("div7")
 
     radialPlot(div8, {
-      data:dataHour,
+      data:dataHourFiltered,
       hour:xValue5,
       yValue:yValue2,
       yLabel:yLabel2,
@@ -271,7 +315,7 @@ d3.csv('data/hour.csv', row1, data => {
       xLabel:xLabel4,
       yLabel:"Users",
       colorValue:pointColor2,
-      pointSize:pointSize,
+      pointSizeß:pointSize,
       margin:margin
     });
 
@@ -286,69 +330,52 @@ d3.csv('data/hour.csv', row1, data => {
   //evenet listeners
   window.addEventListener('resize',render);
 
-  let f1=true, f2=true, f3=true, f4=true, f5=true, f6=true, f7=true;
 
 
-//evebt handler for bootstrap toggle switch UI elements
+//event handler for bootstrap toggle switch UI elements
 $(function() {
 
   	$('#year2011').change(function() {
-      f1 = $(this).prop('checked');
-      // dataHour.forEach(d =>{
-      //   if(d.year==0 && f1==false){d.filterOpacity=0};
-      // });
-		//render vis after toggle changes and dataset filtered    		//render()
-    console.log(f1);
+      year2011Filter = $(this).prop('checked');
+      console.log(year2011Filter);
+      render()
     });
 
     $('#year2012').change(function() {
-      f2 = $(this).prop('checked');
-      // dataHour.forEach(d =>{
-      //   if(d.year==1 && f2==false){d.filterOpacity=0};
-      // });
-      console.log(f2);
+      year2012Filter = $(this).prop('checked');
+      console.log(year2012Filter);
+      render()
 		});
 
     $('#dayTypeWorking').change(function() {
-      f3 = $(this).prop('checked');
-      // dataHour.forEach(d =>{
-      //   if(d.workinday==1 && f3==false){d.filterOpacity=0};
-      // });
-      console.log(f3);
+      dayTypeWorkingFilter = $(this).prop('checked');
+      console.log(dayTypeWorkingFilter);
+      render()
     });
 
 
     $('#dayTypeNonWorking').change(function() {
-      f4 = $(this).prop('checked');
-      // dataHour.forEach(d =>{
-      //   if(d.workinday==0 && f4==false){d.filterOpacity=0};
-      // });
-      console.log(f4);
-
+      dayTypeNonWorkingFilter = $(this).prop('checked');
+      console.log(dayTypeNonWorkingFilter);
+      render()
     });
 
     $('#weatherSit1').change(function() {
-      f5 = $(this).prop('checked');
-      // dataHour.forEach(d =>{
-      //   if(d.weathersit==1 && f5==false){d.filterOpacity=0};
-      // });
-      console.log(f5);
+      weatherSit1Filter = $(this).prop('checked');
+      console.log(weatherSit1Filter);
+      render()
     });
 
      $('#weatherSit2').change(function() {
-      f6 = $(this).prop('checked') ;
-      // dataHour.forEach(d =>{
-      //   if(d.weathersit==2 && f6==false){d.filterOpacity=0};
-      // });
-      console.log(f6);
+      weatherSit2Filter = $(this).prop('checked') ;
+      console.log(weatherSit2Filter);
+      render()
     });
 
       $('#weatherSit3').change(function() {
-      f7 = $(this).prop('checked');
-      // dataHour.forEach(d =>{
-      //   if(d.weathersit==3 && f7==false){d.filterOpacity=0};
-      // });
-      console.log(f7);
+      weatherSit3Filter = $(this).prop('checked');
+      console.log(weatherSit1Filter);
+      render()
     });
 });
 });
