@@ -145,10 +145,18 @@ export default function (div, props) {
     .text(yLabelLeft);
 
 //add brush to line chart
-    g.append("g")
-         .attr("class", "brush")
-         .call(brush)
-         .call(brush.move, xScale.range())
+var b = g.selectAll('.brush').data([null]);
+
+var bEnter = b.append("g")
+      .attr("class", "brush")
+      .call(brush)
+      .call(brush.move, xScale.range());
+
+var bExit = b.remove();
+
+bExit
+b
+bEnter
 
 const curveFunction = d3.curveCatmullRom
 

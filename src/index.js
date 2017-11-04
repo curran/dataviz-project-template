@@ -179,7 +179,6 @@ d3.csv('data/hour.csv', row1, data => {
       weatherSit3Filter,
       unfilteredOpacity
     });
-    console.log(dataHour);
 
     applyFilter(dataDay,{
       dateRange,
@@ -192,32 +191,30 @@ d3.csv('data/hour.csv', row1, data => {
       weatherSit3Filter,
       unfilteredOpacity
     });
-    console.log(dataDay);
-    // const dataHourFiltered = filterData(dataHour,{
-    //   dateRange,
-    //   year2011Filter,
-    //   year2012Filter,
-    //   dayTypeWorkingFilter,
-    //   dayTypeNonWorkingFilter,
-    //   weatherSit1Filter,
-    //   weatherSit2Filter,
-    //   weatherSit3Filter,
-    //   unfilteredOpacity
-    // });
-    // console.log(dataHour);
-    //
-    // const dataDayFiltered =filterData(dataDay,{
-    //   dateRange,
-    //   year2011Filter,
-    //   year2012Filter,
-    //   dayTypeWorkingFilter,
-    //   dayTypeNonWorkingFilter,
-    //   weatherSit1Filter,
-    //   weatherSit2Filter,
-    //   weatherSit3Filter,
-    //   unfilteredOpacity
-    // });
-    // console.log(dataDay);
+
+    const dataHourFiltered = filterData(dataHour,{
+      dateRange,
+      year2011Filter,
+      year2012Filter,
+      dayTypeWorkingFilter,
+      dayTypeNonWorkingFilter,
+      weatherSit1Filter,
+      weatherSit2Filter,
+      weatherSit3Filter,
+      unfilteredOpacity
+    });
+
+    const dataDayFiltered =filterData(dataDay,{
+      dateRange,
+      year2011Filter,
+      year2012Filter,
+      dayTypeWorkingFilter,
+      dayTypeNonWorkingFilter,
+      weatherSit1Filter,
+      weatherSit2Filter,
+      weatherSit3Filter,
+      unfilteredOpacity
+    });
 
 
     //first row of grids
@@ -267,7 +264,7 @@ d3.csv('data/hour.csv', row1, data => {
     console.log("div3")
 
     radialPlot2(div4, {
-      data:dataHour, //Filtered,
+      data:dataHourFiltered,
       hour:xValue5,
       yValue:yValue1,
       yLabel:yLabel1,
@@ -321,7 +318,7 @@ d3.csv('data/hour.csv', row1, data => {
     console.log("div7")
 
     radialPlot(div8, {
-      data:dataHour, //Filtered,
+      data:dataHourFiltered,
       hour:xValue5,
       yValue:yValue2,
       yLabel:yLabel2,

@@ -22,9 +22,7 @@ stroke: #b5b5b5;
 stroke-width: 1;
 }
 
-.axis line {
-  stroke: LightGrey;
-}
+
 .axis line,
 .axis circle {
 fill: none;
@@ -48,12 +46,7 @@ stroke:  LightGrey;
   font-family: sans-serif;
 }
 
-  .line {
-	fill: none;
-  stroke: red;
-  stroke-width: 2px;
-	clip-path: url(#clip)
-  }
+
 	.line_casual {
 	fill: none;
   stroke: darkblue;

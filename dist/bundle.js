@@ -256,7 +256,6 @@ d3.csv('data/hour.csv', row1, data => {
       weatherSit3Filter,
       unfilteredOpacity
     });
-    console.log(dataHour);
 
     Object(__WEBPACK_IMPORTED_MODULE_4__applyFilter__["a" /* default */])(dataDay,{
       dateRange,
@@ -269,32 +268,30 @@ d3.csv('data/hour.csv', row1, data => {
       weatherSit3Filter,
       unfilteredOpacity
     });
-    console.log(dataDay);
-    // const dataHourFiltered = filterData(dataHour,{
-    //   dateRange,
-    //   year2011Filter,
-    //   year2012Filter,
-    //   dayTypeWorkingFilter,
-    //   dayTypeNonWorkingFilter,
-    //   weatherSit1Filter,
-    //   weatherSit2Filter,
-    //   weatherSit3Filter,
-    //   unfilteredOpacity
-    // });
-    // console.log(dataHour);
-    //
-    // const dataDayFiltered =filterData(dataDay,{
-    //   dateRange,
-    //   year2011Filter,
-    //   year2012Filter,
-    //   dayTypeWorkingFilter,
-    //   dayTypeNonWorkingFilter,
-    //   weatherSit1Filter,
-    //   weatherSit2Filter,
-    //   weatherSit3Filter,
-    //   unfilteredOpacity
-    // });
-    // console.log(dataDay);
+
+    const dataHourFiltered = Object(__WEBPACK_IMPORTED_MODULE_5__filterData__["a" /* default */])(dataHour,{
+      dateRange,
+      year2011Filter,
+      year2012Filter,
+      dayTypeWorkingFilter,
+      dayTypeNonWorkingFilter,
+      weatherSit1Filter,
+      weatherSit2Filter,
+      weatherSit3Filter,
+      unfilteredOpacity
+    });
+
+    const dataDayFiltered =Object(__WEBPACK_IMPORTED_MODULE_5__filterData__["a" /* default */])(dataDay,{
+      dateRange,
+      year2011Filter,
+      year2012Filter,
+      dayTypeWorkingFilter,
+      dayTypeNonWorkingFilter,
+      weatherSit1Filter,
+      weatherSit2Filter,
+      weatherSit3Filter,
+      unfilteredOpacity
+    });
 
 
     //first row of grids
@@ -344,7 +341,7 @@ d3.csv('data/hour.csv', row1, data => {
     console.log("div3")
 
     Object(__WEBPACK_IMPORTED_MODULE_3__radialPlot2__["a" /* default */])(div4, {
-      data:dataHour, //Filtered,
+      data:dataHourFiltered,
       hour:xValue5,
       yValue:yValue1,
       yLabel:yLabel1,
@@ -398,7 +395,7 @@ d3.csv('data/hour.csv', row1, data => {
     console.log("div7")
 
     Object(__WEBPACK_IMPORTED_MODULE_2__radialPlot__["a" /* default */])(div8, {
-      data:dataHour, //Filtered,
+      data:dataHourFiltered,
       hour:xValue5,
       yValue:yValue2,
       yLabel:yLabel2,
@@ -796,10 +793,18 @@ const yAxis = d3.axisLeft()
     .text(yLabelLeft);
 
 //add brush to line chart
-    g.append("g")
-         .attr("class", "brush")
-         .call(brush)
-         .call(brush.move, xScale.range())
+var b = g.selectAll('.brush').data([null]);
+
+var bEnter = b.append("g")
+      .attr("class", "brush")
+      .call(brush)
+      .call(brush.move, xScale.range());
+
+var bExit = b.remove();
+
+bExit
+b
+bEnter
 
 const curveFunction = d3.curveCatmullRom
 
@@ -1355,7 +1360,7 @@ radialLinesExit;
 "use strict";
 
 
-/* unused harmony default export */ var _unused_webpack_default_export = (function (data, props) {
+/* harmony default export */ __webpack_exports__["a"] = (function (data, props) {
   const {
     dateRange,
     year2011Filter,
