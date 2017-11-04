@@ -9,7 +9,7 @@ body {
 }
 .tick text, .legendCells text {
   fill: #8E8883;
-  font-size: 28pt;
+  font-size: 10pt;
   font-family: sans-serif;
 }
 .axis-label, .legend-label {

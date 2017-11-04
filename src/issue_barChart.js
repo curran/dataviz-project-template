@@ -11,7 +11,6 @@ const xAxis = d3.axisBottom()
 
 const yAxis = d3.axisLeft()
   .scale(yScale)
-  .ticks(5)
   .tickSize(-innerWidth)
   .tickPadding(15);
 
@@ -69,32 +68,38 @@ export default function (svg, props) {
     .attr("transform", "translate(620,14)");
 
 
-  // var dataset = d3.values(data2).map(function(d) {
-  //   return d.values;
-  // })
-
   var dataset = data2.map(function(d){ 
   var ob = {};
-    ob.Key = d.product.key
-    ob.value = d.product.value
+    var i = 0;
+    for (; i < d.product.length; i++){
+    ob[d.product[i].key] = d.product[i].value;
+  }
+
   return ob; 
 });
 
 
-console.log(dataset)
-  //console.log(dataset.key)
-
   const keys = ["Bank account or service","Consumer Loan","Credit card","Credit reporting","Debt collection","Money transfers",
   "Mortgage","Other financial service","Payday loan","Prepaid card","Student loan","Virtual currency"];
 
+  for(var j=0;j<dataset.length;j++){
+    for(var k in keys){
+      if (!dataset[j].hasOwnProperty(keys[k])) {
+        dataset[j][keys[k]] = 0;
+      }
+    }
+  };
+
+  console.log(dataset)
+  
   var stack = d3.stack()
     .keys(keys);
 
-  var stacked = stack(d.product);
+  var stacked = stack(dataset);
   console.log(stacked)
 
   xScale
-    .domain(data2.map(function (d) { return yScale(d[xValue]); })).range([0, innerWidth]);
+    .domain(data2.map(function (d) { return d.issue; })).range([0, innerWidth]);
 
   yScale
     .domain([0, d3.max(stacked.map(function (d){
@@ -103,35 +108,32 @@ console.log(dataset)
     .range([innerHeight, 0])
     .nice();
 
+  colorScale
+    .domain(keys)
+
   xAxisG.call(xAxis);
-  xAxisG.selectAll('.tick line').remove();
-  xAxisG.selectAll('.tick text')
-      .attr('transform', 'rotate(-45)')
-      .attr('text-anchor', 'end')
-      .attr('alignment-baseline', 'middle')
-      .attr('x', -5)
-      .attr('y', 6)
-      .attr('dy', 0);
+
 
   yAxisG.call(yAxis);
 
-  var layers = g.selectAll('g').data(stacked);
-    layers.exit().remove();
-    layers = layers.enter().append('g')
-      .merge(layers)
-        .attr('fill', function(d) { return colorScale(d.key); });
+  var groups = g.selectAll('g')
+    .data(stacked)
+    .enter()
+    .append("g")
+    .style('fill', function(d,i) { return colorScale(i); });
     
-    var layer = layers.selectAll('rect')
-      .data(function (d) { return d; });
-    layer.exit().remove();
-    layer.enter().append("rect")
-      .merge(layer)
-      .attr('width', d => xScale.bandwidth()) 
-      .attr('x', function (d) { return xScale(d[xValue]); })
-      .attr('y', function (d) { return yScale(d[1]); })
-      .attr('height', function (d) { return yScale(d[0]) - yScale(d[1]); });
+  var rects = groups.selectAll('rect')
+    .data(function (d) { return d; })
+    .enter()
+    .append("rect")
+    .attr('width', xScale.bandwidth())
+    .attr('x', function(d,i){return xScale(i);})
+    .attr('y', function (d) { return yScale(d[1]); })
+    .attr('height', function (d) { return yScale(d[0]) - yScale(d[1]); });
 
-  colorLegendG.call(colorLegend);
+  colorLegendG.call(colorLegend)
+      .selectAll('.cell text')
+      .attr('dy', '0.1em');
 
 
 }
