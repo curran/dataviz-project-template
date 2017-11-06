@@ -337,7 +337,12 @@ d3.csv('data/hour.csv', row1, data => {
       yLabel:"Users",
       colorValue:pointColor2,
       pointSizeß:pointSize,
-      margin:margin
+      margin:margin,
+      onBrush: (dateRange) => {
+        console.log(dateRange)
+        console.log('TODO set filters, compute filtered data')
+        console.log('TODO re-render everything')
+      }
     });
 
 

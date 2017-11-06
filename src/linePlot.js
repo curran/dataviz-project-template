@@ -58,10 +58,10 @@ export default function (div, props) {
       // startDate = dateRange[0];
       // endDate = dateRange[1];
       //xScale.domain(s.map(xScale.invert, x2));
-      console.log(dateRange)
       // console.log(startDate);
       // console.log(endDate);
-      };
+      props.onBrush(dateRange);
+  };
 
   var svgEnter = svg
     .enter()
@@ -147,16 +147,18 @@ export default function (div, props) {
 //add brush to line chart
 var b = g.selectAll('.brush').data([null]);
 
-var bEnter = b.append("g")
-      .attr("class", "brush")
+var bEnter = b.enter().append("g")
+      .attr("class", "brush");
+
+b.merge(bEnter)
       .call(brush)
       .call(brush.move, xScale.range());
 
-var bExit = b.remove();
-
-bExit
-b
-bEnter
+//var bExit = b.remove();
+//
+//bExit
+//b
+//bEnter
 
 const curveFunction = d3.curveCatmullRom
 
